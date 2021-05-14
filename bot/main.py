@@ -52,7 +52,8 @@ async def on_message(message):
 
     cleaned_msg = message.content.replace("!", "").replace("?", "").lower()
     if cleaned_msg.endswith("cubebot") and len(cleaned_msg) > 9 and cleaned_msg[:-8] in greetings:
-        await message.channel.send(random.choice(greetings) + str(message.author))
+        end_char = "!" if random.randint(0, 1) == 1 else ""
+        await message.channel.send("{} @{}{}".formast(random.choice(greetings), message.author, end_char))
 
 # --------------------------------------------------------------------------- #
 
