@@ -50,7 +50,7 @@ async def on_message(message):
     if message.author == bot.user:
         return
 
-    cleaned_msg = message.content.replace("!", "").replace("?", "").tolower()
+    cleaned_msg = message.content.replace("!", "").replace("?", "").lower()
     if cleaned_msg.endswith("cubebot") and len(cleaned_msg) > 9 and cleaned_msg[:-8] in greetings:
         await message.channel.send(random.choice(greetings) + str(message.author))
 
