@@ -1,1 +1,1 @@
-worker: python bot/main.py
+worker: cd bot; python main.py; cd ../
