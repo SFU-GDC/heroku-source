@@ -42,7 +42,7 @@ async def on_ready():
 
 @bot.event
 async def on_member_join(member):
-    # TODO: give basic role
+    # TODO: give basic role?
     pass
 
 @bot.event
@@ -50,10 +50,12 @@ async def on_message(message):
     if message.author == bot.user:
         return
 
-    cleaned_msg = message.content.replace("!", "").replace("?", "").lower()
+    cleaned_msg = message.content.replace("!", "").replace("?", "").lower().strip()
     if cleaned_msg.endswith("cubebot") and len(cleaned_msg) > 9 and cleaned_msg[:-8] in greetings:
         end_char = "!" if random.randint(0, 1) == 1 else ""
         await message.channel.send("{} @{}{}".formast(random.choice(greetings), message.author, end_char))
+    elif cleaned_msg.contains("linux"):
+        await message.channel.send("you mean GNU linux, right?")
 
 # --------------------------------------------------------------------------- #
 
