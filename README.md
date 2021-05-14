@@ -4,5 +4,5 @@ This is the repository for all applications run on the cloud using heroku. If yo
 ### CubeBot - Discord Bot:
 CubeBot is SFU Game Dev Club's main bot for managing roles and giving information about game jams.
 
-![alt text](https://raw.githubusercontent.com/SFU-GDC/heroku-source/main/res/tiny-cubebot.gif "spin spin spin!")
+<img src="https://raw.githubusercontent.com/SFU-GDC/heroku-source/main/res/tiny-cubebot.gif" alt="cubebot" title="spin spin spin!" width="250"/>
 
