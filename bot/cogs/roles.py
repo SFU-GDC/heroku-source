@@ -37,12 +37,10 @@ class Roles(commands.Cog):
                 print("react")
                 print(reaction.emoji)
                 print(reaction.emoji.id)
-                if reaction.emoji == bulbasaur_green:
+                if reaction.emoji.name == "Bulbasaur Green":
                     role = discord.utils.get(ctx.guild.roles, name="Bulbasaur Green")
-                    print(role)
                     await user.add_roles(role)
-                    print("bulb")
-                elif reaction.emoji == gameboy_yellow:
+                elif reaction.emoji.name == "Gameboy Yellow":
                     role = discord.utils.get(ctx.guild.roles, name="Gameboy Yellow")
                     await user.add_roles(role)             
             except asyncio.TimeoutError:
@@ -55,6 +53,7 @@ class Roles(commands.Cog):
         elif val == "false":
             # remove roles if possible
             user = ctx.message.author
+            print(user.roles)
             if "Bulbasaur Green" in user.roles:
                 role = discord.utils.get(ctx.guild.roles, name="Bulbasaur Green")
                 await user.add_roles(role)
