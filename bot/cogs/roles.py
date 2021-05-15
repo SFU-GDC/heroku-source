@@ -11,6 +11,7 @@ class Roles(commands.Cog):
 
     @commands.command(aliases=['notifications', 'notification'])
     async def notify(self, ctx, activate):
+        print("notify")
         val = str(activate).lower()
         if val == "true":
             await ctx.send("You will now recieve notifications")
@@ -38,6 +39,7 @@ class Roles(commands.Cog):
                 await ctx.send("Enjoy {}!".format(reaction.emoji))
 
         elif val == "false":
+            # remove roles if possible
             user = ctx.message.author
             if "Bulbasaur Green" in user.roles:
                 role = discord.utils.get(ctx.guild.roles, name="Bulbasaur Green")
@@ -60,3 +62,4 @@ class Roles(commands.Cog):
 
 def setup(bot):
     bot.add_cog(Roles(bot))
+    print("cog loaded")
