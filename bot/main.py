@@ -31,15 +31,17 @@ async def unload(ctx, extension):
     bot.unload_extension(f'cogs.{extension}')
 
 bot.load_extension("cogs.roles")
+bot.load_extension("cogs.schedule")
 
 # --------------------------------------------------------------------------- #
 # Misc Setup
 
 @bot.command()
 async def help(ctx):
-    help_str = "Commands:\n\t,notify <true|false>\t\t//activates or deactivates notifications\n\t"
-    ",ping\t\t\t//pong\n\t,gamejam\t\t// shows game jams from itch.io\n\n"
-
+    help_str = "Commands:\n\t"
+    help_str += ",notify <true|false>\t// activates or deactivates notifications\n\t"
+    help_str += ",ping\t\t// pong\n\t"
+    help_str += ",gamejam\t// lists game jams from itch.io\n\n"
     help_str += "Interaction:\n\tTry saying hi to CubeBot"
     await ctx.send("```{}```".format(help_str))
 
