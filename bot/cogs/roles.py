@@ -39,6 +39,7 @@ class Roles(commands.Cog):
                 print(reaction.emoji.id)
                 if reaction.emoji.name == "Bulbasaur Green":
                     role = discord.utils.get(ctx.guild.roles, name="Bulbasaur Green")
+                    print(role)
                     await user.add_roles(role)
                 elif reaction.emoji.name == "Gameboy Yellow":
                     role = discord.utils.get(ctx.guild.roles, name="Gameboy Yellow")
@@ -47,6 +48,7 @@ class Roles(commands.Cog):
                 await ctx.send('You took too long, try again.')
             else:
                 print("end")
+                role = discord.utils.get(ctx.guild.roles, name="Notification Squad")
                 role = user.add_roles(role)
                 await ctx.send("Enjoy {}!".format(reaction.emoji))
 
