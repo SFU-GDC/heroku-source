@@ -26,8 +26,8 @@ async def unload(ctx, extension):
     bot.unload_extension(f'cogs.{extension}')
 """
 
-from cogs.roles import Roles
-bot.add_cog(Roles(bot))
+#from cogs.roles import Roles
+#bot.add_cog(Roles(bot))
 
 # --------------------------------------------------------------------------- #
 # Misc Setup
@@ -35,9 +35,8 @@ bot.add_cog(Roles(bot))
 @bot.command()
 async def setallmembers(ctx):
     print("doing stuff")
+    await ctx.send("test")
     pass # todo: set all members to the "member" role.
-
-bot.add_command(setallmembers)
 
 @bot.event
 async def on_ready():
