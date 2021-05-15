@@ -30,8 +30,10 @@ class Roles(commands.Cog):
             # wait for reponse or timeout
             try:
                 print("waiting")
-                reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=60.0)
+                print(ctx.guild.roles)
+                reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=45.0)
                 print("react")
+                print(reaction.emoji)
                 if reaction.emoji == bulbasaur_green:
                     role = discord.utils.get(ctx.guild.roles, name="Bulbasaur Green")
                     await user.add_roles(role)
@@ -68,7 +70,7 @@ class Roles(commands.Cog):
     @notify.error
     async def notify_error(self, ctx, error):
         print("error: {}".format(repr(error)))
-        await ctx.send("Oops, something went wrong! Call the function like this: `,notify true`")
+        await ctx.send("Oops, something went wrong. Call the function like this: `,notify true`")
     
 
 # --------------------------------------------------------------------------- #
