@@ -69,4 +69,3 @@ class Roles(commands.Cog):
 
 def setup(bot):
     bot.add_cog(Roles(bot))
-    print("cog loaded")

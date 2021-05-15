@@ -16,7 +16,6 @@ bot = commands.Bot(command_prefix=',', intents=intents)
 # --------------------------------------------------------------------------- #
 # Cog Loading
 
-"""
 @bot.command()
 async def load(ctx, extension):
     bot.load_extension(f'cogs.{extension}')
@@ -24,10 +23,8 @@ async def load(ctx, extension):
 @bot.command()
 async def unload(ctx, extension):
     bot.unload_extension(f'cogs.{extension}')
-"""
 
-#from cogs.roles import Roles
-#bot.add_cog(Roles(bot))
+bot.load_extension("cogs.roles")
 
 # --------------------------------------------------------------------------- #
 # Misc Setup
@@ -53,7 +50,8 @@ async def on_message(message):
     if message.author == bot.user:
         return
 
-    bot.process_commands(message)
+    val = await bot.process_commands(message)
+    print("did process cmd: {}".format(val))
 
     cleaned_msg = message.content.replace("!", "").replace("?", "").lower().strip()
     ends_with_myname = cleaned_msg.endswith(mynames[0].lower()) or cleaned_msg.endswith(mynames[1].lower())
