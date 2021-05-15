@@ -17,6 +17,7 @@ class Roles(commands.Cog):
     @commands.command()
     async def notify(self, ctx, activate):
         print("notify")
+        print(discord._version)
         val = str(activate).lower()
         if val == "true":
             await ctx.send("You will now recieve notifications")
@@ -26,6 +27,7 @@ class Roles(commands.Cog):
             is_bulbasaur = lambda reaction, user: user == ctx.message.author and str(reaction.emoji) == bulbasaur_green
             is_gameboy = lambda reaction, user: user == ctx.message.author and str(reaction.emoji) == gameboy_yellow
             check = lambda r, u: is_gameboy(r,u) or is_bulbasaur(r,u)
+            print(ctx.guild.roles)
     
             role = discord.utils.get(ctx.guild.roles, name="Notification Squad")
             print(role)
