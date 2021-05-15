@@ -9,7 +9,11 @@ class Roles(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(aliases=['notifications', 'notification'])
+    @commands.command()
+    async def ping(self, ctx): # This was inside '__init__' before
+        await ctx.send("pong!\n{}ms".format(round(self.bot.latency * 1000)))
+
+    @commands.command
     async def notify(self, ctx, activate):
         print("notify")
         val = str(activate).lower()
@@ -56,7 +60,11 @@ class Roles(commands.Cog):
             await ctx.send("You will no longer recieve notifications")
         else:
             await ctx.send("Error: please type `,notify true` or `,notify false`")
-
+    
+    #@notify.error
+    #async def notify_error():
+    #    pass
+    
 
 # --------------------------------------------------------------------------- #
 
