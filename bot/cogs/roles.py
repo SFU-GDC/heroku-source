@@ -28,7 +28,7 @@ class Roles(commands.Cog):
             check = lambda r, u: is_gameboy(r,u) or is_bulbasaur(r,u)
     
             role = discord.utils.get(ctx.guild.roles, name="Notification Squad")
-            role = ctx.message.author.add_roles(role)
+            await ctx.message.author.add_roles(role)
 
             # wait for reponse or timeout
             try:
@@ -41,11 +41,11 @@ class Roles(commands.Cog):
                 print(reaction.emoji)
                 print(reaction.emoji.id)
                 print(reaction.emoji.name)
-                if reaction.emoji.name == "Bulbasaur Green":
+                if reaction.emoji.name == "bulbasaur":
                     role = discord.utils.get(ctx.guild.roles, name="Bulbasaur Green")
                     print(role)
                     await user.add_roles(role)
-                elif reaction.emoji.name == "Gameboy Yellow":
+                elif reaction.emoji.name == "gameboy":
                     role = discord.utils.get(ctx.guild.roles, name="Gameboy Yellow")
                     await user.add_roles(role)             
             except asyncio.TimeoutError:
