@@ -63,8 +63,8 @@ class Roles(commands.Cog):
             await ctx.send("Error: please type `,notify true` or `,notify false`")
     
     @notify.error
-    async def notify_error():
-        pass
+    async def notify_error(self, ctx, error):
+        print("error: {}".format(repr(error)))
     
 
 # --------------------------------------------------------------------------- #
