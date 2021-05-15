@@ -17,7 +17,6 @@ class Roles(commands.Cog):
     @commands.command()
     async def notify(self, ctx, activate):
         print("notify")
-        print(discord._version)
         val = str(activate).lower()
         if val == "true":
             await ctx.send("You will now recieve notifications")
@@ -31,6 +30,8 @@ class Roles(commands.Cog):
     
             role = discord.utils.get(ctx.guild.roles, name="Notification Squad")
             print(role)
+            rol2e = discord.utils.get(ctx.guild.roles, id=842605912241209355)
+            print(rol2e)
             await ctx.message.author.add_roles(role)
 
             # wait for reponse or timeout
