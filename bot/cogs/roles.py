@@ -1,5 +1,4 @@
 import asyncio
-from inspect import isgenerator
 import discord
 from discord.ext import commands, tasks
 
