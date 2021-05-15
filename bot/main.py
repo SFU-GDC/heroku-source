@@ -33,6 +33,7 @@ for filename in os.listdir('./cogs'):
 
 @bot.command()
 async def setallmembers(ctx):
+    print("doing stuff")
     pass # todo: set all members to the "member" role.
 
 @bot.event

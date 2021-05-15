@@ -13,7 +13,7 @@ class Roles(commands.Cog):
     async def ping(self, ctx): # This was inside '__init__' before
         await ctx.send("pong!\n{}ms".format(round(self.bot.latency * 1000)))
 
-    @commands.command
+    @commands.command()
     async def notify(self, ctx, activate):
         print("notify")
         val = str(activate).lower()
