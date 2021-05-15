@@ -37,6 +37,8 @@ async def setallmembers(ctx):
     print("doing stuff")
     pass # todo: set all members to the "member" role.
 
+bot.add_command(setallmembers)
+
 @bot.event
 async def on_ready():
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name="conway's game of life"))
