@@ -27,6 +27,9 @@ class Roles(commands.Cog):
             is_gameboy = lambda reaction, user: user == ctx.message.author and str(reaction.emoji) == gameboy_yellow
             check = lambda r, u: is_gameboy(r,u) or is_bulbasaur(r,u)
     
+            role = discord.utils.get(ctx.guild.roles, name="Notification Squad")
+            role = ctx.message.author.add_roles(role)
+
             # wait for reponse or timeout
             try:
                 print("waiting")
@@ -49,8 +52,7 @@ class Roles(commands.Cog):
                 await ctx.send('You took too long, try again.')
             else:
                 print("end")
-                role = discord.utils.get(ctx.guild.roles, name="Notification Squad")
-                role = user.add_roles(role)
+
                 await ctx.send("Enjoy {}!".format(reaction.emoji))
 
         elif val == "false":
