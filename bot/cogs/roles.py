@@ -28,6 +28,7 @@ class Roles(commands.Cog):
             check = lambda r, u: is_gameboy(r,u) or is_bulbasaur(r,u)
     
             role = discord.utils.get(ctx.guild.roles, name="Notification Squad")
+            print(role)
             await ctx.message.author.add_roles(role)
 
             # wait for reponse or timeout
