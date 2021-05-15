@@ -53,13 +53,15 @@ async def on_message(message):
     if message.author == bot.user:
         return
 
+    bot.process_commands(message)
+
     cleaned_msg = message.content.replace("!", "").replace("?", "").lower().strip()
     ends_with_myname = cleaned_msg.endswith(mynames[0].lower()) or cleaned_msg.endswith(mynames[1].lower())
     if ends_with_myname and len(cleaned_msg) > 9 and cleaned_msg[:-8].strip() in greetings:
         end_char = "!" if random.randint(0, 1) == 1 else ""
         await message.channel.send("{} {}{}".format(random.choice(greetings), message.author.mention, end_char))
     elif "linux" in cleaned_msg and not "gnu linux" in cleaned_msg:
-        await message.channel.send("you mean GNU linux, right?")
+        await message.channel.send("you mean GNU linux, right?")    
 
 # --------------------------------------------------------------------------- #
 
