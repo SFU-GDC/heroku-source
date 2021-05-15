@@ -37,6 +37,7 @@ class Roles(commands.Cog):
                 print("react")
                 print(reaction.emoji)
                 print(reaction.emoji.id)
+                print(reaction.emoji.name)
                 if reaction.emoji.name == "Bulbasaur Green":
                     role = discord.utils.get(ctx.guild.roles, name="Bulbasaur Green")
                     print(role)
