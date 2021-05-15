@@ -39,6 +39,7 @@ class Roles(commands.Cog):
                 elif reaction.emoji.name == "gameboy":
                     await add_role(user, ctx.guild.roles, "Gameboy Yellow")
                     await remove_role(user, "Bulbasaur Green")
+                    
             except asyncio.TimeoutError:
                 await ctx.send('You took too long to pick a colour, try again if you want to claim one.')
             else:

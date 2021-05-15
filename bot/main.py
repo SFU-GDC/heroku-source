@@ -6,6 +6,12 @@ from discord.ext import commands, tasks
 from myconstants import greetings, mynames
 
 # --------------------------------------------------------------------------- #
+
+# Tests:
+#from cogs.schedule import scrape_itch_io_jams
+#scrape_itch_io_jams()
+
+# --------------------------------------------------------------------------- #
 # Bot Init
 
 intents = discord.Intents.default()
@@ -31,7 +37,9 @@ bot.load_extension("cogs.roles")
 
 @bot.command()
 async def help(ctx):
-    help_str = "Commands:\n\t,notify <true|false>\n\t,ping\n\n"
+    help_str = "Commands:\n\t,notify <true|false>\t\t//activates or deactivates notifications\n\t"
+    ",ping\t\t\t//pong\n\t,gamejam\t\t// shows game jams from itch.io\n\n"
+
     help_str += "Interaction:\n\tTry saying hi to CubeBot"
     await ctx.send("```{}```".format(help_str))
 
