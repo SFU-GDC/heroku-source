@@ -11,7 +11,7 @@ from myconstants import greetings, mynames
 intents = discord.Intents.default()
 intents.members = True
 bot = commands.Bot(command_prefix=',', intents=intents)
-#bot.remove_command('help')
+bot.remove_command('help')
 
 # --------------------------------------------------------------------------- #
 # Cog Loading
@@ -30,15 +30,15 @@ bot.load_extension("cogs.roles")
 # Misc Setup
 
 @bot.command()
-async def setallmembers(ctx):
-    print("doing stuff")
-    await ctx.send("test")
-    pass # todo: set all members to the "member" role.
+async def help(ctx):
+    help_str = "Commands:\n\t,notify <true|false>\n\t,ping\n\n"
+    help_str += "Interaction:\n\tTry saying hi to CubeBot"
+    await ctx.send("```{}```".format(help_str))
 
 @bot.event
 async def on_ready():
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name="conway's game of life"))
-    print("CubeBot is Ready")
+    print("CubeBot is ready")
 
 @bot.event
 async def on_member_join(member):

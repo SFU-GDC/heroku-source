@@ -2,6 +2,8 @@ import asyncio
 import discord
 from discord.ext import commands, tasks
 
+from myconstants import bulbasaur_green, gameboy_yellow
+
 # For the notification roles
 
 class Roles(commands.Cog):
@@ -19,19 +21,19 @@ class Roles(commands.Cog):
         if val == "true":
             await ctx.send("You will now recieve notifications")
             message = await ctx.send("Choose a colour by reacting to this message")
-            await message.add_reaction(emoji=":gameboy:")
-            await message.add_reaction(emoji=":bulbasaur:")
-            is_gameboy = lambda reaction, user: user == ctx.message.author and str(reaction.emoji) == ':gameboy:'
-            is_bulbasaur = lambda reaction, user: user == ctx.message.author and str(reaction.emoji) == ':bulbasaur:'
+            await message.add_reaction(emoji=bulbasaur_green)
+            await message.add_reaction(emoji=gameboy_yellow)
+            is_bulbasaur = lambda reaction, user: user == ctx.message.author and str(reaction.emoji) == bulbasaur_green
+            is_gameboy = lambda reaction, user: user == ctx.message.author and str(reaction.emoji) == gameboy_yellow
             check = lambda r, u: is_gameboy(r,u) or is_bulbasaur(r,u)
  
             # wait for reponse or timeout
             try:
                 reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=60.0)
-                if reaction.emoji == ":bulbasaur:":
+                if reaction.emoji == bulbasaur_green:
                     role = discord.utils.get(ctx.guild.roles, name="Bulbasaur Green")
                     await user.add_roles(role)
-                elif reaction.emoji == ":gameboy:":
+                elif reaction.emoji == gameboy_yellow:
                     role = discord.utils.get(ctx.guild.roles, name="Gameboy Yellow")
                     await user.add_roles(role)             
             except asyncio.TimeoutError:
@@ -60,9 +62,9 @@ class Roles(commands.Cog):
         else:
             await ctx.send("Error: please type `,notify true` or `,notify false`")
     
-    #@notify.error
-    #async def notify_error():
-    #    pass
+    @notify.error
+    async def notify_error():
+        pass
     
 
 # --------------------------------------------------------------------------- #
