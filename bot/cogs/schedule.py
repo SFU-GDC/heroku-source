@@ -24,6 +24,7 @@ class Schedule(commands.Cog):
             master_string = ""
             for jam in most_popular:
                 master_string += jam_to_str(jam) + "\n"
+            await ctx.send("```{}```".format(master_string))
 
             #timeline = discord.File(f)
             #await ctx.send("Here's a timeline of all the game jams on itch.io:")
@@ -46,11 +47,12 @@ def jam_to_str(jam):
         jam["title"], jam["joined"], pretty_date(timediff), jam["length"], jam["link"])
 
 # TODO: this
-def pretty_date(timedelta):
-    years = "{} years".format() if timedelta.years != 0 else ""
-    months = "{} months".format() if timedelta.months != 0 else ""
-    days = "{} days".format() if timedelta.days != 0 else ""
-    return "{}{}{}".format(years, months, days)
+def pretty_date(td): # td is timedelta
+    if td.days >= 2:
+        return "{} days".format(td.days)
+    else:
+        return "{} hours".format(td.days * 24 + td.seconds / (60 * 60))
+
 
 def str_to_datetime(str):
     return datetime(int(str[:4]), int(str[5:7]), int(str[8:10]), int(str[11:13]), int(str[14:16]), int(str[17:19]))
