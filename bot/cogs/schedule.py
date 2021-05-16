@@ -16,13 +16,17 @@ class Schedule(commands.Cog):
     async def gamejam(self, ctx, option=""):
         jam_list = scrape_itch_io_jams()
         
-        num_jams = -1 if option.lower() == "all" else 8
+        if option.lower() == "daily":
+            print("TODO: implement this")
+            return
+        
+        num_jams = 16 if option.lower() == "more" else 8
 
         most_popular = jam_list[:num_jams]
+        most_popular[0]["most_members"] = True
         most_popular.sort(key=lambda n: n["start"])
-
         if jam_list != None:
-            await ctx.send("8 game jams with the most members in order of date:")
+            await ctx.send("Here's the {} Game Jams with the most members:".format(num_jams))
             master_string = ""
             for jam in most_popular:
                 master_string += jam_to_str(jam) + "\n"
@@ -48,9 +52,10 @@ class Schedule(commands.Cog):
 # --------------------------------------------------------------------------- #
 
 def jam_to_str(jam):
+    extra = "⭐" if "most_members" in jam else ""
     timediff = jam["start"] - datetime.now()
-    return "**{}**:\n\t*{}* members, starts in *{}*, duration of *{}*\n\t@ <https://itch.io{}>".format(
-        jam["title"], jam["joined"], pretty_date(timediff), jam["length"], jam["link"])
+    return "|**{}**: {}\n|\tin *{}*, for *{}*, *{}* members\n|\t@ <https://itch.io{}>".format(
+        jam["title"], extra, jam["joined"], pretty_date(timediff), jam["length"], jam["link"])
 
 # TODO: this
 def pretty_date(td): # td is timedelta
@@ -98,7 +103,7 @@ def scrape_itch_io_jams():
         else:
             link = top_row.div.h3.a.get("href")
             title = top_row.div.h3.a.get_text()
-            obj["link"] = title
+            obj["link"] = link
             obj["title"] = title
 
         host = host_row.a.get_text()
