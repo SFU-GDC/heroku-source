@@ -39,10 +39,10 @@ bot.load_extension("cogs.schedule")
 @bot.command()
 async def help(ctx):
     help_str = "Commands:\n\t"
-    help_str += ",notify <true|false>\n\t\t// activates or deactivates notifications\n\t"
-    help_str += ",ping\t\t/n\t\t// pong\n\t"
-    help_str += ",gamejam\n\t\t// lists game jams from itch.io\n\t"
-    help_str += ",join jam_name\n\t\t// gives notifications 7 days before, 24 hours before, and 1 hour before the jam starts.\n\n"
+    help_str += "**,notify <true|false>**\n\t\t// activates or deactivates notifications\n\t"
+    help_str += "**,ping**\t\t\n\t\t// pong\n\t"
+    help_str += "**,gamejam**\n\t\t// lists game jams from itch.io\n\t"
+    help_str += "**,join jam_name**\n\t\t// gives notifications 7 days before, 24 hours before, and 1 hour before the jam starts.\n\n"
     help_str += "Interaction:\n\tTry saying hi to CubeBot"
     await ctx.send("```{}```".format(help_str))
 
