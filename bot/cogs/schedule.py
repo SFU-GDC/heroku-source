@@ -13,10 +13,12 @@ class Schedule(commands.Cog):
         self.bot = bot
 
     @commands.command(aliases=["gamejams"])
-    async def gamejam(self, ctx):
+    async def gamejam(self, ctx, option=""):
         jam_list = scrape_itch_io_jams()
         
-        most_popular = jam_list[:8]
+        num_jams = -1 if option.lower() == "all" else 8
+
+        most_popular = jam_list[:num_jams]
         most_popular.sort(key=lambda n: n["start"])
 
         if jam_list != None:
@@ -24,7 +26,7 @@ class Schedule(commands.Cog):
             master_string = ""
             for jam in most_popular:
                 master_string += jam_to_str(jam) + "\n"
-            await ctx.send("```{}```".format(master_string))
+            await ctx.send("{}".format(master_string))
 
             #timeline = discord.File(f)
             #await ctx.send("Here's a timeline of all the game jams on itch.io:")
@@ -43,7 +45,7 @@ class Schedule(commands.Cog):
 
 def jam_to_str(jam):
     timediff = jam["start"] - datetime.now()
-    return "**{}**: *{}* members, starts in *{}* for *{}* @ <https://itch.io{}>".format(
+    return "**{}**:\n\t*{}* members, starts in *{}*, duration of *{}*\n\t@ <https://itch.io{}>".format(
         jam["title"], jam["joined"], pretty_date(timediff), jam["length"], jam["link"])
 
 # TODO: this
