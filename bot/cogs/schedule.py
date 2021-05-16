@@ -57,8 +57,8 @@ class Schedule(commands.Cog):
 def jam_to_str(jam):
     extra = "⭐" if "most_members" in jam else ""
     timediff = jam["start"] - datetime.now()
-    return "| **{}** {}\n| \tin *{}*, for *{}*, *{}* members\n| \t@ <https://itch.io{}>".format(
-        jam["title"], extra, jam["joined"], pretty_date(timediff), jam["length"], jam["link"])
+    return "| **{}** {}\n| \tin {}, for {}, {} joined\n| \t@ <https://itch.io{}>".format(
+        jam["title"], extra, pretty_date(timediff), jam["length"], jam["joined"], jam["link"])
 
 # TODO: this
 def pretty_date(td): # td is timedelta
