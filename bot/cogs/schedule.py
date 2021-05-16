@@ -41,7 +41,7 @@ class Schedule(commands.Cog):
 
 def jam_to_str(jam):
     timediff = jam["start"] - datetime.now()
-    return "{}: {} members, starts in {} for {} @ https://itch.io{} ".format(jam["title"], jam["joined"], timediff, jam["length"], jam["link"])
+    return "{}: {} members, starts in {} for {} @ <https://itch.io{}>".format(jam["title"], jam["joined"], timediff, jam["length"], jam["link"])
 
 # TODO?
 def pretty_date(timedelta):
