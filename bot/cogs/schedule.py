@@ -31,10 +31,14 @@ class Schedule(commands.Cog):
             #timeline = discord.File(f)
             #await ctx.send("Here's a timeline of all the game jams on itch.io:")
             #await ctx.send(file=timeline)
-            await ctx.send("To recieve notifications for a specifc jam, run `,join jam_name`")
+            await ctx.send("To recieve notifications for a specifc jam, run `,join jam_name` (not yet implemented)")
         else:
             await ctx.send("Huh, something went wrong. It should work if you try again right away, but if not please let someone know. ^-^")
     
+    @commands.command()
+    async def join(self, ctx, option=""):
+        await ctx.send("Sorry, I haven't learned this command quite yet")
+
 
 #NOTES:
 # - enable people to subscribe to certain itch.io jams -> two reminders: 7 days before, and 1 day.
