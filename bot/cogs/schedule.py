@@ -19,25 +19,28 @@ class Schedule(commands.Cog):
         if option.lower() == "daily":
             print("TODO: implement this")
             return
-        
-        num_jams = 16 if option.lower() == "more" else 8
-
-        most_popular = jam_list[:num_jams]
-        most_popular[0]["most_members"] = True
-        most_popular.sort(key=lambda n: n["start"])
-        if jam_list != None:
-            await ctx.send("Here's the {} Game Jams with the most members:".format(num_jams))
-            master_string = ""
-            for jam in most_popular:
-                master_string += jam_to_str(jam) + "\n"
-            await ctx.send("{}".format(master_string))
-
-            #timeline = discord.File(f)
-            #await ctx.send("Here's a timeline of all the game jams on itch.io:")
-            #await ctx.send(file=timeline)
-            await ctx.send("To recieve notifications for a specifc jam, run `,join jam_name` (not yet implemented)")
+        elif option.lower() == "next":
+            print("TODO: implement this too")
+            return
         else:
-            await ctx.send("Huh, something went wrong. It should work if you try again right away, but if not please let someone know. ^-^")
+            num_jams = 16 if option.lower() == "more" else 8
+
+            most_popular = jam_list[:num_jams]
+            most_popular[0]["most_members"] = True
+            most_popular.sort(key=lambda n: n["start"])
+            if jam_list != None:
+                await ctx.send("Here's the {} Game Jams with the most members:".format(num_jams))
+                master_string = ""
+                for jam in most_popular:
+                    master_string += jam_to_str(jam) + "\n"
+                await ctx.send("{}".format(master_string))
+
+                #timeline = discord.File(f)
+                #await ctx.send("Here's a timeline of all the game jams on itch.io:")
+                #await ctx.send(file=timeline)
+                await ctx.send("To recieve notifications for a specifc jam, run `,join jam_name` (not yet implemented)")
+            else:
+                await ctx.send("Huh, something went wrong. It should work if you try again right away, but if not please let someone know. ^-^")
     
     @commands.command()
     async def join(self, ctx, option=""):
@@ -54,7 +57,7 @@ class Schedule(commands.Cog):
 def jam_to_str(jam):
     extra = "⭐" if "most_members" in jam else ""
     timediff = jam["start"] - datetime.now()
-    return "|**{}**: {}\n|\tin *{}*, for *{}*, *{}* members\n|\t@ <https://itch.io{}>".format(
+    return "| **{}** {}\n| \tin *{}*, for *{}*, *{}* members\n| \t@ <https://itch.io{}>".format(
         jam["title"], extra, jam["joined"], pretty_date(timediff), jam["length"], jam["link"])
 
 # TODO: this
