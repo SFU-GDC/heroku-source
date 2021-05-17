@@ -20,7 +20,8 @@ class Schedule(commands.Cog):
         self.bot = bot
 
     @commands.command(aliases=["gamejams"])
-    async def gamejam(self, ctx, option="", titles=None):        
+    async def gamejam(self, ctx, option="", titles=None):    
+        title = min(16, titles) # TODO: convey this property in docs & a message when rounding down.   
         if option.lower() == "soon":
             # NOTE: this option assumes that all jams within the current week are contained in the first page.
             jam_list = scrape_itch_io_jams(url_by_date)
