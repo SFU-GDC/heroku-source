@@ -1,29 +1,73 @@
+import io
 from datetime import datetime
 
 import requests
 from bs4 import BeautifulSoup
+import numpy as np
+import skimage
+from skimage.io import imread
 
 import discord
 from discord.ext import commands, tasks
 
 # For the game jam schedules
 
+url_by_members = "https://itch.io/jams/upcoming"
+url_by_date = "https://itch.io/jams/upcoming/sort-date"
+
 class Schedule(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
     @commands.command(aliases=["gamejams"])
-    async def gamejam(self, ctx, option=""):
-        jam_list = scrape_itch_io_jams()
-        
-        if option.lower() == "daily":
-            print("TODO: implement this")
+    async def gamejam(self, ctx, option="", titles=None):        
+        if option.lower() == "soon":
+            # NOTE: this option assumes that all jams within the current week are contained in the first page.
+            jam_list = scrape_itch_io_jams(url_by_date)
+
+            if jam_list == None:
+                await ctx.send("Huh, something went wrong. It should work if you try again right away, but if not please let someone know. ^-^")
+                return
+
+            now = datetime.now()
+            days_until = lambda jam: (jam["start"] - now).days + (jam["start"] - now).seconds / (60 * 60 * 24)
+            next_week = [jam for jam in jam_list if days_until(jam) <= 7]
+            next_week.sort(key=lambda n: -int(n["joined"]))
+
+            if len(next_week) == 0: 
+                await ctx.send("Sorry, there are no game jams over the next week.")
+                return
+
+            limit = 4 #if titles == None else int(titles)
+            num_jams = min(len(next_week), limit)
+            next_week = next_week[:num_jams]
+            next_week[0]["most_members"] = True
+
+            await ctx.send("Here's the {} most popular Game Jams over the next week:".format(num_jams))
+            images = []
+            master_string = ""
+            for jam in next_week:
+                master_string += jam_to_str(jam) + "\n"
+                if "img" in jam:
+                    images.append(jam["img"])
+                else:
+                    images.append(None)
+
+            await ctx.send("{}".format(master_string))
+
+            f = make_quad_graphic(images)
+            #timeline = discord.File(f)
+            #await ctx.send("Here's a timeline of all the game jams on itch.io:")
+            #await ctx.send(file=timeline)
+
+            await ctx.send("To recieve notifications for a specifc jam, run `,join jam_name` (not yet implemented)")
             return
         elif option.lower() == "next":
             print("TODO: implement this too")
             return
         else:
-            num_jams = 16 if option.lower() == "more" else 8
+            jam_list = scrape_itch_io_jams(url_by_members)
+            num_jams = 8 if titles == None else int(titles)
 
             most_popular = jam_list[:num_jams]
             most_popular[0]["most_members"] = True
@@ -35,9 +79,6 @@ class Schedule(commands.Cog):
                     master_string += jam_to_str(jam) + "\n"
                 await ctx.send("{}".format(master_string))
 
-                #timeline = discord.File(f)
-                #await ctx.send("Here's a timeline of all the game jams on itch.io:")
-                #await ctx.send(file=timeline)
                 await ctx.send("To recieve notifications for a specifc jam, run `,join jam_name` (not yet implemented)")
             else:
                 await ctx.send("Huh, something went wrong. It should work if you try again right away, but if not please let someone know. ^-^")
@@ -45,7 +86,6 @@ class Schedule(commands.Cog):
     @commands.command()
     async def join(self, ctx, option=""):
         await ctx.send("Sorry, I haven't learned this command quite yet")
-
 
 #NOTES:
 # - enable people to subscribe to certain itch.io jams -> two reminders: 7 days before, and 1 day.
@@ -60,20 +100,18 @@ def jam_to_str(jam):
     return "| **{}** {}\n| \tin {}, for {}, {} joined\n| \t@ <https://itch.io{}>".format(
         jam["title"], extra, pretty_date(timediff), jam["length"], jam["joined"], jam["link"])
 
-# TODO: this
 def pretty_date(td): # td is timedelta
     if td.days >= 2:
         return "{} days".format(td.days)
     else:
-        return "{} hours".format(td.days * 24 + td.seconds / (60 * 60))
-
+        return "{} hours".format(int((td.days * 24 + td.seconds / (60 * 60)) * 10) / 10)
 
 def str_to_datetime(str):
     return datetime(int(str[:4]), int(str[5:7]), int(str[8:10]), int(str[11:13]), int(str[14:16]), int(str[17:19]))
 
-def scrape_itch_io_jams():
+# NOTE: url must be valid!
+def scrape_itch_io_jams(url):
     # make an html request & parse the document
-    url = "https://itch.io/jams/upcoming"
     request = requests.get(url)
     if request.status_code != 200:
         return None
@@ -112,7 +150,7 @@ def scrape_itch_io_jams():
         host = host_row.a.get_text()
         start = timestamp_row.strong.span.get_text()
         length = timestamp_row.strong.next_sibling.next_sibling.get_text()
-        joined = stats_row.div.span.get_text()
+        joined = 0 if stats_row.div == None else stats_row.div.span.get_text()
         ranked = is_ranked_row != None
         obj["host"] = host
         obj["start"] = str_to_datetime(start)
@@ -127,8 +165,58 @@ def scrape_itch_io_jams():
 
     return jam_list
 
-def make_timeline():
-    pass
+# there are between 1 and 4 images in $images
+def make_quad_graphic(images):
+    sk_images = []
+    for img in images:
+        sk_img = np.zeros([100,100,3],dtype=np.uint8) if img == None else imread(img)
+        sk_images.append(sk_img)
+
+    print(sk_images[0].shape)
+
+
+# --------------------------------------------------------------------------- #
+# Tests:
+
+def test():
+    jam_list = scrape_itch_io_jams(url_by_date)
+
+    print("here")
+
+    if jam_list == None:
+        print("Huh, something went wrong. It should work if you try again right away, but if not please let someone know. ^-^")
+        return
+
+    now = datetime.now()
+    days_until = lambda jam: (jam["start"] - now).days + (jam["start"] - now).seconds / (60 * 60 * 24)
+    next_week = [jam for jam in jam_list if days_until(jam) <= 7]
+    next_week.sort(key=lambda n: -int(n["joined"]))
+
+    if len(next_week) == 0: 
+        print("Sorry, there are no game jams over the next week.")
+        return
+
+    limit = 4
+    num_jams = min(len(next_week), limit)
+    next_week = next_week[:num_jams]
+    next_week[0]["most_members"] = True
+
+    print("Here's the {} most popular Game Jams over the next week:".format(num_jams))
+    images = []
+    master_string = ""
+    for jam in next_week:
+        master_string += jam_to_str(jam) + "\n"
+        if "img" in jam:
+            response = requests.get(jam["img"])
+            img_bytes = io.BytesIO(response.content)
+            images.append(img_bytes)
+        else:
+            images.append(None)
+
+
+    print("{}".format(master_string))
+
+    f = make_quad_graphic(images)
 
 # --------------------------------------------------------------------------- #
 
