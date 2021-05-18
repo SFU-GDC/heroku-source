@@ -43,9 +43,9 @@ class Schedule(commands.Cog):
 
             limit = 4 #if titles == None else int(titles)
             num_jams = min(len(next_week), limit)
+            next_week[0]["most_members"] = True
             next_week = next_week[:num_jams]
             next_week.sort(key=lambda n: n["start"])
-            next_week[0]["most_members"] = True
 
             await ctx.send("Here's the {} most popular Game Jams over the next week:".format(num_jams))
             images = []
@@ -62,7 +62,7 @@ class Schedule(commands.Cog):
             fbuf = io.BytesIO()
             print(len(make_quad_graphic(images)))
             imageio.imwrite(fbuf, make_quad_graphic(images), format="png")
-            print(len(fbuf))
+            print(repr(fbuf))
             graphic = discord.File(fbuf)
             print(str(graphic))
             print(repr(graphic))
