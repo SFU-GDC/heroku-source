@@ -8,7 +8,7 @@ import numpy as np
 import skimage
 from skimage.io import imread, imsave
 from skimage.transform import resize
-
+import imageio
 
 import discord
 from discord.ext import commands, tasks
@@ -59,7 +59,7 @@ class Schedule(commands.Cog):
             await ctx.send("{}".format(master_string))
 
             fbuf = io.BytesIO()
-            imsave(fbuf, make_quad_graphic(images))
+            imageio.imwrite(fbuf, make_quad_graphic(images), format="jpg")
             graphic = discord.File(fbuf)
             await ctx.send(file=graphic)
 
@@ -163,8 +163,8 @@ def scrape_itch_io_jams(url):
 
         jam_list.append(obj)
 
-    for jam in jam_list:
-        print("{}\n".format(jam))
+    #for jam in jam_list:
+    #    print("{}\n".format(jam))
 
     return jam_list
 
