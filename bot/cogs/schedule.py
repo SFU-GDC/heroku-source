@@ -23,8 +23,7 @@ class Schedule(commands.Cog):
         self.bot = bot
 
     @commands.command(aliases=["gamejams"])
-    async def gamejam(self, ctx, option="", titles=None):    
-        title = min(16, titles) # TODO: convey this property in docs & a message when rounding down.   
+    async def gamejam(self, ctx, option=""):    
         if option.lower() == "soon":
             # NOTE: this option assumes that all jams within the current week are contained in the first page.
             jam_list = scrape_itch_io_jams(url_by_date)
@@ -71,7 +70,7 @@ class Schedule(commands.Cog):
             return
         else:
             jam_list = scrape_itch_io_jams(url_by_members)
-            num_jams = 8 if titles == None else int(titles)
+            num_jams = 16 if option.lower() == "more" else 8
 
             most_popular = jam_list[:num_jams]
             most_popular[0]["most_members"] = True
