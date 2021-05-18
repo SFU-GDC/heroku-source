@@ -8,8 +8,8 @@ from myconstants import greetings, mynames
 # --------------------------------------------------------------------------- #
 
 # Tests:
-from cogs.schedule import test
-test()
+#from cogs.schedule import test
+#test()
 
 # --------------------------------------------------------------------------- #
 # Bot Init

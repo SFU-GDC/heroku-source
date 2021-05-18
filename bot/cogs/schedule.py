@@ -4,8 +4,11 @@ from datetime import datetime
 import requests
 from bs4 import BeautifulSoup
 import numpy as np
+
 import skimage
-from skimage.io import imread
+from skimage.io import imread, imsave
+from skimage.transform import resize
+
 
 import discord
 from discord.ext import commands, tasks
@@ -56,10 +59,10 @@ class Schedule(commands.Cog):
 
             await ctx.send("{}".format(master_string))
 
-            f = make_quad_graphic(images)
-            #timeline = discord.File(f)
-            #await ctx.send("Here's a timeline of all the game jams on itch.io:")
-            #await ctx.send(file=timeline)
+            fbuf = io.BytesIO()
+            imsave(fbuf, make_quad_graphic(images))
+            graphic = discord.File(fbuf)
+            await ctx.send(file=graphic)
 
             await ctx.send("To recieve notifications for a specifc jam, run `,join jam_name` (not yet implemented)")
             return
@@ -166,15 +169,38 @@ def scrape_itch_io_jams(url):
 
     return jam_list
 
+# src must be smaller than dest
+def overlay_image(dest, src, x, y):
+    height, width, channels = src.shape
+    for y_ in range(0, height):
+        for x_ in range(0, width):
+            colour = src[y_][x_]
+            a = 1 if len(colour) == 3 else colour[3]/256
+            dest[y_+y][x_+x] = (colour[0] * a, colour[1] * a, colour[2] * a)
+
 # there are between 1 and 4 images in $images
 def make_quad_graphic(images):
+    target_height = 2 * 111
+    target_width = 2 * 140
+    spacing = 4 # NOTE: assuming all images are smaller than this
+
     sk_images = []
-    for img in images:
-        sk_img = np.zeros([100,100,3],dtype=np.uint8) if img == None else imread(img)
+    for i in range(4):
+        img = images[i]
+        sk_img = np.zeros([target_height, target_width, 3], dtype=np.uint8) if img == None else imread(img)
+        sk_img = resize(sk_img, (target_height, target_width), anti_aliasing=True) * 256 
         sk_images.append(sk_img)
 
-    print(sk_images[0].shape)
+    big_height = 2*target_height + spacing * 3
+    big_width = 2*target_width + spacing * 3
+    sk_img_big = np.zeros([big_height, big_width, 3], dtype=np.uint8)
 
+    overlay_image(sk_img_big, sk_images[0], spacing, spacing)
+    overlay_image(sk_img_big, sk_images[1], 2 * spacing + target_width, spacing)
+    overlay_image(sk_img_big, sk_images[2], spacing, 2 * spacing + target_height)
+    overlay_image(sk_img_big, sk_images[3], 2 * spacing + target_width, 2 * spacing + target_height)
+
+    return sk_img_big
 
 # --------------------------------------------------------------------------- #
 # Tests:
