@@ -5,6 +5,7 @@ beautifulsoup4
 scikit-image
 
 PIL
+imageio
 
 #lxml
 #beautifulsoup4~=4.9.3
