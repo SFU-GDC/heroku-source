@@ -60,8 +60,12 @@ class Schedule(commands.Cog):
             await ctx.send("{}".format(master_string))
 
             fbuf = io.BytesIO()
-            imageio.imwrite(fbuf, make_quad_graphic(images), format="jpg")
+            print(len(make_quad_graphic(images)))
+            imageio.imwrite(fbuf, make_quad_graphic(images), format="png")
+            print(len(fbuf))
             graphic = discord.File(fbuf)
+            print(str(graphic))
+            print(repr(graphic))
             await ctx.send(file=graphic)
 
             await ctx.send("To recieve notifications for a specifc jam, run `,join jam_name` (not yet implemented)")
