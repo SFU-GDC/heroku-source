@@ -4,7 +4,6 @@ requests~=2.25.1
 beautifulsoup4
 scikit-image
 
-PIL
 imageio
 
 #lxml
