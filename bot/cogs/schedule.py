@@ -60,12 +60,11 @@ class Schedule(commands.Cog):
             await ctx.send("{}".format(master_string))
 
             fbuf = io.BytesIO()
-            print(len(make_quad_graphic(images)))
             imageio.imwrite(fbuf, make_quad_graphic(images), format="png")
-            print(repr(fbuf))
-            graphic = discord.File(fbuf)
-            print(str(graphic))
-            print(repr(graphic))
+            fbuf.seek(0)
+            graphic = discord.File(fbuf) # TODO: why is this empty?
+            #print(str(graphic))
+            #print(repr(graphic))
             await ctx.send(file=graphic)
 
             await ctx.send("To recieve notifications for a specifc jam, run `,join jam_name` (not yet implemented)")
@@ -212,8 +211,6 @@ def make_quad_graphic(images):
 def test():
     jam_list = scrape_itch_io_jams(url_by_date)
 
-    print("here")
-
     if jam_list == None:
         print("Huh, something went wrong. It should work if you try again right away, but if not please let someone know. ^-^")
         return
@@ -238,9 +235,7 @@ def test():
     for jam in next_week:
         master_string += jam_to_str(jam) + "\n"
         if "img" in jam:
-            response = requests.get(jam["img"])
-            img_bytes = io.BytesIO(response.content)
-            images.append(img_bytes)
+            images.append(jam["img"])
         else:
             images.append(None)
 
@@ -248,6 +243,12 @@ def test():
     print("{}".format(master_string))
 
     f = make_quad_graphic(images)
+
+    fbuf = io.BytesIO() 
+    imageio.imwrite(fbuf, make_quad_graphic(images), format="png")
+    #print(fbuf.getvalue())
+    #file1 = open('myfile.png', 'wb')
+    #file1.write(fbuf.getvalue())
 
 # --------------------------------------------------------------------------- #
 
