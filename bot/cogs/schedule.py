@@ -63,7 +63,7 @@ class Schedule(commands.Cog):
             imageio.imwrite(fbuf, make_quad_graphic(images), format="jpg")
             fbuf.name = "graphic.jpg"
             fbuf.seek(0)
-            graphic = discord.File(fbuf) # TODO: why is this empty?
+            graphic = discord.File(fbuf)
             await ctx.send(file=graphic)
             await ctx.send("To recieve notifications for a specifc jam, run `,join jam_name` (not yet implemented)")
         elif option.lower() == "next":
