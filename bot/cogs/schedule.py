@@ -35,43 +35,39 @@ class Schedule(commands.Cog):
             now = datetime.now()
             days_until = lambda jam: (jam["start"] - now).days + (jam["start"] - now).seconds / (60 * 60 * 24)
             next_week = [jam for jam in jam_list if days_until(jam) <= 7]
-            next_week.sort(key=lambda n: -int(n["joined"]))
 
             if len(next_week) == 0: 
                 await ctx.send("Sorry, there are no game jams over the next week.")
                 return
 
-            limit = 4 #if titles == None else int(titles)
+            # Setup list
+            limit = 4
             num_jams = min(len(next_week), limit)
-            next_week[0]["most_members"] = True
+            next_week.sort(key=lambda n: -int(n["joined"]))
             next_week = next_week[:num_jams]
+            next_week[0]["most_members"] = True
             next_week.sort(key=lambda n: n["start"])
 
             await ctx.send("Here's the {} most popular Game Jams over the next week:".format(num_jams))
+            
+            # build master string w/ text info about jams
             images = []
             master_string = ""
             for jam in next_week:
                 master_string += jam_to_str(jam) + "\n"
-                if "img" in jam:
-                    images.append(jam["img"])
-                else:
-                    images.append(None)
+                images.append(jam["img"] if "img" in jam else None)
 
             await ctx.send("{}".format(master_string))
 
             fbuf = io.BytesIO()
-            imageio.imwrite(fbuf, make_quad_graphic(images), format="png")
+            imageio.imwrite(fbuf, make_quad_graphic(images), format="jpg")
+            fbuf.name = "graphic.jpg"
             fbuf.seek(0)
             graphic = discord.File(fbuf) # TODO: why is this empty?
-            #print(str(graphic))
-            #print(repr(graphic))
             await ctx.send(file=graphic)
-
             await ctx.send("To recieve notifications for a specifc jam, run `,join jam_name` (not yet implemented)")
-            return
         elif option.lower() == "next":
             print("TODO: implement this too")
-            return
         else:
             jam_list = scrape_itch_io_jams(url_by_members)
             num_jams = 16 if option.lower() == "more" else 8
