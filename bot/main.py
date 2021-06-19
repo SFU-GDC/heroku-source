@@ -107,7 +107,7 @@ async def every_minute_loop():
         guild = bot.get_guild(int(os.environ["MAIN_SERVER_ID"]))
         channel = discord.utils.get(guild.channels, name="bot-test")
         await channel.send("Weekly update that we did it")
-        print("did it")
+        print("we did it")
         done_friday_update = True
 
     if now.hour == 1 and done_friday_update:
