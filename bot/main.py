@@ -95,9 +95,14 @@ done_friday_update = False
 async def timed_actions():
     global done_friday_update
 
+    print("loop")
+
     now = datetime.now()
     
-    if now.weekday() == 4 and now.hour == 10 and now.minute >= 30 and not done_friday_update:
+    print(now.weekday())
+    print(now.hour)
+    print(now.minute)
+    if now.weekday() == 4 and now.hour == 22 and now.minute >= 30 and not done_friday_update:
         guild = bot.get_guild(os.environ["MAIN_SERVER_ID"])
         channel = discord.utils.get(guild.channels, name="bot-test", type="ChannelType.text")
         channel.send("Weekly update that we did it")
