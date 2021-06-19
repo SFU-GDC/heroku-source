@@ -127,7 +127,7 @@ async def reset_events(ctx):
 @bot.command()
 async def add_event(ctx, unique_name, date, desc):
     parts = date.split("-")
-    
+
     try:
         parts = list(map(int, parts))
     except Exception as e:
@@ -145,7 +145,8 @@ async def edit_event(ctx, unique_name, desc):
 
 @bot.command()
 async def events(ctx):
-    await ctx.send("TODO: implement this")
+    db_manager.get_events()
+    await ctx.send("Events fetched")
 
 # --------------------------------------------------------------------------- #
 # Website Output?
