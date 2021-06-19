@@ -9,7 +9,7 @@ def reset_events_table():
 
     cur.execute("DROP TABLE IF EXISTS public.events;")
     # https://www.psycopg.org/docs/usage.html#adaptation-of-python-values-to-sql-types
-    cur.execute("CREATE TABLE public.events (name VARCHAR(256) UNIQUE, datetime TIMESTAMP, description(1024) VARCHAR);")
+    cur.execute("CREATE TABLE public.events (name VARCHAR(256) UNIQUE, datetime TIMESTAMP, description VARCHAR(1024));")
 
     cur.close()
     conn.close()
