@@ -85,10 +85,10 @@ async def on_message(message):
 async def on_member_join(member):
     guild = bot.get_guild(int(os.environ["MAIN_SERVER_ID"]))
     channel = discord.utils.get(guild.channels, name="bot-spam", type="ChannelType.text")
-    channel.send("Welcome {}!".format(member.mention))
+    await channel.send("Welcome {}!".format(member.mention))
     #channel.send("To get started, please pick a colour by reacting to this message.")
-    channel.send("We have informal meetings every second monday at **8:00pm** where we talk about anything and everything somewhat related to game development, then people give short demos of what they've been working on recently. If you've ever worked on a game or have something cool to show off, we'd love it if you'd like to demo it!".format(member.mention))
-    channel.send("Our next meeting is on June 27th.")
+    await channel.send("We have informal meetings every second monday at **8:00pm** where we talk about anything and everything somewhat related to game development, then people give short demos of what they've been working on recently. If you've ever worked on a game or have something cool to show off, we'd love it if you'd like to demo it!".format(member.mention))
+    await channel.send("Our next meeting is on June 27th.")
     
 # --------------------------------------------------------------------------- #
 # Notifications
@@ -106,7 +106,7 @@ async def every_minute_loop():
     if now.hour == 12+11 and now.minute >= 30 and not done_friday_update:
         guild = bot.get_guild(int(os.environ["MAIN_SERVER_ID"]))
         channel = discord.utils.get(guild.channels, name="bot-test")
-        channel.send("Weekly update that we did it")
+        await channel.send("Weekly update that we did it")
         print("did it")
         done_friday_update = True
 
