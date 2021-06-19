@@ -83,7 +83,7 @@ async def on_message(message):
 
 @bot.event
 async def on_member_join(member):
-    guild = bot.get_guild(os.environ["MAIN_SERVER_ID"])
+    guild = bot.get_guild(int(os.environ["MAIN_SERVER_ID"]))
     channel = discord.utils.get(guild.channels, name="bot-spam", type="ChannelType.text")
     channel.send("Welcome {}!".format(member.mention))
     #channel.send("To get started, please pick a colour by reacting to this message.")
@@ -104,7 +104,7 @@ async def every_minute_loop():
     
     #if now.weekday() == 4 and now.hour == 12+5 and now.minute >= 30 and not done_friday_update:
     if now.hour == 12+11 and now.minute >= 30 and not done_friday_update:
-        guild = bot.get_guild(os.environ["MAIN_SERVER_ID"])
+        guild = bot.get_guild(int(os.environ["MAIN_SERVER_ID"]))
         channel = discord.utils.get(guild.channels, name="bot-test", type="ChannelType.text")
         channel.send("Weekly update that we did it")
         print("did it")
