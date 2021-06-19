@@ -129,11 +129,12 @@ async def add_event(ctx, unique_name, date, desc):
     try:
         parts = date.split("-")
         parts = list(map(int, parts))
+        date_ = datetime(year=parts[0], month=parts[1], day=parts[2], hour=parts[3], minute=parts[4])
+        db_manager.add_event(unique_name, date_, desc)
+        await ctx.send("Successfully added event `{}`".format(unique_name))
     except:
         await ctx.send("Syntax error: date must be 5 parts split by '-' characters. Ex: `yyyy-mm-dd-hh-mm` => `2021-05-25-23-46`")
-    else:
-        db_manager.add_event(unique_name, date, desc)
-        await ctx.send("Successfully added event `{}`".format(unique_name))
+        
 
 @commands.has_role('Executive')
 @bot.command()

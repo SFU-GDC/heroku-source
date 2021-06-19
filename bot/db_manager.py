@@ -8,7 +8,7 @@ def reset_events_table():
     cur = conn.cursor()
 
     cur.execute("DROP TABLE IF EXISTS events;")
-    cur.execute("CREATE TABLE events (name varchar, day date, desc varchar);")
+    cur.execute("CREATE TABLE events (name VARCHAR UNIQUE, _time DATETIME, description VARCHAR);")
 
     cur.close()
     conn.close()
@@ -20,7 +20,7 @@ def add_event(unique_event_name, date, desc):
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = conn.cursor()
 
-    cur.execute("INSERT INTO events (name, day, desc) VALUES (%s, %s, %s)", (unique_event_name, date, desc))
+    cur.execute("INSERT INTO events (name, _time, description) VALUES (%s, %s, %s)", (unique_event_name, date, desc))
     
     cur.close()
     conn.close()
