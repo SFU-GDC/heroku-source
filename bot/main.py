@@ -100,21 +100,18 @@ done_friday_update = False
 async def every_minute_loop():
     global done_friday_update
 
-    print("loop")
-
     now = datetime.now()
     
-    print(now.weekday())
-    print(now.hour)
-    print(now.minute)
-    if now.weekday() == 4 and now.hour == 22 and now.minute >= 30 and not done_friday_update:
+    #if now.weekday() == 4 and now.hour == 12+5 and now.minute >= 30 and not done_friday_update:
+    if now.hour == 12+11 and now.minute >= 30 and not done_friday_update:
         guild = bot.get_guild(os.environ["MAIN_SERVER_ID"])
         channel = discord.utils.get(guild.channels, name="bot-test", type="ChannelType.text")
         channel.send("Weekly update that we did it")
         print("did it")
         done_friday_update = True
 
-    if now.weekday() == 4 and now.hour == 6 and done_friday_update:
+    if now.hour == 0 and done_friday_update:
+    #if now.weekday() == 4 and now.hour == 6 and done_friday_update:
         done_friday_update = False
 
 # --------------------------------------------------------------------------- #
@@ -129,7 +126,14 @@ async def reset_events(ctx):
 @commands.has_role('Executive')
 @bot.command()
 async def add_event(ctx, unique_name, date, desc):
-    await ctx.send("TODO: implement this")
+    try:
+        parts = date.split("-")
+        parts = list(map(int, parts))
+    except:
+        await ctx.send("Syntax error: date must be 5 parts split by '-' characters. Ex: `yyyy-mm-dd-hh-mm` => `2021-05-25-23-46`")
+    else:
+        db_manager.add_event(unique_name, date, desc)
+        await ctx.send("Successfully added event `{}`".format(unique_name))
 
 @commands.has_role('Executive')
 @bot.command()
