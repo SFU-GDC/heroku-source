@@ -13,10 +13,13 @@ def reset_events_table():
     cur.close()
     conn.close()
 
-def store_event(event_name, date, desc):
+def remove_event(unique_event_name):
     pass
 
-def update_event(event_name, desc):
+def store_event(unique_event_name, date, desc):
+    pass
+
+def update_event(unique_event_name, desc):
     pass
 
 def get_events():

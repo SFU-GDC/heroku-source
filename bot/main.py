@@ -54,6 +54,7 @@ async def help(ctx):
 @bot.event
 async def on_ready():
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name="conway's game of life"))
+    every_minute_loop.start()
     print("CubeBot is ready")
 
 @bot.event
@@ -82,9 +83,13 @@ async def on_message(message):
 
 @bot.event
 async def on_member_join(member):
-    pass
-
-
+    guild = bot.get_guild(os.environ["MAIN_SERVER_ID"])
+    channel = discord.utils.get(guild.channels, name="bot-spam", type="ChannelType.text")
+    channel.send("Welcome {}!".format(member.mention))
+    #channel.send("To get started, please pick a colour by reacting to this message.")
+    channel.send("We have informal meetings every second monday at **8:00pm** where we talk about anything and everything somewhat related to game development, then people give short demos of what they've been working on recently. If you've ever worked on a game or have something cool to show off, we'd love it if you'd like to demo it!".format(member.mention))
+    channel.send("Our next meeting is on June 27th.")
+    
 # --------------------------------------------------------------------------- #
 # Notifications
 
@@ -92,7 +97,7 @@ async def on_member_join(member):
 done_friday_update = False
 
 @tasks.loop(minutes=1)
-async def timed_actions():
+def every_minute_loop():
     global done_friday_update
 
     print("loop")
@@ -117,12 +122,18 @@ async def timed_actions():
 
 @commands.has_role('Executive')
 @bot.command()
-async def add_event(ctx):
+async def reset_events(ctx):
+    db_manager.reset_events_table()
+    await ctx.send("Events have been reset")
+
+@commands.has_role('Executive')
+@bot.command()
+async def add_event(ctx, unique_name, date, desc):
     await ctx.send("TODO: implement this")
 
 @commands.has_role('Executive')
 @bot.command()
-async def edit_event(ctx):
+async def edit_event(ctx, unique_name, desc):
     await ctx.send("TODO: implement this")
 
 @bot.command()
