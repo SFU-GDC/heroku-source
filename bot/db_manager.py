@@ -7,7 +7,7 @@ def reset_events_table():
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = conn.cursor()
 
-    cur.execute("DROP TABLE events IF EXISTS;")
+    cur.execute("DROP TABLE IF EXISTS events;")
     cur.execute("CREATE TABLE events (name varchar, day date, desc varchar);")
 
     cur.close()
