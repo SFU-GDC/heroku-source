@@ -7,9 +7,9 @@ def reset_events_table():
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = conn.cursor()
 
-    cur.execute("DROP TABLE IF EXISTS events;")
+    cur.execute("DROP TABLE IF EXISTS public.events;")
     # https://www.psycopg.org/docs/usage.html#adaptation-of-python-values-to-sql-types
-    cur.execute("CREATE TABLE events (name VARCHAR UNIQUE, datetime TIMESTAMP, description VARCHAR);")
+    cur.execute("CREATE TABLE public.events (name VARCHAR(256) UNIQUE, datetime TIMESTAMP, description(1024) VARCHAR);")
 
     cur.close()
     conn.close()
@@ -21,7 +21,8 @@ def add_event(unique_event_name, date, desc):
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = conn.cursor()
 
-    cur.execute("INSERT INTO events (name, datetime, description) VALUES (%s, %s, %s)", (unique_event_name, date, desc))
+    #(name, datetime, description)
+    cur.execute("INSERT INTO public.events VALUES (%s, %s, %s)", (unique_event_name, date, desc))
     
     cur.close()
     conn.close()
