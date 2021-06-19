@@ -1,18 +1,30 @@
 import os
 import psycopg2
 
-DATABASE_URL = os.environ['DATABASE_URL']
+DATABASE_URL = os.environ.get('DATABASE_URL')
+
 
 def reset_events_table():
-    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
-    cur = conn.cursor()
+    conn = None
+    try:
+        conn = psycopg2.connect(DATABASE_URL) # , sslmode='require'
 
-    cur.execute("DROP TABLE IF EXISTS \"events\";")
+        cur = conn.cursor()
+        cur.execute("CREATE TABLE events (name VARCHAR(255) UNIQUE);") #, datetime TIMESTAMP, description VARCHAR(1024));")
+        cur.close()
+    except Exception as error:
+        print('Could not connect to the Database.')
+        print('Cause: {}'.format(error))
+
+    finally:
+        if conn is not None:
+            conn.close()
+            print('Database connection closed.')
+
+
+    #cur.execute("DROP TABLE IF EXISTS \"events\";")
     # https://www.psycopg.org/docs/usage.html#adaptation-of-python-values-to-sql-types
-    cur.execute("CREATE TABLE \"events\" (name VARCHAR(256) UNIQUE, datetime TIMESTAMP, description VARCHAR(1024));")
-
-    cur.close()
-    conn.close()
+    #cur.execute("CREATE TABLE events (name VARCHAR(255) UNIQUE);") #, datetime TIMESTAMP, description VARCHAR(1024));")
 
 def remove_event(unique_event_name):
     pass
@@ -22,7 +34,7 @@ def add_event(unique_event_name, date, desc):
     cur = conn.cursor()
 
     #(name, datetime, description)
-    cur.execute("INSERT INTO \"events\" VALUES (%s, %s, %s)", (unique_event_name, date, desc))
+    cur.execute("INSERT INTO events VALUES (%s)", (unique_event_name)) #, %s, %s)", (unique_event_name, date, desc))
     
     cur.close()
     conn.close()
