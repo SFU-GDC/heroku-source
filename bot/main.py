@@ -97,7 +97,7 @@ async def on_member_join(member):
 done_friday_update = False
 
 @tasks.loop(minutes=1)
-def every_minute_loop():
+async def every_minute_loop():
     global done_friday_update
 
     print("loop")
