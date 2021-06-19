@@ -103,14 +103,14 @@ async def every_minute_loop():
     now = datetime.now()
     
     #if now.weekday() == 4 and now.hour == 12+5 and now.minute >= 30 and not done_friday_update:
-    if now.hour == 12+11 and now.minute >= 30 and not done_friday_update:
+    if now.hour == 0 and now.minute >= 30 and not done_friday_update:
         guild = bot.get_guild(int(os.environ["MAIN_SERVER_ID"]))
         channel = discord.utils.get(guild.channels, name="bot-test")
         await channel.send("Weekly update that we did it")
         print("did it")
         done_friday_update = True
 
-    if now.hour == 0 and done_friday_update:
+    if now.hour == 1 and done_friday_update:
     #if now.weekday() == 4 and now.hour == 6 and done_friday_update:
         done_friday_update = False
 
