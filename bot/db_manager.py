@@ -8,6 +8,7 @@ def reset_events_table():
     conn = None
     try:
         conn = psycopg2.connect(DATABASE_URL) # , sslmode='require'
+        conn.autocommit = 1
 
         cur = conn.cursor()
         cur.execute("CREATE TABLE events (name VARCHAR(255) UNIQUE)") #, datetime TIMESTAMP, description VARCHAR(1024));")
@@ -34,8 +35,10 @@ def add_event(unique_event_name, date, desc):
     print("INSERT INTO events VALUES ({})".format(unique_event_name)) #, %s, %s)", (unique_event_name, date, desc))
     try:
         conn = psycopg2.connect(DATABASE_URL) # , sslmode='require'
+        conn.autocommit = 1
 
         cur = conn.cursor()
+        cur.execute("CREATE TABLE events (name VARCHAR(255))")
         cur.execute("INSERT INTO events VALUES ({})".format(unique_event_name)) #, %s, %s)", (unique_event_name, date, desc))
         cur.close()
     except Exception as error:
