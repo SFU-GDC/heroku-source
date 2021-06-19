@@ -145,7 +145,7 @@ async def edit_event(ctx, unique_name, desc):
 
 @bot.command()
 async def events(ctx):
-    db_manager.get_events()
+    print(db_manager.get_events())
     await ctx.send("Events fetched")
 
 # --------------------------------------------------------------------------- #
