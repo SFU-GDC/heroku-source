@@ -88,7 +88,7 @@ async def on_member_join(member):
     await channel.send("Welcome {}!".format(member.mention))
     #channel.send("To get started, please pick a colour by reacting to this message.")
     await channel.send("We have informal meetings every second monday at **8:00pm** where we talk about anything and everything somewhat related to game development, then people give short demos of what they've been working on recently. If you've ever worked on a game or have something cool to show off, we'd love it if you'd like to demo it!".format(member.mention))
-    await channel.send("Our next meeting is on June 27th.")
+    await channel.send("Our next meeting is on June 28th.")
     
 # --------------------------------------------------------------------------- #
 # Notifications
@@ -126,15 +126,17 @@ async def reset_events(ctx):
 @commands.has_role('Executive')
 @bot.command()
 async def add_event(ctx, unique_name, date, desc):
+    parts = date.split("-")
+    
     try:
-        parts = date.split("-")
         parts = list(map(int, parts))
+    except Exception as e:
+        print(e)
+        await ctx.send("Syntax error: date must be 5 parts split by '-' characters. Ex: `yyyy-mm-dd-hh-mm` => `2021-05-25-23-46`")
+    else:
         date_ = datetime(year=parts[0], month=parts[1], day=parts[2], hour=parts[3], minute=parts[4])
         db_manager.add_event(unique_name, date_, desc)
         await ctx.send("Successfully added event `{}`".format(unique_name))
-    except:
-        await ctx.send("Syntax error: date must be 5 parts split by '-' characters. Ex: `yyyy-mm-dd-hh-mm` => `2021-05-25-23-46`")
-        
 
 @commands.has_role('Executive')
 @bot.command()
