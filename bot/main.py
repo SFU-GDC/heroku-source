@@ -1,9 +1,12 @@
 import os, random
+from datetime import datetime
 
 import discord
 from discord.ext import commands, tasks
 
 from myconstants import greetings, mynames
+
+import db_manager
 
 # --------------------------------------------------------------------------- #
 
@@ -73,6 +76,58 @@ async def on_message(message):
         await message.channel.send("{} {}{}".format(random.choice(greetings), message.author.mention, end_char))
     elif "linux" in cleaned_msg and not "gnu linux" in cleaned_msg:
         await message.channel.send("you mean GNU linux, right?")    
+
+# --------------------------------------------------------------------------- #
+# New Users
+
+@bot.event
+async def on_member_join(member):
+    pass
+
+
+# --------------------------------------------------------------------------- #
+# Notifications
+
+# We use this variable in case we accidentally miss 5:30 by 1 minute.
+done_friday_update = False
+
+@tasks.loop(minutes=1)
+async def timed_actions():
+    global done_friday_update
+
+    now = datetime.now()
+    
+    if now.weekday() == 4 and now.hour == 10 and now.minute >= 30 and not done_friday_update:
+        guild = bot.get_guild(os.environ["MAIN_SERVER_ID"])
+        channel = discord.utils.get(guild.channels, name="bot-test", type="ChannelType.text")
+        channel.send("Weekly update that we did it")
+        print("did it")
+        done_friday_update = True
+
+    if now.weekday() == 4 and now.hour == 6 and done_friday_update:
+        done_friday_update = False
+
+# --------------------------------------------------------------------------- #
+# Managing Events
+
+@commands.has_role('Executive')
+@bot.command()
+async def add_event(ctx):
+    await ctx.send("TODO: implement this")
+
+@commands.has_role('Executive')
+@bot.command()
+async def edit_event(ctx):
+    await ctx.send("TODO: implement this")
+
+@bot.command()
+async def events(ctx):
+    await ctx.send("TODO: implement this")
+
+# --------------------------------------------------------------------------- #
+# Website Output?
+
+pass
 
 # --------------------------------------------------------------------------- #
 
