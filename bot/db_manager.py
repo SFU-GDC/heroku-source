@@ -39,7 +39,7 @@ def add_event(unique_event_name, date, desc):
 
         cur = conn.cursor()
         cur.execute("CREATE TABLE events (name VARCHAR(255))")
-        cur.execute("INSERT INTO events VALUES ({})".format(unique_event_name)) #, %s, %s)", (unique_event_name, date, desc))
+        cur.execute("INSERT INTO events (name) VALUES (%s)", ["meeting"]) #, %s, %s)", (unique_event_name, date, desc))
         cur.close()
     except Exception as error:
         print('Could not connect to the Database.')
