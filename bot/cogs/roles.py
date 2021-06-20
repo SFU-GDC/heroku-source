@@ -3,6 +3,7 @@ import discord
 from discord.ext import commands, tasks
 
 from myconstants import bulbasaur_green, gameboy_yellow
+import myconstants
 
 # For the notification roles
 
@@ -18,7 +19,30 @@ class Roles(commands.Cog):
     async def color(self, ctx):
         # If the user is part of notification squad then they have a wider variety of possible colours.
         message = await ctx.send("Choose a colour by reacting to this message")
-        pass
+        emoji_list = myconstants.color_emoji_list
+        color_list = myconstants.color_list
+        for emoji in emoji_list:
+            await message.add_reaction(emoji=emoji)
+
+        check = lambda reaction, user: user == ctx.message.author and reaction.emoji in emoji_list
+
+        try:
+            reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=60.0)
+            user = ctx.message.author
+
+            if reaction.emoji.name == "bulbasaur":
+                await add_role(user, ctx.guild.roles, "Bulbasaur Green")
+                await remove_role(user, "Gameboy Yellow")
+            elif reaction.emoji.name == "gameboy":
+                await add_role(user, ctx.guild.roles, "Gameboy Yellow")
+                await remove_role(user, "Bulbasaur Green")
+                
+        except asyncio.TimeoutError:
+            await ctx.send("You took too long to pick a colour, try again if you'd want to claim one.")
+        else:
+            await ctx.send("Enjoy {}!".format(reaction.emoji))
+
+
 
     @commands.command()
     async def notify(self, ctx, activate):
@@ -36,7 +60,7 @@ class Roles(commands.Cog):
 
             # wait for reponse or timeout
             try:
-                reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=45.0)
+                reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=60.0)
                 user = ctx.message.author
 
                 if reaction.emoji.name == "bulbasaur":
@@ -47,7 +71,7 @@ class Roles(commands.Cog):
                     await remove_role(user, "Bulbasaur Green")
                     
             except asyncio.TimeoutError:
-                await ctx.send('You took too long to pick a colour, try again if you want to claim one.')
+                await ctx.send("You took too long to pick a colour, try again if you want to claim one.")
             else:
                 await ctx.send("Enjoy {}!".format(reaction.emoji))
 

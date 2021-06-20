@@ -101,11 +101,9 @@ def get_next_events(n):
         conn = psycopg2.connect(DATABASE_URL) # , sslmode='require'
         cur = conn.cursor()
         
-        cur.execute("SELECT * FROM events WHERE datetime > (%s)", [datetime.now()])
-        print(cur.mogrify("SELECT * FROM events WHERE datetime > (%s)", [datetime.now()]))
+        cur.execute("SELECT * FROM events WHERE datetime > (%s) ORDER BY datetime ASC", [datetime.now()])
         ret_val = cur.fetchmany(n)
-        print(ret_val)
-        
+
         cur.close()
     except Exception as error:
         print('Could not connect to the Database: {}'.format(error))

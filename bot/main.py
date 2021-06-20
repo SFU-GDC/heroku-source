@@ -157,19 +157,22 @@ async def events(ctx):
     outstr = "Upcoming 3 events:\n"
     lines = []
     for e in db_manager.get_next_events(3):
-        line1 = "{} @ {}".format(e[0], util.make_readable(e[1]))
+        line1 = "{} => {}".format(e[0], util.make_readable(e[1]))
         line2 = "{}".format(e[2])
         lines += [(line1, line2)]
 
     # TODO: try not to go over 80 characters, or eventually I'll need to write a line wrapper...
     # take longest line & factor in border spacing
     maxlen = 0 if len(lines) == 0 else (max(map(lambda t: max(len(t[0]), len(t[1])), lines)) + 4)
-    outstr += "=" * maxlen + "\n"
+    outstr += "#" + "=" * (maxlen-2) + "#" + "\n"
     for (line1, line2) in lines:
-        line1 = "| " + line1 + "\n"
-        line2 = "| " + line2 + " " * ((maxlen-4)-len(line2)) + " |\n" + "-" * maxlen + "\n"
+        line1 = "| " + line1 + " |\n"
+        line2 = "| " + line2 + " " * ((maxlen-4)-len(line2)) + " |\n" + "+" + "=" * (maxlen-2) + "+" + "\n"
         outstr += line1 + line2
     
+    if outstr == "":
+        outstr = "no events found"
+
     await ctx.send("```{}```".format(outstr))
 
 # --------------------------------------------------------------------------- #
