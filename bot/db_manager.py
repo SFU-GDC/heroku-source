@@ -17,7 +17,7 @@ def reset_events_table():
         
         # https://www.psycopg.org/docs/usage.html#adaptation-of-python-values-to-sql-types
         cur.execute("DROP TABLE IF EXISTS events")
-        cur.execute("CREATE TABLE events (name VARCHAR(255) UNIQUE, datetime TIMESTAMP, description VARCHAR(1024), metadata VARCHAR(1024) WITH DEFAULT)")
+        cur.execute("CREATE TABLE events (name VARCHAR(255) UNIQUE, datetime TIMESTAMP, description VARCHAR(1024), metadata VARCHAR(1024) DEFAULT 'empty')")
         
         cur.close()
     except Exception as error:
