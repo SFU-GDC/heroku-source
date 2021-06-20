@@ -47,7 +47,8 @@ async def help(ctx):
     help_str += ",gamejam\n\t\t// lists the 8 most popular game jams from itch.io\n\t"
     help_str += ",gamejam more\n\t\t// 16 most popular game jams from itch.io\n\t"
     help_str += ",gamejam soon\n\t\t// lists 4 most popular game jams from itch.io running this week\n\t"
-    help_str += ",events\n\t\t// shows upcoming club events\n\n"
+    help_str += ",events\n\n\n"
+    help_str += ",meetings\n\t\t// shows upcoming club events\n\n"
     help_str += "Interaction:\n\tTry saying hi to CubeBot"
     await ctx.send("```{}```".format(help_str))
 
@@ -152,7 +153,7 @@ async def remove_event(ctx, unique_name):
     db_manager.remove_event(unique_name)
     await ctx.send("Done!")
 
-@bot.command()
+@bot.command(aliases=['meetings'])
 async def events(ctx):
     outstr = "Upcoming 3 events:\n"
     lines = []
@@ -166,8 +167,8 @@ async def events(ctx):
     maxlen = 0 if len(lines) == 0 else (max(map(lambda t: max(len(t[0]), len(t[1])), lines)) + 4)
     outstr += "#" + "=" * (maxlen-2) + "#" + "\n"
     for (line1, line2) in lines:
-        line1 = "| " + line1 + " |\n"
-        line2 = "| " + line2 + " " * ((maxlen-4)-len(line2)) + " |\n" + "+" + "=" * (maxlen-2) + "+" + "\n"
+        line1 = "| " + line1 + " " * ((maxlen-4)-len(line1)) + " |\n"
+        line2 = "| " + line2 + " " * ((maxlen-4)-len(line2)) + " |\n" + "+" + "-" * (maxlen-2) + "+" + "\n"
         outstr += line1 + line2
     
     if outstr == "":
