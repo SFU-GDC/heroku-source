@@ -47,7 +47,7 @@ async def help(ctx):
     help_str += ",gamejam\n\t\t// lists the 8 most popular game jams from itch.io\n\t"
     help_str += ",gamejam more\n\t\t// 16 most popular game jams from itch.io\n\t"
     help_str += ",gamejam soon\n\t\t// lists 4 most popular game jams from itch.io running this week\n\t"
-    help_str += ",join jam_name\n\t\t// gives notifications 7 days before, 24 hours before, and 1 hour before the jam starts. (Not yet completed)\n\n"
+    help_str += ",events\n\t\t// shows upcomming club events\n\n"
     help_str += "Interaction:\n\tTry saying hi to CubeBot"
     await ctx.send("```{}```".format(help_str))
 
@@ -130,9 +130,10 @@ async def add_event(ctx, unique_name, date, desc):
 
     try:
         parts = list(map(int, parts))
+        assert len(parts) == 5
     except Exception as e:
         print(e)
-        await ctx.send("Syntax error: date must be 5 parts split by '-' characters. Ex: `yyyy-mm-dd-hh-mm` => `2021-05-25-23-46`")
+        await ctx.send("Error: date must be 5 parts split by '-' characters. Ex: `yyyy-mm-dd-hh-mm` => `2021-05-25-23-46`")
     else:
         date_ = datetime(year=parts[0], month=parts[1], day=parts[2], hour=parts[3], minute=parts[4])
         db_manager.add_event(unique_name, date_, desc)
@@ -140,13 +141,25 @@ async def add_event(ctx, unique_name, date, desc):
 
 @commands.has_role('Executive')
 @bot.command()
-async def edit_event(ctx, unique_name, desc):
-    await ctx.send("TODO: implement this")
+async def update_event(ctx, unique_name, desc, metadata=""):
+    db_manager.update_event(unique_name, desc, metadata)
+    await ctx.send("Done!")
 
 @bot.command()
 async def events(ctx):
-    print(db_manager.get_events())
-    await ctx.send("Events fetched")
+    outstr = "Upcomming events:\n"
+    lines = []
+    for e in db_manager.get_next_events(3):
+        line = "{} | {} {}".format(e[0], e[1], e[2])
+        lines += [line]
+
+    maxlen = max(map(len, lines)) + 1 # take longest line
+    outstr += "-" * maxlen + "\n"
+    for line in lines:
+        line += " |\n" + "-" * maxlen + "\n"
+        outstr += line
+    
+    await ctx.send(outstr)
 
 # --------------------------------------------------------------------------- #
 # Website Output?
