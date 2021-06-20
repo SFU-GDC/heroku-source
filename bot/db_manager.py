@@ -82,7 +82,7 @@ def get_all_events():
     return ret_val
 
 def get_next_events(n):
-    ret_val = None
+    ret_val = []
 
     conn = None
     try:
@@ -90,7 +90,9 @@ def get_next_events(n):
         cur = conn.cursor()
         
         cur.execute("SELECT * FROM events WHERE datetime > (%s)", datetime.datetime.now())
+        print(cur.mogrify("SELECT * FROM events WHERE datetime > (%s)", datetime.datetime.now()))
         ret_val = cur.fetchmany(n)
+        print(ret_val)
         
         cur.close()
     except Exception as error:
