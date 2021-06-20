@@ -166,7 +166,7 @@ async def events(ctx):
     maxlen = 0 if len(lines) == 0 else (max(map(lambda t: max(len(t[0]), len(t[1])), lines)) + 4)
     outstr += "=" * maxlen + "\n"
     for (line1, line2) in lines:
-        line1 = "| " + line1 #+ " |\n" + "-" * maxlen + "\n"
+        line1 = "| " + line1 + "\n"
         line2 = "| " + line2 + " " * ((maxlen-4)-len(line2)) + " |\n" + "-" * maxlen + "\n"
         outstr += line1 + line2
     

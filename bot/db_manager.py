@@ -34,7 +34,7 @@ def remove_event(unique_event_name):
         conn = psycopg2.connect(DATABASE_URL) # , sslmode='require'
         cur = conn.cursor()
         
-        cur.execute("DELETE FROM events WHERE name = (%s)", (unique_event_name))
+        cur.execute("DELETE FROM events WHERE name = (%s)", [unique_event_name])
         
         cur.close()
     except Exception as error:
