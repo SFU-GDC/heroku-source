@@ -1,4 +1,5 @@
-import os, datetime
+import os
+from datetime import datetime
 import psycopg2
 
 # TODO: 
@@ -89,8 +90,8 @@ def get_next_events(n):
         conn = psycopg2.connect(DATABASE_URL) # , sslmode='require'
         cur = conn.cursor()
         
-        cur.execute("SELECT * FROM events WHERE datetime > (%s)", datetime.datetime.now())
-        print(cur.mogrify("SELECT * FROM events WHERE datetime > (%s)", datetime.datetime.now()))
+        cur.execute("SELECT * FROM events WHERE datetime > (%s)", [datetime.now()])
+        print(cur.mogrify("SELECT * FROM events WHERE datetime > (%s)", [datetime.now()]))
         ret_val = cur.fetchmany(n)
         print(ret_val)
         
