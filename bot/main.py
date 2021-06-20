@@ -56,7 +56,10 @@ async def help(ctx):
 async def on_ready():
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name="conway's game of life"))
     every_minute_loop.start()
-    print("CubeBot is ready")
+
+    guild = bot.get_guild(int(os.environ["MAIN_SERVER_ID"]))
+    channel = discord.utils.get(guild.channels, name="bot-test")
+    await channel.send("I'm online now")
 
 @bot.event
 async def on_member_join(member):
@@ -104,16 +107,15 @@ async def every_minute_loop():
 
     now = datetime.now()
     
-    #if now.weekday() == 4 and now.hour == 12+5 and now.minute >= 30 and not done_friday_update:
-    if now.hour == 0 and now.minute >= 30 and not done_friday_update:
+    # TODO: change this to 4 & implement the bot.
+    if now.weekday() == 2 and now.hour == 12+5 and now.minute >= 30 and not done_friday_update:
         guild = bot.get_guild(int(os.environ["MAIN_SERVER_ID"]))
         channel = discord.utils.get(guild.channels, name="bot-test")
         await channel.send("Weekly update that we did it")
         print("we did it")
         done_friday_update = True
 
-    if now.hour == 1 and done_friday_update:
-    #if now.weekday() == 4 and now.hour == 6 and done_friday_update:
+    if now.weekday() == 4 and now.hour == 6 and done_friday_update:
         done_friday_update = False
 
 # --------------------------------------------------------------------------- #
@@ -168,7 +170,7 @@ async def events(ctx):
     outstr += "#" + "=" * (maxlen-2) + "#" + "\n"
     for (line1, line2) in lines:
         line1 = "| " + line1 + " " * ((maxlen-4)-len(line1)) + " |\n"
-        line2 = "| " + line2 + " " * ((maxlen-4)-len(line2)) + " |\n" + "+" + "-" * (maxlen-2) + "+" + "\n"
+        line2 = "| \t" + line2 + " " * ((maxlen-4)-len(line2)) + " |\n" + "+" + "-" * (maxlen-2) + "+" + "\n"
         outstr += line1 + line2
     
     if outstr == "":
