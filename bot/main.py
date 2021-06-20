@@ -47,7 +47,7 @@ async def help(ctx):
     help_str += ",gamejam\n\t\t// lists the 8 most popular game jams from itch.io\n\t"
     help_str += ",gamejam more\n\t\t// 16 most popular game jams from itch.io\n\t"
     help_str += ",gamejam soon\n\t\t// lists 4 most popular game jams from itch.io running this week\n\t"
-    help_str += ",events\n\t\t// shows upcomming club events\n\n"
+    help_str += ",events\n\t\t// shows upcoming club events\n\n"
     help_str += "Interaction:\n\tTry saying hi to CubeBot"
     await ctx.send("```{}```".format(help_str))
 
@@ -144,6 +144,12 @@ async def add_event(ctx, unique_name, date, desc):
 @bot.command()
 async def update_event(ctx, unique_name, desc, metadata=""):
     db_manager.update_event(unique_name, desc, metadata)
+    await ctx.send("Done!")
+
+@commands.has_role('Executive')
+@bot.command()
+async def remove_event(ctx, unique_name):
+    db_manager.remove_event(unique_name)
     await ctx.send("Done!")
 
 @bot.command()
