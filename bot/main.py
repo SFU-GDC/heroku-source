@@ -157,11 +157,11 @@ async def events(ctx):
 
     # TODO: try not to go over 80 characters, or eventually I'll need to write a line wrapper...
     # take longest line & factor in border spacing
-    maxlen = max(map(lambda t: max(len(t[0]), len(t[1])), lines)) + 4 
+    maxlen = 0 if len(lines) == 0 else (max(map(lambda t: max(len(t[0]), len(t[1])), lines)) + 4)
     outstr += "=" * maxlen + "\n"
     for (line1, line2) in lines:
-        line1 = "| " + line1 + " |\n" + "-" * maxlen + "\n"
-        line2 = "| " + line2 + " |\n" + "-" * maxlen + "\n"
+        line1 = "| " + line1 #+ " |\n" + "-" * maxlen + "\n"
+        line2 = "| " + line2 + " " * ((maxlen-4)-len(line2)) + " |\n" + "-" * maxlen + "\n"
         outstr += line1 + line2
     
     await ctx.send("```{}```".format(outstr))
