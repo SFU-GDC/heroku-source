@@ -88,7 +88,7 @@ async def on_member_join(member):
     await channel.send("Welcome {}!".format(member.mention))
     #channel.send("To get started, please pick a colour by reacting to this message.")
     #await bot.get_cog("Roles").color(channel)
-    await channel.send("We have informal meetings every second monday at **8:00pm** where we talk about anything and everything somewhat related to game development, then people give short demos of what they've been working on recently. If you've ever worked on a game or have something cool to show off, we'd love it if you'd like to demo it!".format(member.mention))
+    await channel.send("We have informal meetings every second monday at **8:00pm** where we go over a few topics related to game development, then people give short demos of what they've been working on recently. If you've ever worked on a game or have something cool to show off, we'd love it if you'd demo it!".format(member.mention))
     await channel.send("Our next meeting is on June 28th.")
     
 # --------------------------------------------------------------------------- #
@@ -151,15 +151,18 @@ async def events(ctx):
     outstr = "Upcoming 3 events:\n"
     lines = []
     for e in db_manager.get_next_events(3):
-        line = "{} @ {} {}".format(e[0], util.make_readable(e[1]), e[2])
-        lines += [line]
+        line1 = "{} @ {}".format(e[0], util.make_readable(e[1]))
+        line2 = "{}".format(e[2])
+        lines += [(line1, line2)]
 
+    # TODO: try not to go over 80 characters, or eventually I'll need to write a line wrapper...
     # take longest line & factor in border spacing
-    maxlen = max(map(len, lines)) + 4 
-    line += "=" * maxlen + "\n"
-    for line in lines:
-        line = "| " + line + " |\n" + "-" * maxlen + "\n"
-        outstr += line
+    maxlen = max(map(lambda t: max(len(t[0]), len(t[1])), lines)) + 4 
+    outstr += "=" * maxlen + "\n"
+    for (line1, line2) in lines:
+        line1 = "| " + line1 + " |\n" + "-" * maxlen + "\n"
+        line2 = "| " + line2 + " |\n" + "-" * maxlen + "\n"
+        outstr += line1 + line2
     
     await ctx.send("```{}```".format(outstr))
 
