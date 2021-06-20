@@ -166,11 +166,11 @@ async def events(ctx):
 
     # TODO: try not to go over 80 characters, or eventually I'll need to write a line wrapper...
     # take longest line & factor in border spacing
-    maxlen = 0 if len(lines) == 0 else (max(map(lambda t: max(len(t[0]), len(t[1])), lines)) + 4)
+    maxlen = 0 if len(lines) == 0 else (max(map(lambda t: max(len(t[0]), len(t[1])), lines)) + 6)
     outstr += "#" + "=" * (maxlen-2) + "#" + "\n"
     for (line1, line2) in lines:
         line1 = "| " + line1 + " " * ((maxlen-4)-len(line1)) + " |\n"
-        line2 = "| \t" + line2 + " " * ((maxlen-4)-len(line2)) + " |\n" + "+" + "-" * (maxlen-2) + "+" + "\n"
+        line2 = "|   " + line2 + " " * ((maxlen-4)-len(line2)) + " |\n" + "+" + "-" * (maxlen-2) + "+" + "\n"
         outstr += line1 + line2
     
     if outstr == "":
