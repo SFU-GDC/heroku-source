@@ -29,9 +29,20 @@ def reset_events_table():
     #cur.execute("CREATE TABLE events (name VARCHAR(255) UNIQUE);") #, datetime TIMESTAMP, description VARCHAR(1024));")
 
 def remove_event(unique_event_name):
-    # todo: do this later
-    pass
+    conn = None
+    try:
+        conn = psycopg2.connect(DATABASE_URL) # , sslmode='require'
+        cur = conn.cursor()
+        
+        cur.execute("DELETE FROM events WHERE name = (%s)", (unique_event_name))
+        
+        cur.close()
+    except Exception as error:
+        print('Could not connect to the Database: {}'.format(error))
 
+    finally:
+        close_connection(conn)
+    
 def add_event(unique_event_name, date, desc):
     conn = None
     try:
@@ -53,7 +64,7 @@ def update_event(unique_event_name, desc, metadata):
         conn = psycopg2.connect(DATABASE_URL) # , sslmode='require'
         cur = conn.cursor()
         
-        cur.execute("UPDATE events SET desc = (%s), metadata = (%s) WHERE name = (%s)", (desc, metadata, unique_event_name))
+        cur.execute("UPDATE events SET description = (%s), metadata = (%s) WHERE name = (%s)", (desc, metadata, unique_event_name))
         
         cur.close()
     except Exception as error:

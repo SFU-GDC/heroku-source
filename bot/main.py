@@ -6,7 +6,7 @@ from discord.ext import commands, tasks
 
 from myconstants import greetings, mynames
 
-import db_manager
+import db_manager, util
 
 # --------------------------------------------------------------------------- #
 
@@ -148,19 +148,20 @@ async def update_event(ctx, unique_name, desc, metadata=""):
 
 @bot.command()
 async def events(ctx):
-    outstr = "Upcomming events:\n"
+    outstr = "Upcoming 3 events:\n"
     lines = []
     for e in db_manager.get_next_events(3):
-        line = "{} | {} {}".format(e[0], e[1], e[2])
+        line = "{} @ {} {}".format(e[0], util.make_readable(e[1]), e[2])
         lines += [line]
 
-    maxlen = max(map(len, lines)) + 1 # take longest line
-    outstr += "-" * maxlen + "\n"
+    # take longest line & factor in border spacing
+    maxlen = max(map(len, lines)) + 4 
+    line += "=" * maxlen + "\n"
     for line in lines:
-        line += " |\n" + "-" * maxlen + "\n"
+        line = "| " + line + " |\n" + "-" * maxlen + "\n"
         outstr += line
     
-    await ctx.send(outstr)
+    await ctx.send("```{}```".format(outstr))
 
 # --------------------------------------------------------------------------- #
 # Website Output?
