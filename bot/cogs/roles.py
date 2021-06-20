@@ -14,6 +14,12 @@ class Roles(commands.Cog):
     async def ping(self, ctx): # This was inside '__init__' before
         await ctx.send("pong!\n{}ms".format(round(self.bot.latency * 1000)))
 
+    @commands.command(aliases=['colour'])
+    async def color(self, ctx):
+        # If the user is part of notification squad then they have a wider variety of possible colours.
+        message = await ctx.send("Choose a colour by reacting to this message")
+        pass
+
     @commands.command()
     async def notify(self, ctx, activate):
         val = str(activate).lower()

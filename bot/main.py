@@ -84,9 +84,10 @@ async def on_message(message):
 @bot.event
 async def on_member_join(member):
     guild = bot.get_guild(int(os.environ["MAIN_SERVER_ID"]))
-    channel = discord.utils.get(guild.channels, name="bot-spam", type="ChannelType.text")
+    channel = discord.utils.get(guild.channels, name="bot-spam")
     await channel.send("Welcome {}!".format(member.mention))
     #channel.send("To get started, please pick a colour by reacting to this message.")
+    #await bot.get_cog("Roles").color(channel)
     await channel.send("We have informal meetings every second monday at **8:00pm** where we talk about anything and everything somewhat related to game development, then people give short demos of what they've been working on recently. If you've ever worked on a game or have something cool to show off, we'd love it if you'd like to demo it!".format(member.mention))
     await channel.send("Our next meeting is on June 28th.")
     
