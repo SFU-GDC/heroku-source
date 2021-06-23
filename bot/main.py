@@ -108,15 +108,20 @@ async def every_minute_loop():
     now = datetime.now()
     
     # TODO: change this to 4 & implement the bot.
-    if now.weekday() == 2 and now.hour == 12+5 and now.minute >= 30 and not done_friday_update:
-        guild = bot.get_guild(int(os.environ["MAIN_SERVER_ID"]))
-        channel = discord.utils.get(guild.channels, name="bot-test")
-        await channel.send("Weekly update that we did it")
-        print("we did it")
-        done_friday_update = True
+    #if now.weekday() == 2 and now.hour == 12+5 and now.minute >= 30 and not done_friday_update:
+    guild = bot.get_guild(int(os.environ["MAIN_SERVER_ID"]))
+    channel = discord.utils.get(guild.channels, name="bot-test")
+    await channel.send("It's Friday, which means it's time for the Weekly Update!")
+
+    # TODO: compute time to all events (in order) and make a report for events with particular metadata that are close to being done.
+    next_event = db_manager.get_next_events(1)
+    await channel.send("Our next event **{}** is on {} (in {} hours). *{}*".format(next_event[0], util.make_readable(next_event[1]), (datetime.now() - next_event[1]).hour, next_event[2]))
+    done_friday_update = True
 
     if now.weekday() == 4 and now.hour == 6 and done_friday_update:
         done_friday_update = False
+
+
 
 # --------------------------------------------------------------------------- #
 # Managing Events
@@ -157,7 +162,7 @@ async def remove_event(ctx, unique_name):
 
 @bot.command(aliases=['meetings'])
 async def events(ctx):
-    outstr = "Upcoming 3 events:\n"
+    outstr = ""
     lines = []
     for e in db_manager.get_next_events(3):
         line1 = "{} => {}".format(e[0], util.make_readable(e[1]))
@@ -176,6 +181,7 @@ async def events(ctx):
     if outstr == "":
         outstr = "no events found"
 
+    await ctx.send("Here's our next 3 events:")
     await ctx.send("```{}```".format(outstr))
 
 # --------------------------------------------------------------------------- #
