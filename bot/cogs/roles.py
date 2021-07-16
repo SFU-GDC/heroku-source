@@ -19,10 +19,10 @@ class Roles(commands.Cog):
     async def color(self, ctx):
         # If the user is part of notification squad then they have a wider variety of possible colours.
         message = await ctx.send("Choose a colour by reacting to this message")
-        for emoji in myconstants.color_emoji_list:
+        for emoji in myconstants.color_emote_list:
             await message.add_reaction(emoji=emoji)
 
-        check = lambda reaction, user: user == ctx.message.author and reaction.emoji in myconstants.color_emoji_list
+        check = lambda reaction, user: user == ctx.message.author and reaction.emoji in myconstants.color_emote_list
 
         try:
             reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=60.0)
