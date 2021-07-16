@@ -43,7 +43,7 @@ bot.load_extension("cogs.schedule")
 async def help(ctx):
     help_str = "Commands:\n\t"
     help_str += ",notify <true|false>\n\t\t// activates or deactivates notifications\n\t"
-    help_str += ",color\n\t\t// get a colour!"
+    help_str += ",color\n\t\t// get a colour!\n\t"
     help_str += ",ping\t\t\n\t\t// pong\n\t"
     help_str += ",gamejam\n\t\t// lists the 8 most popular game jams from itch.io\n\t"
     help_str += ",gamejam more\n\t\t// 16 most popular game jams from itch.io\n\t"
