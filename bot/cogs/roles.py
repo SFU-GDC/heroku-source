@@ -19,10 +19,15 @@ class Roles(commands.Cog):
     async def color(self, ctx):
         # If the user is part of notification squad then they have a wider variety of possible colours.
         message = await ctx.send("Choose a colour by reacting to this message")
-        for emoji in myconstants.color_emote_list:
+        if "Notification Squad" in [y.name for y in ctx.message.author.roles]:
+            color_emote_list = myconstants.extended_color_emote_list 
+        else:
+            color_emote_list = myconstants.color_emote_list 
+
+        for emoji in color_emote_list:
             await message.add_reaction(emoji=emoji)
 
-        check = lambda reaction, user: user == ctx.message.author and str(reaction.emoji) in myconstants.color_emote_list
+        check = lambda reaction, user: user == ctx.message.author and str(reaction.emoji) in color_emote_list
 
         try:
             reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=60.0)
@@ -30,15 +35,7 @@ class Roles(commands.Cog):
 
             if reaction.emoji.name in myconstants.color_emote_name_list:
                 index_of = myconstants.color_emote_name_list.index(reaction.emoji.name)
-                
-                print(user.roles)
-                print([y.name for y in user.roles])
-
-
-                # remove other color roles, then add new role
-                for role in myconstants.extended_color_list:
-                    if role in [y.name for y in user.roles]:
-                        await remove_role(user, role)
+                await remove_all_color_roles(user)
                 await add_role(user, ctx.guild.roles, myconstants.color_list[index_of])
                 
         except asyncio.TimeoutError:
@@ -68,11 +65,11 @@ class Roles(commands.Cog):
                 user = ctx.message.author
 
                 if reaction.emoji.name == "bulbasaur":
+                    await remove_all_color_roles(user)
                     await add_role(user, ctx.guild.roles, "Bulbasaur Green")
-                    await remove_role(user, "Gameboy Yellow")
                 elif reaction.emoji.name == "gameboy":
+                    await remove_all_color_roles(user)
                     await add_role(user, ctx.guild.roles, "Gameboy Yellow")
-                    await remove_role(user, "Bulbasaur Green")
                     
             except asyncio.TimeoutError:
                 await ctx.send("You took too long to pick a colour, try again if you'd like to claim one.")
@@ -98,6 +95,11 @@ class Roles(commands.Cog):
     
     
 # --------------------------------------------------------------------------- #
+
+async def remove_all_color_roles(user):
+    for role in myconstants.extended_color_list:
+        if role in [y.name for y in user.roles]:
+            await remove_role(user, role)
 
 async def remove_role(user, name):
     r = discord.utils.get(user.roles, name=name)
