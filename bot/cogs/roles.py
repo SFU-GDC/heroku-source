@@ -22,7 +22,7 @@ class Roles(commands.Cog):
         for emoji in myconstants.color_emote_list:
             await message.add_reaction(emoji=emoji)
 
-        check = lambda reaction, user: user == ctx.message.author and reaction.emoji in myconstants.color_emote_list
+        check = lambda reaction, user: user == ctx.message.author and str(reaction.emoji) in myconstants.color_emote_list
 
         try:
             reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=60.0)

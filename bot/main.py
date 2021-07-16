@@ -116,7 +116,11 @@ async def every_minute_loop():
     # TODO: compute time to all events (in order) and make a report for events with particular metadata that are close to being done.
     next_event = db_manager.get_next_events(1)
     print(next_event)
-    await channel.send("Our next event **{}** is on {} (in {} days). *{}*".format(next_event[0], util.make_readable(next_event[1]), (next_event[1] - datetime.now()).days, next_event[2]))
+    if len(next_event) == 0:
+        await channel.send("No upcomming events...")
+    else:
+        next_event = next_event[0] # from list -> tuple
+        await channel.send("Our next event **{}** is on {} (in {} days). *{}*".format(next_event[0], util.make_readable(next_event[1]), (next_event[1] - datetime.now()).days, next_event[2]))
     done_friday_update = True
 
     if now.weekday() == 4 and now.hour == 6 and done_friday_update:
