@@ -21,8 +21,13 @@ class Roles(commands.Cog):
         message = await ctx.send("Choose a colour by reacting to this message")
         if "Notification Squad" in [y.name for y in ctx.message.author.roles]:
             color_emote_list = myconstants.extended_color_emote_list 
+            color_emote_name_list = myconstants.color_emote_name_list
+            color_list = myconstants.extended_color_list
         else:
             color_emote_list = myconstants.color_emote_list 
+            color_emote_name_list = myconstants.color_emote_name_list
+            color_list = myconstants.color_list
+
 
         for emoji in color_emote_list:
             await message.add_reaction(emoji=emoji)
@@ -33,10 +38,10 @@ class Roles(commands.Cog):
             reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=60.0)
             user = ctx.message.author
 
-            if reaction.emoji.name in myconstants.color_emote_name_list:
-                index_of = myconstants.color_emote_name_list.index(reaction.emoji.name)
+            if reaction.emoji.name in color_emote_name_list:
+                index_of = color_emote_name_list.index(reaction.emoji.name)
                 await remove_all_color_roles(user)
-                await add_role(user, ctx.guild.roles, myconstants.color_list[index_of])
+                await add_role(user, ctx.guild.roles, color_list[index_of])
                 
         except asyncio.TimeoutError:
             await ctx.send("You took too long to pick a colour, try `,color` again if you'd like to claim one.")
