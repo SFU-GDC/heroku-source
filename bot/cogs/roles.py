@@ -33,7 +33,7 @@ class Roles(commands.Cog):
         futures = [message.add_reaction(emoji=emoji) for emoji in color_emote_list]
         #for f in futures:
         #    res = await f
-        results = await asyncio.gather(futures)
+        results = await asyncio.gather(*futures)
         print(results)
 
         #for emoji in color_emote_list:
