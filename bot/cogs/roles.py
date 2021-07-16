@@ -35,7 +35,7 @@ class Roles(commands.Cog):
                 for role in myconstants.extended_color_list:
                     if role in user.roles:
                         await remove_role(user, role)
-                await add_role(user, ctx.guild.roles, myconstants.color_role_name_list[index_of])
+                await add_role(user, ctx.guild.roles, myconstants.color_list[index_of])
                 
         except asyncio.TimeoutError:
             await ctx.send("You took too long to pick a colour, try `,color` again if you'd like to claim one.")

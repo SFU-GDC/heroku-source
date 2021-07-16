@@ -99,6 +99,7 @@ async def on_member_join(member):
 # Notifications
 
 # We use this variable in case we accidentally miss 5:30 by 1 minute.
+# TODO: store this info in discord.
 done_friday_update = False
 
 @tasks.loop(minutes=1)
@@ -108,20 +109,20 @@ async def every_minute_loop():
     now = datetime.now()
     
     # TODO: change this to 4 & implement the bot.
-    #if now.weekday() == 2 and now.hour == 12+5 and now.minute >= 30 and not done_friday_update:
-    guild = bot.get_guild(int(os.environ["MAIN_SERVER_ID"]))
-    channel = discord.utils.get(guild.channels, name="bot-test")
-    await channel.send("It's Friday, which means it's time for the Weekly Update!")
+    if now.weekday() == 2 and now.hour == 12+5 and now.minute >= 30 and not done_friday_update:
+        guild = bot.get_guild(int(os.environ["MAIN_SERVER_ID"]))
+        channel = discord.utils.get(guild.channels, name="bot-test")
+        await channel.send("It's Friday, which means it's time for the Weekly Update!")
 
-    # TODO: compute time to all events (in order) and make a report for events with particular metadata that are close to being done.
-    next_event = db_manager.get_next_events(1)
-    print(next_event)
-    if len(next_event) == 0:
-        await channel.send("No upcomming events...")
-    else:
-        next_event = next_event[0] # from list -> tuple
-        await channel.send("Our next event **{}** is on {} (in {} days). *{}*".format(next_event[0], util.make_readable(next_event[1]), (next_event[1] - datetime.now()).days, next_event[2]))
-    done_friday_update = True
+        # TODO: compute time to all events (in order) and make a report for events with particular metadata that are close to being done.
+        next_event = db_manager.get_next_events(1)
+        print(next_event)
+        if len(next_event) == 0:
+            await channel.send("No upcomming events...")
+        else:
+            next_event = next_event[0] # from list -> tuple
+            await channel.send("Our next event **{}** is on {} (in {} days). *{}*".format(next_event[0], util.make_readable(next_event[1]), (next_event[1] - datetime.now()).days, next_event[2]))
+        done_friday_update = True
 
     if now.weekday() == 4 and now.hour == 6 and done_friday_update:
         done_friday_update = False
