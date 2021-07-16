@@ -28,9 +28,9 @@ class Roles(commands.Cog):
             color_emote_name_list = myconstants.color_emote_name_list
             color_list = myconstants.color_list
 
-
-        for emoji in color_emote_list:
-            await message.add_reaction(emoji=emoji)
+        # add emotes in parallel?
+        futures = [message.add_reaction(emoji=emoji) for emoji in color_emote_list]
+        await asyncio.gather(futures)
 
         check = lambda reaction, user: user == ctx.message.author and str(reaction.emoji) in color_emote_list
 
