@@ -19,30 +19,30 @@ class Roles(commands.Cog):
     async def color(self, ctx):
         # If the user is part of notification squad then they have a wider variety of possible colours.
         message = await ctx.send("Choose a colour by reacting to this message")
-        emoji_list = myconstants.color_emoji_list
-        color_list = myconstants.color_list
-        for emoji in emoji_list:
+        for emoji in myconstants.color_emoji_list:
             await message.add_reaction(emoji=emoji)
 
-        check = lambda reaction, user: user == ctx.message.author and reaction.emoji in emoji_list
+        check = lambda reaction, user: user == ctx.message.author and reaction.emoji in myconstants.color_emoji_list
 
         try:
             reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=60.0)
             user = ctx.message.author
 
-            if reaction.emoji.name == "bulbasaur":
-                await add_role(user, ctx.guild.roles, "Bulbasaur Green")
-                await remove_role(user, "Gameboy Yellow")
-            elif reaction.emoji.name == "gameboy":
-                await add_role(user, ctx.guild.roles, "Gameboy Yellow")
-                await remove_role(user, "Bulbasaur Green")
+            if reaction.emoji.name in myconstants.color_emote_name_list:
+                index_of = myconstants.color_emote_name_list.index(reaction.emoji.name)
+                
+                # remove other color roles, then add new role
+                for role in myconstants.extended_color_list:
+                    if role in user.roles:
+                        await remove_role(user, role)
+                await add_role(user, ctx.guild.roles, myconstants.color_role_name_list[index_of])
                 
         except asyncio.TimeoutError:
-            await ctx.send("You took too long to pick a colour, try again if you'd want to claim one.")
+            await ctx.send("You took too long to pick a colour, try `,color` again if you'd like to claim one.")
         else:
             await ctx.send("Enjoy {}!".format(reaction.emoji))
 
-
+        # TODO: remove the emotes from the message.
 
     @commands.command()
     async def notify(self, ctx, activate):
@@ -71,7 +71,7 @@ class Roles(commands.Cog):
                     await remove_role(user, "Bulbasaur Green")
                     
             except asyncio.TimeoutError:
-                await ctx.send("You took too long to pick a colour, try again if you want to claim one.")
+                await ctx.send("You took too long to pick a colour, try again if you'd like to claim one.")
             else:
                 await ctx.send("Enjoy {}!".format(reaction.emoji))
 

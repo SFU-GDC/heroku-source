@@ -93,7 +93,7 @@ async def on_member_join(member):
     #channel.send("To get started, please pick a colour by reacting to this message.")
     #await bot.get_cog("Roles").color(channel)
     await channel.send("We have informal meetings every second monday at **8:00pm** where we go over a few topics related to game development, then people give short demos of what they've been working on recently. If you've ever worked on a game or have something cool to show off, we'd love it if you'd demo it!".format(member.mention))
-    await channel.send("Our next meeting is on June 28th.")
+    #await channel.send("Our next meeting is on June 28th.")
     
 # --------------------------------------------------------------------------- #
 # Notifications
