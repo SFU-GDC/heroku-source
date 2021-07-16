@@ -31,3 +31,4 @@ color_list = [
 
 extended_color_emote_list = color_emote_list + [bulbasaur_green, gameboy_yellow]
 extended_color_list = color_list + ["Bulbasaur Green", "Gameboy Yellow"]
+extended_color_emote_name_list = color_emote_name_list + ["bulbasaur", "gameboy"]

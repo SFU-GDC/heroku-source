@@ -31,9 +31,13 @@ class Roles(commands.Cog):
             if reaction.emoji.name in myconstants.color_emote_name_list:
                 index_of = myconstants.color_emote_name_list.index(reaction.emoji.name)
                 
+                print(user.roles)
+                print([y.name for y in user.roles])
+
+
                 # remove other color roles, then add new role
                 for role in myconstants.extended_color_list:
-                    if role in user.roles:
+                    if role in [y.name for y in user.roles]:
                         await remove_role(user, role)
                 await add_role(user, ctx.guild.roles, myconstants.color_list[index_of])
                 

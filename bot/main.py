@@ -99,7 +99,7 @@ async def on_member_join(member):
 # Notifications
 
 # We use this variable in case we accidentally miss 5:30 by 1 minute.
-# TODO: store this info in discord.
+# TODO: store this info in the db?
 done_friday_update = False
 
 @tasks.loop(minutes=1)
@@ -118,7 +118,7 @@ async def every_minute_loop():
         next_event = db_manager.get_next_events(1)
         print(next_event)
         if len(next_event) == 0:
-            await channel.send("No upcomming events...")
+            await channel.send("No upcoming events...")
         else:
             next_event = next_event[0] # from list -> tuple
             await channel.send("Our next event **{}** is on {} (in {} days). *{}*".format(next_event[0], util.make_readable(next_event[1]), (next_event[1] - datetime.now()).days, next_event[2]))
