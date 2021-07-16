@@ -21,7 +21,7 @@ class Roles(commands.Cog):
         message = await ctx.send("Choose a colour by reacting to this message")
         if "Notification Squad" in [y.name for y in ctx.message.author.roles]:
             color_emote_list = myconstants.extended_color_emote_list 
-            color_emote_name_list = myconstants.color_emote_name_list
+            color_emote_name_list = myconstants.extended_color_emote_name_list
             color_list = myconstants.extended_color_list
         else:
             color_emote_list = myconstants.color_emote_list 
