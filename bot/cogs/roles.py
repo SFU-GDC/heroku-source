@@ -1,7 +1,4 @@
 import asyncio
-#from asyncio.windows_events import NULL
-import threading
-
 import discord
 from discord.ext import commands, tasks
 
@@ -31,22 +28,12 @@ class Roles(commands.Cog):
             color_emote_name_list = myconstants.color_emote_name_list
             color_list = myconstants.color_list
 
-        # add emotes in parallel?
+        # doesn't feel like parallel...
+        # https://stackoverflow.com/questions/53324404/delay-when-adding-emojis-to-a-message-on-discord-python
+        futures = [message.add_reaction(emoji=emoji) for emoji in color_emote_list]
+        await asyncio.gather(*futures)
 
-        pool = []
-        for emoji in color_emote_list:
-            _thread = threading.Thread(target=asyncio.run, args=(message.add_reaction(emoji=emoji),))
-            #_thread = threading.Thread(target=add_emote, args=(message, emoji))
-            _thread.start()
-            pool.append(_thread)
-
-        for thread in pool:
-            thread.join()
-
-        #futures = [message.add_reaction(emoji=emoji) for emoji in color_emote_list]
-        #await asyncio.gather(*futures)
-
-        # TODO: have the thing check for emotes before setting up the "wait for"
+        # TODO: check for reactions here.
 
         check = lambda reaction, user: user == ctx.message.author and str(reaction.emoji) in color_emote_list
 
@@ -116,13 +103,6 @@ class Roles(commands.Cog):
     
     
 # --------------------------------------------------------------------------- #
-
-def add_emote(message, emoji):
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-
-    loop.run_until_complete(message.add_reaction(emoji=emoji))
-    loop.close()
 
 async def remove_all_color_roles(user):
     for role in myconstants.extended_color_list:
