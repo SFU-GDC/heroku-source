@@ -1,4 +1,7 @@
 import asyncio
+from asyncio.windows_events import NULL
+import threading
+
 import discord
 from discord.ext import commands, tasks
 
@@ -28,16 +31,21 @@ class Roles(commands.Cog):
             color_emote_name_list = myconstants.color_emote_name_list
             color_list = myconstants.color_list
 
-
         # add emotes in parallel?
-        futures = [message.add_reaction(emoji=emoji) for emoji in color_emote_list]
-        #for f in futures:
-        #    res = await f
-        results = await asyncio.gather(*futures)
-        print(results)
+        
+        pool = []
+        for emoji in color_emote_list:
+            _thread = threading.Thread(target=add_emote, args=(message, emoji))
+            _thread.start()
+            pool.append(_thread)
 
-        #for emoji in color_emote_list:
-        #    await message.add_reaction(emoji=emoji)
+        for thread in pool:
+            thread.join()
+
+        #futures = [message.add_reaction(emoji=emoji) for emoji in color_emote_list]
+        #await asyncio.gather(*futures)
+
+        # TODO: have the thing check for emotes before setting up the "wait for"
 
         check = lambda reaction, user: user == ctx.message.author and str(reaction.emoji) in color_emote_list
 
@@ -107,6 +115,14 @@ class Roles(commands.Cog):
     
     
 # --------------------------------------------------------------------------- #
+
+def add_emote(message, emoji):
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+
+    future = message.add_reaction(emoji=emoji)
+    loop.run_until_complete(future)
+    loop.close()
 
 async def remove_all_color_roles(user):
     for role in myconstants.extended_color_list:
