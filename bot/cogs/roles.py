@@ -1,5 +1,5 @@
 import asyncio
-from asyncio.windows_events import NULL
+#from asyncio.windows_events import NULL
 import threading
 
 import discord
@@ -32,7 +32,7 @@ class Roles(commands.Cog):
             color_list = myconstants.color_list
 
         # add emotes in parallel?
-        
+
         pool = []
         for emoji in color_emote_list:
             _thread = threading.Thread(target=add_emote, args=(message, emoji))

@@ -43,6 +43,7 @@ bot.load_extension("cogs.schedule")
 async def help(ctx):
     help_str = "Commands:\n\t"
     help_str += ",notify <true|false>\n\t\t// activates or deactivates notifications\n\t"
+    help_str += ",color\n\t\t// get a colour!"
     help_str += ",ping\t\t\n\t\t// pong\n\t"
     help_str += ",gamejam\n\t\t// lists the 8 most popular game jams from itch.io\n\t"
     help_str += ",gamejam more\n\t\t// 16 most popular game jams from itch.io\n\t"
@@ -91,7 +92,7 @@ async def on_member_join(member):
     channel = discord.utils.get(guild.channels, name="bot-spam")
     await channel.send("Welcome {}!".format(member.mention))
     #channel.send("To get started, please pick a colour by reacting to this message.")
-    #await bot.get_cog("Roles").color(channel)
+    #await bot.get_cog("Roles").color(member, channel)
     await channel.send("We have informal meetings every second monday at **8:00pm** where we go over a few topics related to game development, then people give short demos of what they've been working on recently. If you've ever worked on a game or have something cool to show off, we'd love it if you'd demo it!".format(member.mention))
     #await channel.send("Our next meeting is on June 28th.")
     
