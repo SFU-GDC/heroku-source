@@ -35,7 +35,8 @@ class Roles(commands.Cog):
 
         pool = []
         for emoji in color_emote_list:
-            _thread = threading.Thread(target=add_emote, args=(message, emoji))
+            _thread = threading.Thread(target=asyncio.run, args=message.add_reaction(emoji=emoji))
+            #_thread = threading.Thread(target=add_emote, args=(message, emoji))
             _thread.start()
             pool.append(_thread)
 
@@ -120,8 +121,7 @@ def add_emote(message, emoji):
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
 
-    future = message.add_reaction(emoji=emoji)
-    loop.run_until_complete(future)
+    loop.run_until_complete(message.add_reaction(emoji=emoji))
     loop.close()
 
 async def remove_all_color_roles(user):
