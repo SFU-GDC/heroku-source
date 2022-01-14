@@ -56,16 +56,11 @@ async def help(ctx):
 @bot.event
 async def on_ready():
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name="conway's game of life"))
-    every_minute_loop.start()
+    #every_minute_loop.start()
 
     guild = bot.get_guild(int(os.environ["MAIN_SERVER_ID"]))
     channel = discord.utils.get(guild.channels, name="bot-test")
     await channel.send("I'm online now")
-
-@bot.event
-async def on_member_join(member):
-    # TODO: give basic role?
-    pass
 
 @bot.event
 async def on_message(message):
@@ -81,7 +76,7 @@ async def on_message(message):
         end_char = "!" if random.randint(0, 1) == 1 else ""
         await message.channel.send("{} {}{}".format(random.choice(greetings), message.author.mention, end_char))
     elif "linux" in cleaned_msg and not "gnu linux" in cleaned_msg:
-        await message.channel.send("you mean GNU linux, right?")    
+        await message.channel.send("you mean GNU linux, right?")
 
 # --------------------------------------------------------------------------- #
 # New Users
@@ -90,19 +85,18 @@ async def on_message(message):
 async def on_member_join(member):
     guild = bot.get_guild(int(os.environ["MAIN_SERVER_ID"]))
     channel = discord.utils.get(guild.channels, name="bot-spam")
-    await channel.send("Welcome {}!".format(member.mention))
-    #channel.send("To get started, please pick a colour by reacting to this message.")
-    #await bot.get_cog("Roles").color(member, channel)
-    await channel.send("We have informal meetings every second monday at **8:00pm** where we go over a few topics related to game development, then people give short demos of what they've been working on recently. If you've ever worked on a game or have something cool to show off, we'd love it if you'd demo it!".format(member.mention))
-    #await channel.send("Our next meeting is on June 28th.")
+    await channel.send("Welcome {}! To get started, try doing `,color`".format(member.mention))
+    await channel.send("We hold informal meetings where we go over a few topics related to game development, then give people a stage to show off what they've been working on recently.\n\nYou'll find a google calendars link in #info with specific meeting times (& locations). Hope to see you stop by!")
+    #await channel.send(" We hold informal meetings where we go over a few topics related to game development, then people give short demos of what they've been working on recently. If you've ever worked on a game or have something cool to show off, we'd love it if you'd demo it!".format(member.mention))
     
 # --------------------------------------------------------------------------- #
 # Notifications
 
 # We use this variable in case we accidentally miss 5:30 by 1 minute.
 # TODO: store this info in the db?
-done_friday_update = False
+# done_friday_update = False
 
+'''
 @tasks.loop(minutes=1)
 async def every_minute_loop():
     global done_friday_update
@@ -127,7 +121,7 @@ async def every_minute_loop():
 
     if now.weekday() == 4 and now.hour == 6 and done_friday_update:
         done_friday_update = False
-
+'''
 
 
 # --------------------------------------------------------------------------- #
@@ -192,14 +186,9 @@ async def events(ctx):
     await ctx.send("```{}```".format(outstr))
 
 # --------------------------------------------------------------------------- #
-# Website Output?
-
-pass
-
-# --------------------------------------------------------------------------- #
 
 if __name__ == "__main__":
     print("about to run bot")
     bot.run(os.environ['TOKEN']) # this token is set in the heroku environment
 else:
-    print("ran the file in lint mode, exiting gracefully.")
+    print("ran the file in lint mode, exiting gracefully")
