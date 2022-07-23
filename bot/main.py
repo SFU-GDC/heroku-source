@@ -3,8 +3,9 @@ from datetime import datetime
 
 import discord
 from discord.ext import commands, tasks
+from discord.utils import get
 
-from myconstants import greetings, mynames
+from myconstants import greetings, mynames, missions_channel_id, honorary_tom_cruise_id
 
 import db_manager, util
 
@@ -77,6 +78,16 @@ async def on_message(message):
         await message.channel.send("{} {}{}".format(random.choice(greetings), message.author.mention, end_char))
     elif "linux" in cleaned_msg and not "gnu linux" in cleaned_msg:
         await message.channel.send("you mean GNU linux, right?")
+    
+    
+    # Adding to Honorary Tom Cruise role to people who post in #missions
+    if message.channel.id == missions_channel_id and not honorary_tom_cruise_id in [role.id for role in message.author.roles]:
+        tom_cruise_role = get(message.author.server.roles, id=honorary_tom_cruise_id)
+        await bot.add_roles(message.author, tom_cruise_role)
+        await message.channel.send(f"Welcome to **Monthly Missions**, {message.author.name}!\n" 
+                                   + "You have now been given the `Honorary Tom Cruise` role, since you will be engaging in Missions that may seem Impossible each month."
+                                   + "(Also this lets us ping all **Monthly Missions** members)\n"
+                                   + "If you don't want to be an `Honorary Tom Cruise` any more, contact an executive and they can remove the role!")
 
 # --------------------------------------------------------------------------- #
 # New Users
