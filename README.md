@@ -10,5 +10,6 @@ CubeBot is SFU Game Dev Club's main bot for managing roles and giving informatio
 - remove events handling from the bot, its not neccesary & too complicated
 - add games & an economy
 - improve the color / role giving command -> people get confused
+- Possibly add an auto-role removal system
 
 changed
