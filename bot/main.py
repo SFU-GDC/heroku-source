@@ -87,6 +87,7 @@ async def on_message(message):
     if message.channel.id == missions_channel_id and not honorary_tom_cruise_id in [role.id for role in message.author.roles]:
         await channel.send("in correct channel and user doesn't have honorary tom cruise")
         tom_cruise_role = get(message.author.server.roles, id=honorary_tom_cruise_id)
+        await channel.send(tom_cruise_role.name)
         await bot.add_roles(message.author, tom_cruise_role)
         await message.channel.send(f"Welcome to **Monthly Missions**, {message.author.name}!\n" 
                                    + "You have now been given the `Honorary Tom Cruise` role, since you will be engaging in Missions that may seem Impossible each month."
