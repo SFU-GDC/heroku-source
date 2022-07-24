@@ -82,16 +82,12 @@ async def on_message(message):
     
     # Adding to Honorary Tom Cruise role to people who post in #missions
     guild = bot.get_guild(int(os.environ["MAIN_SERVER_ID"]))
-    channel = discord.utils.get(guild.channels, name="bot-test")
-    await channel.send("Got a message")
     if message.channel.id == missions_channel_id and not honorary_tom_cruise_id in [role.id for role in message.author.roles]:
-        await channel.send("in correct channel and user doesn't have honorary tom cruise")
         tom_cruise_role = get(guild.roles, id=honorary_tom_cruise_id)
-        await channel.send(tom_cruise_role.name)
         await message.author.add_roles(tom_cruise_role)
-        await message.channel.send(f"Welcome to **Monthly Missions**, {message.author.name}!\n" 
-                                   + "You have now been given the `Honorary Tom Cruise` role, since you will be engaging in Missions that may seem Impossible each month."
-                                   + "(Also this lets us ping all **Monthly Missions** members)\n"
+        await message.channel.send(f"Welcome to **Monthly Missions**, {message.author.name}!\n\n" 
+                                   + "You have now been given the `Honorary Tom Cruise` role, since you will be engaging in Missions that may seem Impossible each month. "
+                                   + "(Also this lets us ping all **Monthly Missions** members)\n\n"
                                    + "If you don't want to be an `Honorary Tom Cruise` any more, contact an executive and they can remove the role!")
 
 # --------------------------------------------------------------------------- #
