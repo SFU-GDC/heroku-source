@@ -88,7 +88,7 @@ async def on_message(message):
         await channel.send("in correct channel and user doesn't have honorary tom cruise")
         tom_cruise_role = get(guild.roles, id=honorary_tom_cruise_id)
         await channel.send(tom_cruise_role.name)
-        await message.author.add_roles([tom_cruise_role])
+        await message.author.add_roles(tom_cruise_role)
         await message.channel.send(f"Welcome to **Monthly Missions**, {message.author.name}!\n" 
                                    + "You have now been given the `Honorary Tom Cruise` role, since you will be engaging in Missions that may seem Impossible each month."
                                    + "(Also this lets us ping all **Monthly Missions** members)\n"
