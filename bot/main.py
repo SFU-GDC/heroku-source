@@ -79,7 +79,16 @@ async def on_message(message):
     elif "linux" in cleaned_msg and not "gnu linux" in cleaned_msg:
         await message.channel.send("you mean GNU linux, right?")
     
-    
+    # if player mentions a banned word, "ban them"
+    if "video game" in message.tolower():
+        try:
+            if not "BANNED" in [y.name for y in message.author.roles]:
+                await message.channel.send("!! intolerable conduct detected, issuing appropriate punishment !!")
+                r = discord.utils.get(message.guild.roles, name="BANNED")
+                if r: await message.author.add_roles(r)
+        except Exception as e:
+            print("error in assigning BANNED role: {}".format(e))
+
     # Adding to Honorary Tom Cruise role to people who post in #missions
     guild = bot.get_guild(int(os.environ["MAIN_SERVER_ID"]))
     if message.channel.id == missions_channel_id and not honorary_tom_cruise_id in [role.id for role in message.author.roles]:
@@ -196,6 +205,17 @@ async def events(ctx):
 
     await ctx.send("Here's our next 3 events:")
     await ctx.send("```{}```".format(outstr))
+
+# --------------------------------------------------------------------------- #
+# Utilities
+
+# message can be quoted to encase spaces
+@commands.has_role('Executive')
+@bot.command()
+async def announce(ctx, message):
+    guild = bot.get_guild(int(os.environ["MAIN_SERVER_ID"]))
+    channel = discord.utils.get(guild.channels, name="announcements")
+    await channel.send(message)
 
 # --------------------------------------------------------------------------- #
 
