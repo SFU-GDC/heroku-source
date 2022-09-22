@@ -80,7 +80,7 @@ async def on_message(message):
         await message.channel.send("you mean GNU linux, right?")
     
     # if player mentions a banned word, "ban them"
-    if "video game" in message.tolower():
+    if "video game" in message.lower():
         try:
             if not "BANNED" in [y.name for y in message.author.roles]:
                 await message.channel.send("!! intolerable conduct detected, issuing appropriate punishment !!")
@@ -213,8 +213,8 @@ async def events(ctx):
 @commands.has_role('Executive')
 @bot.command()
 async def announce(ctx, message):
-    guild = bot.get_guild(int(os.environ["MAIN_SERVER_ID"]))
-    channel = discord.utils.get(guild.channels, name="announcements")
+    #guild = bot.get_guild(int(os.environ["MAIN_SERVER_ID"]))
+    channel = discord.utils.get(message.guild.channels, name="announcements")
     await channel.send(message)
 
 # --------------------------------------------------------------------------- #
