@@ -28,6 +28,11 @@ class Roles(commands.Cog):
             color_emote_name_list = myconstants.color_emote_name_list
             color_list = myconstants.color_list
 
+        if "BANNED" in [y.name for y in ctx.message.author.roles]:
+            color_emote_list += ["<:evil:1022394738260836372>"] 
+            color_emote_name_list += ["evil"]
+            color_list += ["Darkness Incarnate"]
+
         # doesn't feel like parallel...
         # https://stackoverflow.com/questions/53324404/delay-when-adding-emojis-to-a-message-on-discord-python
         futures = [message.add_reaction(emoji=emoji) for emoji in color_emote_list]
