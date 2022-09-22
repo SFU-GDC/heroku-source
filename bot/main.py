@@ -81,13 +81,13 @@ async def on_message(message):
     
     # if player mentions a banned word, "ban them"
     if "video game" in cleaned_msg:
-        try:
-            if not "BANNED" in [y.name for y in message.author.roles]:
-                await message.channel.send("!! intolerable conduct detected, issuing appropriate punishment !!")
-                r = discord.utils.get(message.guild.roles, name="BANNED")
-                if r: await message.author.add_roles(r)
-        except Exception as e:
-            print("error in assigning BANNED role: {}".format(e))
+        #try:
+        if not "BANNED" in [y.name for y in message.author.roles]:
+            await message.channel.send("!! intolerable conduct detected, issuing appropriate punishment !!")
+            r = discord.utils.get(message.guild.roles, name="BANNED")
+            if r: await message.author.add_roles(r)
+        #except Exception as e:
+            #print("error in assigning BANNED role: {}".format(e))
 
     # Adding to Honorary Tom Cruise role to people who post in #missions
     guild = bot.get_guild(int(os.environ["MAIN_SERVER_ID"]))
@@ -214,7 +214,7 @@ async def events(ctx):
 @bot.command()
 async def announce(ctx, message):
     #guild = bot.get_guild(int(os.environ["MAIN_SERVER_ID"]))
-    channel = discord.utils.get(message.guild.channels, name="announcements")
+    channel = discord.utils.get(ctx.guild.channels, name="announcements")
     await channel.send(message)
 
 # --------------------------------------------------------------------------- #

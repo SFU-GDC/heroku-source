@@ -110,7 +110,7 @@ class Roles(commands.Cog):
 # --------------------------------------------------------------------------- #
 
 async def remove_all_color_roles(user):
-    for role in myconstants.extended_color_list:
+    for role in myconstants.extended_color_list + ["Darkness Incarnate"]:
         if role in [y.name for y in user.roles]:
             await remove_role(user, role)
 
