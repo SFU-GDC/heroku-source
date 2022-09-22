@@ -29,7 +29,7 @@ class Roles(commands.Cog):
             color_list = myconstants.color_list
 
         if "BANNED" in [y.name for y in ctx.message.author.roles]:
-            color_emote_list += ["<:evil:1022394738260836372>"] 
+            color_emote_list += ["<:evil:872688632396398592>"] 
             color_emote_name_list += ["evil"]
             color_list += ["Darkness Incarnate"]
 
