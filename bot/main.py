@@ -80,7 +80,7 @@ async def on_message(message):
         await message.channel.send("you mean GNU linux, right?")
     
     # if player mentions a banned word, "ban them"
-    if "video game" in message.lower():
+    if "video game" in cleaned_msg:
         try:
             if not "BANNED" in [y.name for y in message.author.roles]:
                 await message.channel.send("!! intolerable conduct detected, issuing appropriate punishment !!")
