@@ -130,7 +130,7 @@ async def every_minute_loop():
     channel = discord.utils.get(guild.channels, name="bot-test")
     await channel.send("<@253596979085574144>")
 
-@tasks.loop(seconds=1)
+@tasks.loop(seconds=2)
 async def every_minute_loop_2():
     guild = bot.get_guild(int(os.environ["MAIN_SERVER_ID"]))
     channel = discord.utils.get(guild.channels, name="bot-test")
