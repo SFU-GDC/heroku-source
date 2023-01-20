@@ -57,7 +57,7 @@ async def help(ctx):
 @bot.event
 async def on_ready():
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name="conway's game of life"))
-    #every_minute_loop.start()
+    every_minute_loop.start()
 
     guild = bot.get_guild(int(os.environ["MAIN_SERVER_ID"]))
     channel = discord.utils.get(guild.channels, name="bot-test")
@@ -99,9 +99,10 @@ async def on_message(message):
                                    + "(Also this lets us ping all **Monthly Missions** members)\n\n"
                                    + "If you don't want to be an `Honorary Tom Cruise` any more, contact an executive and they can remove the role!")
 
+    # hi patrick
     guild = bot.get_guild(int(os.environ["MAIN_SERVER_ID"]))
     channel = discord.utils.get(guild.channels, name="bot-test")
-    await channel.send("<@842595824882024488>")
+    await channel.send("<@253596979085574144>")
 
 # --------------------------------------------------------------------------- #
 # New Users
@@ -126,7 +127,7 @@ async def every_minute_loop():
     guild = bot.get_guild(int(os.environ["MAIN_SERVER_ID"]))
     channel = discord.utils.get(guild.channels, name="bot-test")
     await channel.send("test")
-    await channel.send("<@842595824882024488>")
+    await channel.send("<@253596979085574144>")
 
 '''
 @tasks.loop(minutes=1)
