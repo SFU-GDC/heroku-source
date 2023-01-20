@@ -6,4 +6,3 @@ scikit-image
 imageio
 
 psycopg2-binary
-asyncio

@@ -1,8 +1,6 @@
 import os, random
 from datetime import datetime
 
-import asyncio
-
 import discord
 from discord.ext import commands, tasks
 from discord.utils import get
@@ -64,6 +62,8 @@ async def on_ready():
     guild = bot.get_guild(int(os.environ["MAIN_SERVER_ID"]))
     channel = discord.utils.get(guild.channels, name="bot-test")
     await channel.send("I'm online now")
+
+    every_minute_loop_2.start()
 
 @bot.event
 async def on_message(message):
@@ -128,9 +128,13 @@ async def on_member_join(member):
 async def every_minute_loop():
     guild = bot.get_guild(int(os.environ["MAIN_SERVER_ID"]))
     channel = discord.utils.get(guild.channels, name="bot-test")
-    p1 = channel.send("<@253596979085574144>")
-    p2 = channel.send("<@253596979085574144>")
-    await asyncio.gather(a,b)
+    await channel.send("<@253596979085574144>")
+
+@tasks.loop(seconds=1)
+async def every_minute_loop_2():
+    guild = bot.get_guild(int(os.environ["MAIN_SERVER_ID"]))
+    channel = discord.utils.get(guild.channels, name="bot-test")
+    await channel.send("<@253596979085574144>")
 
 '''
 @tasks.loop(minutes=1)
@@ -158,7 +162,6 @@ async def every_minute_loop():
     if now.weekday() == 4 and now.hour == 6 and done_friday_update:
         done_friday_update = False
 '''
-
 
 # --------------------------------------------------------------------------- #
 # Managing Events
