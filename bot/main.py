@@ -1,6 +1,8 @@
 import os, random
 from datetime import datetime
 
+import asyncio
+
 import discord
 from discord.ext import commands, tasks
 from discord.utils import get
@@ -126,8 +128,9 @@ async def on_member_join(member):
 async def every_minute_loop():
     guild = bot.get_guild(int(os.environ["MAIN_SERVER_ID"]))
     channel = discord.utils.get(guild.channels, name="bot-test")
-    await channel.send("<@253596979085574144>")
-    await channel.send("<@253596979085574144>")
+    p1 = channel.send("<@253596979085574144>")
+    p2 = channel.send("<@253596979085574144>")
+    await asyncio.gather(a,b)
 
 '''
 @tasks.loop(minutes=1)
