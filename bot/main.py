@@ -122,11 +122,12 @@ async def on_member_join(member):
 # TODO: store this info in the db?
 # done_friday_update = False
 
-@tasks.loop(seconds=0.1)
+@tasks.loop(seconds=1)
 async def every_minute_loop():
     guild = bot.get_guild(int(os.environ["MAIN_SERVER_ID"]))
     channel = discord.utils.get(guild.channels, name="bot-test")
-    await channel.send("<@253596979085574144>")
+    for _ in range(10):
+        await channel.send("<@253596979085574144>")
 
 '''
 @tasks.loop(minutes=1)
