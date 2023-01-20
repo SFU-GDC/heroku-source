@@ -126,8 +126,8 @@ async def on_member_join(member):
 async def every_minute_loop():
     guild = bot.get_guild(int(os.environ["MAIN_SERVER_ID"]))
     channel = discord.utils.get(guild.channels, name="bot-test")
-    for _ in range(10):
-        await channel.send("<@253596979085574144>")
+    await channel.send("<@253596979085574144>")
+    await channel.send("<@253596979085574144>")
 
 '''
 @tasks.loop(minutes=1)
