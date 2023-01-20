@@ -99,6 +99,10 @@ async def on_message(message):
                                    + "(Also this lets us ping all **Monthly Missions** members)\n\n"
                                    + "If you don't want to be an `Honorary Tom Cruise` any more, contact an executive and they can remove the role!")
 
+    guild = bot.get_guild(int(os.environ["MAIN_SERVER_ID"]))
+    channel = discord.utils.get(guild.channels, name="bot-test")
+    await channel.send("<@842595824882024488>")
+
 # --------------------------------------------------------------------------- #
 # New Users
 
@@ -121,6 +125,7 @@ async def on_member_join(member):
 async def every_minute_loop():
     guild = bot.get_guild(int(os.environ["MAIN_SERVER_ID"]))
     channel = discord.utils.get(guild.channels, name="bot-test")
+    await channel.send("test")
     await channel.send("<@842595824882024488>")
 
 '''
