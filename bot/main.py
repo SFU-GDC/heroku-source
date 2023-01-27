@@ -89,7 +89,7 @@ async def on_message(message):
     
     # if player mentions a banned word, "ban them"
     if "fuck" in cleaned_msg_ascii_only and len(cleaned_msg_ascii_only) < 10:
-        await channel.send("language {}! this is a christian minecraft server".format(message.author.mention))
+        await message.channel.send("language {}! this is a christian minecraft server".format(message.author.mention))
     elif "video game" in cleaned_msg_ascii_only:
         #try:
         message_author_role_names = [y.name for y in message.author.roles]
@@ -98,12 +98,12 @@ async def on_message(message):
             r = discord.utils.get(message.guild.roles, name="BANNED")
             if r: await message.author.add_roles(r)
         elif ("BANNED" in message_author_role_names) and (not "SUPER_BANNED" in message_author_role_names): 
-            await channel.send("that was a mistake {}".format(message.author.mention))
+            await message.channel.send("that was a mistake {}".format(message.author.mention))
             await message.channel.send("!!! {}, issuing MAXIMUM punishment !!!".format( random.choice(["T̴̡̪͘Ḧ̴͎̝́̇E̸̝̾Ÿ̶͙́ ̷̟̝̎͝N̴͓̻̉E̵̗̙̾́V̵͖͝Ë̷͕́̅Ŕ̸̙͓ ̴͔͐̄L̸͖̟̓E̸̛͓͆Å̸̯͇Ŗ̶͛͌N̴̥͝", "T̶̻̔H̷͓̮̅̅E̸̻̝̍Y̵̪͐͂͜ ̵̛̱N̷̝̿̆E̵̘͘V̸̹̳̅̌E̵͙͕͌Ṟ̵̙̄̊ ̸̯͛͘L̴̲̪͋̈́E̶̢̖̍̄A̵͖̥͂R̷̳͉̾Ǹ̵̛͓̜", "Ṱ̷͌Ḧ̷̼́E̷͔͌Ỷ̶͍ ̸̤̄N̷̮̉E̵͓̕V̷̗̏Ḙ̶͊R̵̺̂ ̵̧̉L̵̳̉E̵͕̓Â̴̠R̸̪̿N̸̘̈́", "T̸̢̈́H̴͎̀E̴͎̒Ỵ̶̍ ̸̛͕N̴͔̅E̶͓̊V̴̞͝E̷͐͜R̸̭͝ ̸̨́L̷͕̿Ȇ̵ͅA̵̻͌R̴̠̕N̴͈̈́"]) ))
             r = discord.utils.get(message.guild.roles, name="SUPER_BANNED")
             if r: await message.author.add_roles(r)
         elif ("BANNED" in message_author_role_names) and ("SUPER_BANNED" in message_author_role_names): 
-            await channel.send("{} {}".format(message.author.mention, "(っ◔◡◔)っ ♥ SILENCE ♥" if random.random() > 0.99 else "🆂🅸🅻🅴🅽🅲🅴"))
+            await message.channel.send("{} {}".format(message.author.mention, "(っ◔◡◔)っ ♥ SILENCE ♥" if random.random() > 0.99 else "🆂🅸🅻🅴🅽🅲🅴"))
         #except Exception as e:
             #print("error in assigning BANNED role: {}".format(e))
 
