@@ -60,8 +60,8 @@ async def on_ready():
     #every_minute_loop.start()
 
     # apparently cogs need to be loaded from here now??
-    await bot.load_extension("cogs.roles")
-    await bot.load_extension("cogs.schedule")
+    bot.load_extension("cogs.roles")
+    bot.load_extension("cogs.schedule")
 
     guild = bot.get_guild(int(os.environ["MAIN_SERVER_ID"]))
     channel = discord.utils.get(guild.channels, name="bot-test")
@@ -88,8 +88,8 @@ async def on_message(message):
         await message.channel.send("you mean GNU linux, right?")
     
     # if player mentions a banned word, "ban them"
-    if cleaned_msg_ascii_only == "fuck":
-        await channel.send("{}, this is a christian minecraft server".format(message.author.mention))
+    if "fuck" in cleaned_msg_ascii_only and len(cleaned_msg_ascii_only) < 10:
+        await channel.send("language {}! this is a christian minecraft server".format(message.author.mention))
     elif "video game" in cleaned_msg_ascii_only:
         #try:
         message_author_role_names = [y.name for y in message.author.roles]
