@@ -18,7 +18,7 @@ import db_manager, util
 # --------------------------------------------------------------------------- #
 # Bot Init
 
-intents = discord.Intents.default()
+intents = discord.Intents.all()
 intents.members = True
 bot = commands.Bot(command_prefix=',', intents=intents)
 bot.remove_command('help')
