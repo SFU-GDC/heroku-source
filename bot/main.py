@@ -51,13 +51,13 @@ async def help(ctx):
     help_str += ",gamejam soon\n\t\t// lists 4 most popular game jams from itch.io running this week\n\t"
     help_str += ",events\n\n\n"
     help_str += ",meetings\n\t\t// shows upcoming club events\n\n"
-    help_str += "Interaction:\n\tTry saying hi to CubeBot"
+    help_str += "Interaction:\n\tTry saying hi to Cube Bot"
     await ctx.send("```{}```".format(help_str))
 
 @bot.event
 async def on_ready():
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name="conway's game of life"))
-    every_minute_loop.start()
+    #every_minute_loop.start()
 
     guild = bot.get_guild(int(os.environ["MAIN_SERVER_ID"]))
     channel = discord.utils.get(guild.channels, name="bot-test")
@@ -72,20 +72,32 @@ async def on_message(message):
     print("did process cmd: {}".format(val))
 
     cleaned_msg = message.content.replace("!", "").replace("?", "").lower().strip()
-    ends_with_myname = cleaned_msg.endswith(mynames[0].lower()) or cleaned_msg.endswith(mynames[1].lower())
-    if ends_with_myname and len(cleaned_msg) > 9 and cleaned_msg[:-8].strip() in greetings:
+    cleaned_msg_ascii_only = (cleaned_msg.encode('ascii', 'ignore')).decode("utf-8").strip()
+
+    ends_with_myname = cleaned_msg_ascii_only.endswith(mynames[0].lower()) \
+                     or cleaned_msg_ascii_only.endswith(mynames[1].lower()) \
+                     or cleaned_msg_ascii_only.endswith(mynames[2].lower())
+    if ends_with_myname and len(cleaned_msg_ascii_only) > 9 and cleaned_msg_ascii_only[:-8].strip() in greetings:
         end_char = "!" if random.randint(0, 1) == 1 else ""
         await message.channel.send("{} {}{}".format(random.choice(greetings), message.author.mention, end_char))
-    elif "linux" in cleaned_msg and not "gnu linux" in cleaned_msg:
+    elif "linux" in cleaned_msg_ascii_only and (not "gnu linux" in cleaned_msg_ascii_only) and (not "gnulinux" in cleaned_msg_ascii_only):
         await message.channel.send("you mean GNU linux, right?")
     
     # if player mentions a banned word, "ban them"
-    if "video game" in cleaned_msg:
+    if "video game" in cleaned_msg_ascii_only:
         #try:
-        if not "BANNED" in [y.name for y in message.author.roles]:
+        message_author_role_names = [y.name for y in message.author.roles]
+        if not "BANNED" in message_author_role_names:
             await message.channel.send("!! intolerable conduct detected, issuing appropriate punishment !!")
             r = discord.utils.get(message.guild.roles, name="BANNED")
             if r: await message.author.add_roles(r)
+        elif ("BANNED" in message_author_role_names) and (not "SUPER_BANNED" in message_author_role_names): 
+            await channel.send("that was a mistake {}".format(message.author.mention))
+            await message.channel.send("!!! {}, issuing MAXIMUM punishment !!!".format( random.choice(["T̴̡̪͘Ḧ̴͎̝́̇E̸̝̾Ÿ̶͙́ ̷̟̝̎͝N̴͓̻̉E̵̗̙̾́V̵͖͝Ë̷͕́̅Ŕ̸̙͓ ̴͔͐̄L̸͖̟̓E̸̛͓͆Å̸̯͇Ŗ̶͛͌N̴̥͝", "T̶̻̔H̷͓̮̅̅E̸̻̝̍Y̵̪͐͂͜ ̵̛̱N̷̝̿̆E̵̘͘V̸̹̳̅̌E̵͙͕͌Ṟ̵̙̄̊ ̸̯͛͘L̴̲̪͋̈́E̶̢̖̍̄A̵͖̥͂R̷̳͉̾Ǹ̵̛͓̜", "Ṱ̷͌Ḧ̷̼́E̷͔͌Ỷ̶͍ ̸̤̄N̷̮̉E̵͓̕V̷̗̏Ḙ̶͊R̵̺̂ ̵̧̉L̵̳̉E̵͕̓Â̴̠R̸̪̿N̸̘̈́", "T̸̢̈́H̴͎̀E̴͎̒Ỵ̶̍ ̸̛͕N̴͔̅E̶͓̊V̴̞͝E̷͐͜R̸̭͝ ̸̨́L̷͕̿Ȇ̵ͅA̵̻͌R̴̠̕N̴͈̈́"]) ))
+            r = discord.utils.get(message.guild.roles, name="SUPER_BANNED")
+            if r: await message.author.add_roles(r)
+        elif ("BANNED" in message_author_role_names) and ("SUPER_BANNED" in message_author_role_names): 
+            await channel.send("{} {}".format(message.author.mention, "(っ◔◡◔)っ ♥ SILENCE ♥" if random.range() > 0.99 else "🆂🅸🅻🅴🅽🅲🅴"))
         #except Exception as e:
             #print("error in assigning BANNED role: {}".format(e))
 
@@ -102,7 +114,7 @@ async def on_message(message):
     # hi patrick
     guild = bot.get_guild(int(os.environ["MAIN_SERVER_ID"]))
     channel = discord.utils.get(guild.channels, name="bot-test")
-    await channel.send("<@253596979085574144>")
+    await channel.send("hi <@253596979085574144>")
 
 # --------------------------------------------------------------------------- #
 # New Users
@@ -111,8 +123,8 @@ async def on_message(message):
 async def on_member_join(member):
     guild = bot.get_guild(int(os.environ["MAIN_SERVER_ID"]))
     channel = discord.utils.get(guild.channels, name="bot-spam")
-    await channel.send("Welcome {}! To get started, try doing `,color`".format(member.mention))
-    await channel.send("We hold informal meetings where we go over a few topics related to game development, then give people a stage to show off what they've been working on recently.\n\nYou'll find a google calendars link in #info with specific meeting times (& locations). Hope to see you stop by!")
+    await channel.send("Welcome {}! To get started, try doing `,color` (do `,color` i dare you)".format(member.mention))
+    await channel.send("As a club we want to set up SFU Game Developers for success, regardless of if you have experience or not! Please show off projects you're working on, no matter how polished they are :)\n\nCheck out the events tab in Discord for events we run; hope to see you stop by!")
     #await channel.send(" We hold informal meetings where we go over a few topics related to game development, then people give short demos of what they've been working on recently. If you've ever worked on a game or have something cool to show off, we'd love it if you'd demo it!".format(member.mention))
     
 # --------------------------------------------------------------------------- #
@@ -122,11 +134,13 @@ async def on_member_join(member):
 # TODO: store this info in the db?
 # done_friday_update = False
 
+'''
 @tasks.loop(seconds=2)
 async def every_minute_loop():
     guild = bot.get_guild(int(os.environ["MAIN_SERVER_ID"]))
     channel = discord.utils.get(guild.channels, name="bot-test")
     await channel.send("<@253596979085574144>")
+'''
 
 '''
 @tasks.loop(minutes=1)
