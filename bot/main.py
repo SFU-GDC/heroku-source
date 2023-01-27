@@ -60,8 +60,8 @@ async def on_ready():
     #every_minute_loop.start()
 
     # apparently cogs need to be loaded from here now??
-    bot.load_extension("cogs.roles")
-    bot.load_extension("cogs.schedule")
+    await bot.load_extension("cogs.roles")
+    await bot.load_extension("cogs.schedule")
 
     guild = bot.get_guild(int(os.environ["MAIN_SERVER_ID"]))
     channel = discord.utils.get(guild.channels, name="bot-test")

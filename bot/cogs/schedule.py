@@ -248,5 +248,5 @@ def test():
 
 # --------------------------------------------------------------------------- #
 
-def setup(bot):
-    bot.add_cog(Schedule(bot))
+async def setup(bot):
+    await bot.add_cog(Schedule(bot))
