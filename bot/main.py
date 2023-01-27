@@ -34,8 +34,8 @@ async def load(ctx, extension):
 async def unload(ctx, extension):
     await bot.unload_extension(f'cogs.{extension}')
 
-bot.load_extension("cogs.roles")
-bot.load_extension("cogs.schedule")
+#bot.load_extension("cogs.roles")
+#bot.load_extension("cogs.schedule")
 
 # --------------------------------------------------------------------------- #
 # Misc Setup
@@ -58,6 +58,10 @@ async def help(ctx):
 async def on_ready():
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name="conway's game of life"))
     #every_minute_loop.start()
+
+    # apparently cogs need to be loaded from here now??
+    await bot.load_extension("cogs.roles")
+    await bot.load_extension("cogs.schedule")
 
     guild = bot.get_guild(int(os.environ["MAIN_SERVER_ID"]))
     channel = discord.utils.get(guild.channels, name="bot-test")
@@ -84,7 +88,9 @@ async def on_message(message):
         await message.channel.send("you mean GNU linux, right?")
     
     # if player mentions a banned word, "ban them"
-    if "video game" in cleaned_msg_ascii_only:
+    if cleaned_msg_ascii_only == "fuck":
+        await channel.send("{}, this is a christian minecraft server".format(message.author.mention))
+    elif "video game" in cleaned_msg_ascii_only:
         #try:
         message_author_role_names = [y.name for y in message.author.roles]
         if not "BANNED" in message_author_role_names:
@@ -100,6 +106,9 @@ async def on_message(message):
             await channel.send("{} {}".format(message.author.mention, "(っ◔◡◔)っ ♥ SILENCE ♥" if random.random() > 0.99 else "🆂🅸🅻🅴🅽🅲🅴"))
         #except Exception as e:
             #print("error in assigning BANNED role: {}".format(e))
+
+    
+
 
     # Adding to Honorary Tom Cruise role to people who post in #missions
     guild = bot.get_guild(int(os.environ["MAIN_SERVER_ID"]))
