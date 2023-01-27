@@ -28,11 +28,11 @@ bot.remove_command('help')
 
 @bot.command()
 async def load(ctx, extension):
-    bot.load_extension(f'cogs.{extension}')
+    await bot.load_extension(f'cogs.{extension}')
 
 @bot.command()
 async def unload(ctx, extension):
-    bot.unload_extension(f'cogs.{extension}')
+    await bot.unload_extension(f'cogs.{extension}')
 
 bot.load_extension("cogs.roles")
 bot.load_extension("cogs.schedule")
@@ -97,7 +97,7 @@ async def on_message(message):
             r = discord.utils.get(message.guild.roles, name="SUPER_BANNED")
             if r: await message.author.add_roles(r)
         elif ("BANNED" in message_author_role_names) and ("SUPER_BANNED" in message_author_role_names): 
-            await channel.send("{} {}".format(message.author.mention, "(っ◔◡◔)っ ♥ SILENCE ♥" if random.range() > 0.99 else "🆂🅸🅻🅴🅽🅲🅴"))
+            await channel.send("{} {}".format(message.author.mention, "(っ◔◡◔)っ ♥ SILENCE ♥" if random.random() > 0.99 else "🆂🅸🅻🅴🅽🅲🅴"))
         #except Exception as e:
             #print("error in assigning BANNED role: {}".format(e))
 
