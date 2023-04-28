@@ -35,7 +35,7 @@ class Roles(commands.Cog):
 
         # doesn't feel like parallel...
         # https://stackoverflow.com/questions/53324404/delay-when-adding-emojis-to-a-message-on-discord-python
-        futures = [message.add_reaction(emoji=emoji) for emoji in color_emote_list]
+        futures = [message.add_reaction(emoji) for emoji in color_emote_list]
         await asyncio.gather(*futures)
 
         # TODO: check for reactions here.
@@ -66,8 +66,8 @@ class Roles(commands.Cog):
             await add_role(ctx.message.author, ctx.guild.roles, "Notification Squad")
 
             message = await ctx.send("Choose a colour by reacting to this message")
-            await message.add_reaction(emoji=bulbasaur_green)
-            await message.add_reaction(emoji=gameboy_yellow)
+            await message.add_reaction(bulbasaur_green)
+            await message.add_reaction(gameboy_yellow)
             is_bulbasaur = lambda reaction, user: user == ctx.message.author and str(reaction.emoji) == bulbasaur_green
             is_gameboy = lambda reaction, user: user == ctx.message.author and str(reaction.emoji) == gameboy_yellow
             check = lambda r, u: is_gameboy(r,u) or is_bulbasaur(r,u)
