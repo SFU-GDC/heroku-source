@@ -34,9 +34,6 @@ async def load(ctx, extension):
 async def unload(ctx, extension):
     await bot.unload_extension(f'cogs.{extension}')
 
-#bot.load_extension("cogs.roles")
-#bot.load_extension("cogs.schedule")
-
 # --------------------------------------------------------------------------- #
 # Misc Setup
 
@@ -57,7 +54,6 @@ async def help(ctx):
 @bot.event
 async def on_ready():
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name="conway's game of life"))
-    #every_minute_loop.start()
 
     # apparently cogs need to be loaded from here now??
     await bot.load_extension("cogs.roles")
@@ -104,11 +100,6 @@ async def on_message(message):
             if r: await message.author.add_roles(r)
         elif ("BANNED" in message_author_role_names) and ("SUPER_BANNED" in message_author_role_names): 
             await message.channel.send("{} {}".format(message.author.mention, "(っ◔◡◔)っ ♥ SILENCE ♥" if random.random() > 0.99 else "🆂🅸🅻🅴🅽🅲🅴"))
-        #except Exception as e:
-            #print("error in assigning BANNED role: {}".format(e))
-
-    
-
 
     # Adding to Honorary Tom Cruise role to people who post in #missions
     guild = bot.get_guild(int(os.environ["MAIN_SERVER_ID"]))
@@ -132,52 +123,9 @@ async def on_message(message):
 async def on_member_join(member):
     guild = bot.get_guild(int(os.environ["MAIN_SERVER_ID"]))
     channel = discord.utils.get(guild.channels, name="bot-spam")
-    await channel.send("Welcome {}! To get started, try doing `,color` (do `,color` i dare you)".format(member.mention))
-    await channel.send("As a club we want to set up SFU Game Developers for success, regardless of if you have experience or not! Please show off projects you're working on, no matter how polished they are :)\n\nCheck out the events tab in Discord for events we run; hope to see you stop by!")
-    #await channel.send(" We hold informal meetings where we go over a few topics related to game development, then people give short demos of what they've been working on recently. If you've ever worked on a game or have something cool to show off, we'd love it if you'd demo it!".format(member.mention))
+    await channel.send("Welcome {}! To get started, try doing `,color` (do `,color` i dare you; it actually works now!)".format(member.mention))
+    await channel.send("As a club we want to set Game Developers at SFU up for success, regardless of if you have experience or not! Please show off projects you're working on, no matter how polished they are :)\n\nCheck out the events tab in Discord for events we run; hope to see you stop by!")
     
-# --------------------------------------------------------------------------- #
-# Notifications
-
-# We use this variable in case we accidentally miss 5:30 by 1 minute.
-# TODO: store this info in the db?
-# done_friday_update = False
-
-'''
-@tasks.loop(seconds=2)
-async def every_minute_loop():
-    guild = bot.get_guild(int(os.environ["MAIN_SERVER_ID"]))
-    channel = discord.utils.get(guild.channels, name="bot-test")
-    await channel.send("<@253596979085574144>")
-'''
-
-'''
-@tasks.loop(minutes=1)
-async def every_minute_loop():
-    global done_friday_update
-
-    now = datetime.now()
-    
-    # TODO: change this to 4 & implement the bot.
-    if now.weekday() == 2 and now.hour == 12+5 and now.minute >= 30 and not done_friday_update:
-        guild = bot.get_guild(int(os.environ["MAIN_SERVER_ID"]))
-        channel = discord.utils.get(guild.channels, name="bot-test")
-        await channel.send("It's Friday, which means it's time for the Weekly Update!")
-
-        # TODO: compute time to all events (in order) and make a report for events with particular metadata that are close to being done.
-        next_event = db_manager.get_next_events(1)
-        print(next_event)
-        if len(next_event) == 0:
-            await channel.send("No upcoming events...")
-        else:
-            next_event = next_event[0] # from list -> tuple
-            await channel.send("Our next event **{}** is on {} (in {} days). *{}*".format(next_event[0], util.make_readable(next_event[1]), (next_event[1] - datetime.now()).days, next_event[2]))
-        done_friday_update = True
-
-    if now.weekday() == 4 and now.hour == 6 and done_friday_update:
-        done_friday_update = False
-'''
-
 # --------------------------------------------------------------------------- #
 # Managing Events
 
