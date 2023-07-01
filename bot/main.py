@@ -122,13 +122,16 @@ async def add_role(user, roles, name):
     r = discord.utils.get(roles, name=name)
     if r: await user.add_roles(r)
 
+@bot.event
+async def on_raw_reaction_add(reaction, user):
+    print("reaction occured {}".format(reaction.emoji.name))
+
 # REACT WITH :GAMEJAM: TO GET THE MOUNTAIN-TOP-JAMMER ROLE
 @bot.event
-async def on_reaction_add(reaction, user):
+async def on_raw_reaction_add(reaction, user):
+    print("RAW reaction occured {}".format(reaction.emoji.name))
     Channel = bot.get_channel(JAM_ROLES_CHANNEL_ID)
-    if reaction.message.channel.id != Channel.id:
-        return
-    elif reaction.emoji.name == game_jam_emote_name:
+    if reaction.message.channel.id == Channel.id and reaction.emoji.name == game_jam_emote_name:
         await add_role(user, user.server.roles, game_jam_role)
 
 # --------------------------------------------------------------------------- #
