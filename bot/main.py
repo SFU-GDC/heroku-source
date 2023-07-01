@@ -5,7 +5,7 @@ import discord
 from discord.ext import commands, tasks
 from discord.utils import get
 
-from myconstants import greetings, mynames, missions_channel_id, honorary_tom_cruise_id
+from myconstants import greetings, mynames, missions_channel_id, honorary_tom_cruise_id, game_jam_emote_name, game_jam_role
 
 import db_manager, util
 
@@ -115,6 +115,21 @@ async def on_message(message):
     guild = bot.get_guild(int(os.environ["MAIN_SERVER_ID"]))
     channel = discord.utils.get(guild.channels, name="bot-test")
     await channel.send("hi <@253596979085574144>")
+
+JAM_ROLES_CHANNEL_ID = 1124067242653516006
+
+async def add_role(user, roles, name):
+    r = discord.utils.get(roles, name=name)
+    if r: await user.add_roles(r)
+
+# REACT WITH :GAMEJAM: TO GET THE MOUNTAIN-TOP-JAMMER ROLE
+@bot.event
+async def on_reaction_add(reaction, user):
+    Channel = bot.get_channel(JAM_ROLES_CHANNEL_ID)
+    if reaction.message.channel.id != Channel.id:
+        return
+    elif reaction.emoji.name == game_jam_emote_name:
+        await add_role(user, user.server.roles, game_jam_role)
 
 # --------------------------------------------------------------------------- #
 # New Users
