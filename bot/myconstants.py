@@ -14,7 +14,7 @@ factory_orange = "<:factorio:865441166291894332>"
 crate_brown = "<:crate:865448635100692510>"
 
 game_jam = "<:gamejam:1124170128888700949>"
-game_jam_role = "Mountain-top-Jammer"
+game_jam_role = "Mountain-top Jammer"
 game_jam_emote_name = "gamejam"
 
 color_emote_list = [
