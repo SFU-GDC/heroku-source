@@ -136,7 +136,10 @@ async def on_raw_reaction_add(payload):
     print("RAW reaction occured {}".format(payload.emoji.name))
     print("payload.event_type {}".format(payload.event_type))
     print("payload.guild_id {}".format(payload.guild_id))
+    print("payload.message_id {}".format(payload.message_id))
     print("payload.member {}".format(payload.member))
+    print("payload.member.guild {}".format(payload.member.guild))
+    print("payload.member.guild.roles {}".format(payload.member.guild.roles))
     #channel = bot.get_channel(JAM_ROLES_CHANNEL_ID)
     if payload.message_id == JAM_ROLES_MESSAGE_ID and payload.emoji.name == game_jam_emote_name:
         await add_role(payload.member, payload.member.guild.roles, game_jam_role)
