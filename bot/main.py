@@ -116,39 +116,19 @@ async def on_message(message):
     channel = discord.utils.get(guild.channels, name="bot-test")
     await channel.send("hi <@253596979085574144>")
 
-JAM_ROLES_MESSAGE_ID = 1124602646150533130
+# --------------------------------------------------------------------------- #
+# Roles
+# TODO: move all role stuff here, just cause
 
 async def add_role(user, roles, name):
     r = discord.utils.get(roles, name=name)
-    print("toget: {}".format(name))
-    print("role: {}".format(r))
-    if r: 
-        await user.add_roles(r)
-        print("done adding role")
+    if r: await user.add_roles(r)
 
-#JAM_ROLES_CHANNEL_ID = 1124067242653516006
-'''
-@bot.event
-async def on_reaction_add(reaction, user):
-    print("reaction occured {}".format(reaction.emoji.name))
-    channel = bot.get_channel(JAM_ROLES_CHANNEL_ID)
-    if reaction.message.channel.id == channel.id and reaction.emoji.name == game_jam_emote_name:
-        await add_role(user, user.server.roles, game_jam_role)
-'''
-
+JAM_ROLES_MESSAGE_ID = 1124602646150533130
 # REACT WITH :GAMEJAM: TO GET THE MOUNTAIN-TOP-JAMMER ROLE
 @bot.event
 async def on_raw_reaction_add(payload):
-    print("RAW reaction occured {}".format(payload.emoji.name))
-    print("payload.event_type {}".format(payload.event_type))
-    print("payload.guild_id {}".format(payload.guild_id))
-    print("payload.message_id {}".format(payload.message_id))
-    print("payload.member {}".format(payload.member))
-    print("payload.member.guild {}".format(payload.member.guild))
-    print("payload.member.guild.roles {}".format(payload.member.guild.roles))
-    #channel = bot.get_channel(JAM_ROLES_CHANNEL_ID)
     if payload.message_id == JAM_ROLES_MESSAGE_ID and payload.emoji.name == game_jam_emote_name:
-        print("inner")
         await add_role(payload.member, payload.member.guild.roles, game_jam_role)
 
 # --------------------------------------------------------------------------- #
