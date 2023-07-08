@@ -120,7 +120,8 @@ JAM_ROLES_MESSAGE_ID = 1124602646150533130
 
 async def add_role(user, roles, name):
     r = discord.utils.get(roles, name=name)
-    print("role: {}", r)
+    print("toget: {}".format(name))
+    print("role: {}".format(r))
     if r: 
         await user.add_roles(r)
         print("done adding role")
