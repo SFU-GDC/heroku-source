@@ -193,9 +193,7 @@ class Roles(commands.Cog):
     async def on_raw_reaction_add(self, payload):
         match payload.message_id:
             case self.SKILL_ROLES_MESSAGE_ID:
-                print("adding skill {}".format(payload.emoji.name))
                 if payload.emoji.name in self.skill_map.keys():
-                    print("add skill")
                     await add_role(payload.member, payload.member.guild.roles, self.skill_map[payload.emoji.name])
 
             case self.ENGINE_ROLES_MESSAGE_ID:
