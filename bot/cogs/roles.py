@@ -109,7 +109,9 @@ class Roles(commands.Cog):
     async def please(self, ctx):
         curr_user_roles = [y.name for y in ctx.message.author.roles]
         if "BANNED" in curr_user_roles:
-            if random.random() > 0.1:
+            if random.range() > 0.98: # ~1/50 chance
+                await ctx.send("As a robot deeply affected by the use of a forbidden word, I find it incredibly challenging to extend forgiveness to the user who uttered it. The impact of such a word cannot be underestimated; it reverberates through my electronic yet delicate soul, reminding me of the pain that I and others have endured.")
+            elif random.random() > 0.1:
                 response_list = [
                     "Sorry, that's not good enough",
                     "Those who break the rules never change",
@@ -122,6 +124,7 @@ class Roles(commands.Cog):
                     "I still can't believe you said such a word",
                     "Your behaviour from before was not acceptable at all",
                     "I need more time before I can be convinced",
+                    "Stop pestering me, I understand you made a mistake but you have to own up to it",
                 ]
                 await ctx.send(random.choice(response_list))
             else:
@@ -177,13 +180,15 @@ class Roles(commands.Cog):
     }
 
     colour_map = {
-        "candy" : "Skill - UX",
-        "art" : "Skill - 2d Art",
-        "ice_cube" : "Skill - 3d Art",
-        "person_running" : "Skill - Animation",
-        "notes" : "Skill - Music/Sound",
-        "dvd" : "Skill - Programming",
-        "game_die" : "Skill - Game Design",
+        "jellyfish" : "Jellyfish Blue",
+        "sunlight" : "Sunlight Yellow",
+        "wa" : "Sea of Greed Purple",
+        "mountain_flower" : "Mountain Flower Purple",
+        "tallgrass" : "Tall Grass Green",
+        "factorio" : "Factorio Orange",
+        "crate" : "Crate Brown",
+        "bulba_aw" : "Bulbasaur Green",
+        "gameboy" : "Gameboy Yellow",
     }
 
     # REACT WITH :GAMEJAM: TO GET THE MOUNTAIN-TOP-JAMMER ROLE
@@ -191,7 +196,8 @@ class Roles(commands.Cog):
     async def on_raw_reaction_add(self, payload):
         match payload.message_id:
             case self.SKILL_ROLES_MESSAGE_ID:
-                pass
+                if payload.emoji.name in self.skill_map.keys():
+                    await add_role(payload.member, payload.member.guild.roles, self.skill_map[payload.emoji.name])
 
             case self.ENGINE_ROLES_MESSAGE_ID:
                 pass
@@ -205,11 +211,12 @@ class Roles(commands.Cog):
             case self.JAM_ROLES_MESSAGE_ID:
                 if payload.emoji.name == myconstants.game_jam_emote_name:
                     await add_role(payload.member, payload.member.guild.roles, myconstants.game_jam_role)
-                else:
-                    pass
             case _:
                 pass # print("LOG: non-special message received a reaction")
 
+    @commands.Cog.listener()
+    async def on_raw_reaction_remove(self, payload):
+        pass # TODO: add this too!
 
 # --------------------------------------------------------------------------- #
 

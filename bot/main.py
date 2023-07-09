@@ -46,7 +46,9 @@ async def help(ctx):
     help_str += "+\t,gamejam\n\t\t// lists the 8 most popular game jams from itch.io\n"
     help_str += "+\t,gamejam more\n\t\t// 16 most popular game jams from itch.io\n"
     help_str += "+\t,gamejam soon\n\t\t// lists 4 most popular game jams from itch.io running this week\n"
-    help_str += "Interaction:\n\tTry saying hi to Cube Bot"
+    help_str += "+\t,pleade\n\t\t// pleade to Cube Bot and ask for forgiveness if you have sinned\n"
+    help_str += "\nInteraction:\n\tTry saying hi to Cube Bot"
+
     await ctx.send("```diff\n{}```".format(help_str))
 
 @bot.event
@@ -94,7 +96,6 @@ async def on_message(message):
     if "fuck" in cleaned_msg_ascii_only and len(cleaned_msg_ascii_only) < 10:
         await message.channel.send("language {}! this is a christian minecraft server".format(message.author.mention))
     elif "video game" in cleaned_msg_ascii_only:
-        #try:
         message_author_role_names = [y.name for y in message.author.roles]
         if not "BANNED" in message_author_role_names:
             await message.channel.send("!! intolerable conduct detected, issuing appropriate punishment !!")
@@ -125,8 +126,8 @@ async def on_message(message):
 async def on_member_join(member):
     guild = bot.get_guild(int(os.environ["MAIN_SERVER_ID"]))
     channel = discord.utils.get(guild.channels, name="bot-spam")
-    await channel.send("Welcome {}! To get started, try doing `,color` (do `,color` i dare you; it actually works now!)".format(member.mention))
-    await channel.send("As a club we want to set Game Developers at SFU up for success, regardless of if you have experience or not! Please show off projects you're working on, no matter how polished they are :)\n\nCheck out the events tab in Discord for events we run; hope to see you stop by!")
+    await channel.send("Welcome {}! To get started, go to #roles and grab a fancy name colour!".format(member.mention))
+    await channel.send("Our goal is to set all Game Developers at SFU up for success, regardless of if you have experience or not! Please show off projects you're working on, no matter how polished they are :)\n\nCheck out the events tab in Discord for events we run; hope to see you stop by!")
 
 # --------------------------------------------------------------------------- #
 # Utilities
