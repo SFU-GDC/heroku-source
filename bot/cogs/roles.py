@@ -147,7 +147,7 @@ class Roles(commands.Cog):
 
     JAM_ROLES_MESSAGE_ID = 1124602646150533130
 
-    # these map between variables 
+    # these map between variables and roles
     skill_map = {
         "candy" : "Skill - UX",
         "art" : "Skill - 2d Art",
@@ -157,7 +157,6 @@ class Roles(commands.Cog):
         "dvd" : "Skill - Programming",
         "game_die" : "Skill - Game Design",
     }
-
     engine_map = {
         "pen_ballpoint" : "Engine - Unity",
         "robot" : "Engine - Godot",
@@ -169,7 +168,6 @@ class Roles(commands.Cog):
         "regional_indicator_h" : "Engine - Heaps.io",
         "grey_question" : "Engine - Custom",
     }
-
     language_map = {
         "regional_indicator_c" : "Language - C/C++",
         "dagger" : "Language - C#",
@@ -178,7 +176,6 @@ class Roles(commands.Cog):
         "snake" : "Language - Python",
         "regional_indicator_h" : "Language - Haxe",
     }
-
     colour_map = {
         "jellyfish" : "Jellyfish Blue",
         "sunlight" : "Sunlight Yellow",
@@ -196,7 +193,9 @@ class Roles(commands.Cog):
     async def on_raw_reaction_add(self, payload):
         match payload.message_id:
             case self.SKILL_ROLES_MESSAGE_ID:
+                print("adding skill {}".format(payload.emoji.name))
                 if payload.emoji.name in self.skill_map.keys():
+                    print("add skill")
                     await add_role(payload.member, payload.member.guild.roles, self.skill_map[payload.emoji.name])
 
             case self.ENGINE_ROLES_MESSAGE_ID:
