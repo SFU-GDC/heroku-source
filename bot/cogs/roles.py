@@ -15,6 +15,7 @@ class Roles(commands.Cog):
     async def ping(self, ctx): # This was inside '__init__' before
         await ctx.send("pong!\n{}ms".format(round(self.bot.latency * 1000)))
 
+    # TODO: update this command
     @commands.command(aliases=['colour'])
     async def color(self, ctx):
         # If the user is part of notification squad then they have a wider variety of possible colours.
@@ -106,7 +107,17 @@ class Roles(commands.Cog):
         print("error: {}".format(repr(error)))
         await ctx.send("Oops, something went wrong. Call the function like this: `,notify true`")
     
-    
+    # --------------------------------------------------------------------------- #
+    # Roles
+
+    JAM_ROLES_MESSAGE_ID = 1124602646150533130
+
+    # REACT WITH :GAMEJAM: TO GET THE MOUNTAIN-TOP-JAMMER ROLE
+    @commands.Cog.listener()
+    async def on_raw_reaction_add(self, payload):
+        if payload.message_id == self.JAM_ROLES_MESSAGE_ID and payload.emoji.name == game_jam_emote_name:
+            await add_role(payload.member, payload.member.guild.roles, game_jam_role)
+
 # --------------------------------------------------------------------------- #
 
 async def remove_all_color_roles(user):

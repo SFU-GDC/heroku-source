@@ -111,26 +111,6 @@ async def on_message(message):
                                    + "(Also this lets us ping all **Monthly Missions** members)\n\n"
                                    + "If you don't want to be an `Honorary Tom Cruise` any more, contact an executive and they can remove the role!")
 
-    # hi patrick
-    guild = bot.get_guild(int(os.environ["MAIN_SERVER_ID"]))
-    channel = discord.utils.get(guild.channels, name="bot-test")
-    await channel.send("hi <@253596979085574144>")
-
-# --------------------------------------------------------------------------- #
-# Roles
-# TODO: move all role stuff here, just cause
-
-async def add_role(user, roles, name):
-    r = discord.utils.get(roles, name=name)
-    if r: await user.add_roles(r)
-
-JAM_ROLES_MESSAGE_ID = 1124602646150533130
-# REACT WITH :GAMEJAM: TO GET THE MOUNTAIN-TOP-JAMMER ROLE
-@bot.event
-async def on_raw_reaction_add(payload):
-    if payload.message_id == JAM_ROLES_MESSAGE_ID and payload.emoji.name == game_jam_emote_name:
-        await add_role(payload.member, payload.member.guild.roles, game_jam_role)
-
 # --------------------------------------------------------------------------- #
 # New Users
 
