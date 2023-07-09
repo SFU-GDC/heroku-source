@@ -5,9 +5,9 @@ import discord
 from discord.ext import commands, tasks
 from discord.utils import get
 
-from myconstants import greetings, mynames, missions_channel_id, honorary_tom_cruise_id, game_jam_emote_name, game_jam_role
+from myconstants import greetings, mynames, missions_channel_id, honorary_tom_cruise_id
 
-import db_manager, util
+import util
 
 # --------------------------------------------------------------------------- #
 
@@ -120,67 +120,6 @@ async def on_member_join(member):
     channel = discord.utils.get(guild.channels, name="bot-spam")
     await channel.send("Welcome {}! To get started, try doing `,color` (do `,color` i dare you; it actually works now!)".format(member.mention))
     await channel.send("As a club we want to set Game Developers at SFU up for success, regardless of if you have experience or not! Please show off projects you're working on, no matter how polished they are :)\n\nCheck out the events tab in Discord for events we run; hope to see you stop by!")
-    
-# --------------------------------------------------------------------------- #
-# Managing Events
-
-@commands.has_role('Executive')
-@bot.command()
-async def reset_events(ctx):
-    db_manager.reset_events_table()
-    await ctx.send("Events have been reset")
-
-@commands.has_role('Executive')
-@bot.command()
-async def add_event(ctx, unique_name, date, desc):
-    parts = date.split("-")
-
-    try:
-        parts = list(map(int, parts))
-        assert len(parts) == 5
-    except Exception as e:
-        print(e)
-        await ctx.send("Error: date must be 5 parts split by '-' characters. Ex: `yyyy-mm-dd-hh-mm` => `2021-05-25-23-46`")
-    else:
-        date_ = datetime(year=parts[0], month=parts[1], day=parts[2], hour=parts[3], minute=parts[4])
-        db_manager.add_event(unique_name, date_, desc)
-        await ctx.send("Successfully added event `{}`".format(unique_name))
-
-@commands.has_role('Executive')
-@bot.command()
-async def update_event(ctx, unique_name, desc, metadata=""):
-    db_manager.update_event(unique_name, desc, metadata)
-    await ctx.send("Done!")
-
-@commands.has_role('Executive')
-@bot.command()
-async def remove_event(ctx, unique_name):
-    db_manager.remove_event(unique_name)
-    await ctx.send("Done!")
-
-@bot.command(aliases=['meetings'])
-async def events(ctx):
-    outstr = ""
-    lines = []
-    for e in db_manager.get_next_events(3):
-        line1 = "{} => {}".format(e[0], util.make_readable(e[1]))
-        line2 = "{}".format(e[2])
-        lines += [(line1, line2)]
-
-    # TODO: try not to go over 80 characters, or eventually I'll need to write a line wrapper...
-    # take longest line & factor in border spacing
-    maxlen = 0 if len(lines) == 0 else (max(map(lambda t: max(len(t[0]), len(t[1])), lines)) + 6)
-    outstr += "#" + "=" * (maxlen-2) + "#" + "\n"
-    for (line1, line2) in lines:
-        line1 = "| " + line1 + " " * ((maxlen-4)-len(line1)) + " |\n"
-        line2 = "|   " + line2 + " " * ((maxlen-4)-len(line2)) + " |\n" + "+" + "-" * (maxlen-2) + "+" + "\n"
-        outstr += line1 + line2
-    
-    if outstr == "":
-        outstr = "no events found"
-
-    await ctx.send("Here's our next 3 events:")
-    await ctx.send("```{}```".format(outstr))
 
 # --------------------------------------------------------------------------- #
 # Utilities

@@ -2,7 +2,6 @@ import asyncio
 import discord
 from discord.ext import commands, tasks
 
-from myconstants import bulbasaur_green, gameboy_yellow
 import myconstants
 
 # For the notification roles
@@ -67,10 +66,10 @@ class Roles(commands.Cog):
             await add_role(ctx.message.author, ctx.guild.roles, "Notification Squad")
 
             message = await ctx.send("Choose a colour by reacting to this message")
-            await message.add_reaction(bulbasaur_green)
-            await message.add_reaction(gameboy_yellow)
-            is_bulbasaur = lambda reaction, user: user == ctx.message.author and str(reaction.emoji) == bulbasaur_green
-            is_gameboy = lambda reaction, user: user == ctx.message.author and str(reaction.emoji) == gameboy_yellow
+            await message.add_reaction(myconstants.bulbasaur_green)
+            await message.add_reaction(myconstants.gameboy_yellow)
+            is_bulbasaur = lambda reaction, user: user == ctx.message.author and str(reaction.emoji) == myconstants.bulbasaur_green
+            is_gameboy = lambda reaction, user: user == ctx.message.author and str(reaction.emoji) == myconstants.gameboy_yellow
             check = lambda r, u: is_gameboy(r,u) or is_bulbasaur(r,u)
 
             # wait for reponse or timeout
@@ -115,8 +114,8 @@ class Roles(commands.Cog):
     # REACT WITH :GAMEJAM: TO GET THE MOUNTAIN-TOP-JAMMER ROLE
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload):
-        if payload.message_id == self.JAM_ROLES_MESSAGE_ID and payload.emoji.name == game_jam_emote_name:
-            await add_role(payload.member, payload.member.guild.roles, game_jam_role)
+        if payload.message_id == self.JAM_ROLES_MESSAGE_ID and payload.emoji.name == myconstants.game_jam_emote_name:
+            await add_role(payload.member, payload.member.guild.roles, myconstants.game_jam_role)
 
 # --------------------------------------------------------------------------- #
 

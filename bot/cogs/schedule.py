@@ -242,9 +242,6 @@ def test():
 
     fbuf = io.BytesIO() 
     imageio.imwrite(fbuf, make_quad_graphic(images), format="png")
-    #print(fbuf.getvalue())
-    #file1 = open('myfile.png', 'wb')
-    #file1.write(fbuf.getvalue())
 
 # --------------------------------------------------------------------------- #
 
