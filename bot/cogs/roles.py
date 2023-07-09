@@ -149,9 +149,9 @@ class Roles(commands.Cog):
 
     # these map between variables and roles
     skill_map = {
-        "candy" : "Skill - UX",
-        "art" : "Skill - 2d Art",
-        "ice_cube" : "Skill - 3d Art",
+        "🍬" : "Skill - UX",
+        "🎨" : "Skill - 2d Art",
+        "🧊" : "Skill - 3d Art",
         "person_running" : "Skill - Animation",
         "notes" : "Skill - Music/Sound",
         "dvd" : "Skill - Programming",
