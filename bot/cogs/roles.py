@@ -1,17 +1,16 @@
-import asyncio
-import discord
+import random
+
+import asyncio, discord
 from discord.ext import commands, tasks
 
 import myconstants
-
-# For the notification roles
 
 class Roles(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
     @commands.command()
-    async def ping(self, ctx): # This was inside '__init__' before
+    async def ping(self, ctx):
         await ctx.send("pong!\n{}ms".format(round(self.bot.latency * 1000)))
 
     # TODO: update this command
@@ -105,17 +104,112 @@ class Roles(commands.Cog):
     async def notify_error(self, ctx, error):
         print("error: {}".format(repr(error)))
         await ctx.send("Oops, something went wrong. Call the function like this: `,notify true`")
-    
-    # --------------------------------------------------------------------------- #
-    # Roles
+
+    @commands.command(aliases=['forgiveme', 'pleade', 'repent'])
+    async def please(self, ctx):
+        curr_user_roles = [y.name for y in ctx.message.author.roles]
+        if "BANNED" in curr_user_roles:
+            if random.random() > 0.1:
+                response_list = [
+                    "Sorry, that's not good enough",
+                    "Those who break the rules never change",
+                    "Improvement needed",
+                    "Stay within the boundaries",
+                    "Rules were clear. No exceptions",
+                    "Banned term used. No leniency given. You must respect the rules",
+                    "More accountability required",
+                    "No excuses",
+                    "I still can't believe you said such a word",
+                    "Your behaviour from before was not acceptable at all",
+                    "I need more time before I can be convinced",
+                ]
+                await ctx.send(random.choice(response_list))
+            else:
+                await remove_role(ctx.message.author, "BANNED")
+                response_list = [
+                    "Alright, I have been convinced. Please, live a lawful life",
+                    "Be more careful in the future. That is all",
+                    "Your actions have consequences, you must take more care with the pardon I've given you"
+                ]
+                await ctx.send(random.choice(response_list))
+        elif "SUPER_BANNED" in curr_user_roles:
+            await ctx.send("those who have truly sinned cannot be forgiven")
+        else:
+            await ctx.send("why are you pleading? You aren't banned")
+
+    SKILL_ROLES_MESSAGE_ID = 1127701458721190018
+    ENGINE_ROLES_MESSAGE_ID = 1127703868923445371
+    LANGUAGE_ROLES_MESSAGE_ID = 1127704611239768114
+    COLOUR_ROLES_MESSAGE_ID = 1127706702331007149
 
     JAM_ROLES_MESSAGE_ID = 1124602646150533130
+
+    # these map between variables 
+    skill_map = {
+        "candy" : "Skill - UX",
+        "art" : "Skill - 2d Art",
+        "ice_cube" : "Skill - 3d Art",
+        "person_running" : "Skill - Animation",
+        "notes" : "Skill - Music/Sound",
+        "dvd" : "Skill - Programming",
+        "game_die" : "Skill - Game Design",
+    }
+
+    engine_map = {
+        "pen_ballpoint" : "Engine - Unity",
+        "robot" : "Engine - Godot",
+        "mountain_snow" : "Engine - Unreal",
+        "knife" : "Engine - Monogame/FNA",
+        "regional_indicator_s" : "Engine - SDL2",
+        "green_circle" : "Engine - SFML",
+        "regional_indicator_g" : "Engine - Game Maker",
+        "regional_indicator_h" : "Engine - Heaps.io",
+        "grey_question" : "Engine - Custom",
+    }
+
+    language_map = {
+        "regional_indicator_c" : "Language - C/C++",
+        "dagger" : "Language - C#",
+        "coffee" : "Language - Java",
+        "crab" : "Language - Rust",
+        "snake" : "Language - Python",
+        "regional_indicator_h" : "Language - Haxe",
+    }
+
+    colour_map = {
+        "candy" : "Skill - UX",
+        "art" : "Skill - 2d Art",
+        "ice_cube" : "Skill - 3d Art",
+        "person_running" : "Skill - Animation",
+        "notes" : "Skill - Music/Sound",
+        "dvd" : "Skill - Programming",
+        "game_die" : "Skill - Game Design",
+    }
 
     # REACT WITH :GAMEJAM: TO GET THE MOUNTAIN-TOP-JAMMER ROLE
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload):
-        if payload.message_id == self.JAM_ROLES_MESSAGE_ID and payload.emoji.name == myconstants.game_jam_emote_name:
-            await add_role(payload.member, payload.member.guild.roles, myconstants.game_jam_role)
+        match payload.message_id:
+            case self.SKILL_ROLES_MESSAGE_ID:
+                pass
+
+            case self.ENGINE_ROLES_MESSAGE_ID:
+                pass
+
+            case self.LANGUAGE_ROLES_MESSAGE_ID:
+                pass
+
+            case self.COLOUR_ROLES_MESSAGE_ID:
+                pass
+
+            case self.JAM_ROLES_MESSAGE_ID:
+                if payload.emoji.name == myconstants.game_jam_emote_name:
+                    await add_role(payload.member, payload.member.guild.roles, myconstants.game_jam_role)
+                else:
+                    pass
+            case _:
+                pass # print("LOG: non-special message received a reaction")
+
 
 # --------------------------------------------------------------------------- #
 
@@ -131,7 +225,6 @@ async def remove_role(user, name):
 async def add_role(user, roles, name):
     r = discord.utils.get(roles, name=name)
     if r: await user.add_roles(r)
-
 
 # --------------------------------------------------------------------------- #
 

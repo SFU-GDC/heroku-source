@@ -39,17 +39,15 @@ async def unload(ctx, extension):
 
 @bot.command()
 async def help(ctx):
-    help_str = "Commands:\n\t"
-    help_str += ",notify <true|false>\n\t\t// activates or deactivates notifications\n\t"
-    help_str += ",color\n\t\t// get a colour!\n\t"
-    help_str += ",ping\t\t\n\t\t// pong\n\t"
-    help_str += ",gamejam\n\t\t// lists the 8 most popular game jams from itch.io\n\t"
-    help_str += ",gamejam more\n\t\t// 16 most popular game jams from itch.io\n\t"
-    help_str += ",gamejam soon\n\t\t// lists 4 most popular game jams from itch.io running this week\n\t"
-    help_str += ",events\n\n\n"
-    help_str += ",meetings\n\t\t// shows upcoming club events\n\n"
+    help_str = "Commands:\n"
+    help_str += "+\t,notify <true|false>\n\t\t// activates or deactivates notifications\n"
+    help_str += "+\t,color\n\t\t// get a colour!\n"
+    help_str += "+\t,ping\t\t\n\t\t// pong\n"
+    help_str += "+\t,gamejam\n\t\t// lists the 8 most popular game jams from itch.io\n"
+    help_str += "+\t,gamejam more\n\t\t// 16 most popular game jams from itch.io\n"
+    help_str += "+\t,gamejam soon\n\t\t// lists 4 most popular game jams from itch.io running this week\n"
     help_str += "Interaction:\n\tTry saying hi to Cube Bot"
-    await ctx.send("```{}```".format(help_str))
+    await ctx.send("```diff\n{}```".format(help_str))
 
 @bot.event
 async def on_ready():
@@ -73,6 +71,15 @@ async def on_message(message):
 
     cleaned_msg = message.content.replace("!", "").replace("?", "").lower().strip()
     cleaned_msg_ascii_only = (cleaned_msg.encode('ascii', 'ignore')).decode("utf-8").strip()
+
+    forgive_question_list = [
+        "cubebot please forgive me", "cube bot please forgive me", "cube-bot please forgive me",
+        "cubebot i ask for your forgiveness", "cube bot i ask for your forgiveness", "cube-bot i ask for your forgiveness",
+        "cubebot will you forgive me?", "cube bot will you forgive me?", "cube-bot will you forgive me?",
+        "cubebot can you forgive me?", "cube bot can you forgive me?", "cube-bot can you forgive me?",
+    ]
+    if cleaned_msg_ascii_only in forgive_question_list:
+        pass # TODO: call the please command
 
     ends_with_myname = cleaned_msg_ascii_only.endswith(mynames[0].lower()) \
                      or cleaned_msg_ascii_only.endswith(mynames[1].lower()) \
