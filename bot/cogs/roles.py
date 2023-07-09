@@ -152,29 +152,29 @@ class Roles(commands.Cog):
         "🍬" : "Skill - UX",
         "🎨" : "Skill - 2d Art",
         "🧊" : "Skill - 3d Art",
-        "person_running" : "Skill - Animation",
-        "notes" : "Skill - Music/Sound",
-        "dvd" : "Skill - Programming",
-        "game_die" : "Skill - Game Design",
+        "🏃" : "Skill - Animation",
+        "🎶" : "Skill - Music/Sound",
+        "📀" : "Skill - Programming",
+        "🎲" : "Skill - Game Design",
     }
     engine_map = {
-        "pen_ballpoint" : "Engine - Unity",
-        "robot" : "Engine - Godot",
-        "mountain_snow" : "Engine - Unreal",
-        "knife" : "Engine - Monogame/FNA",
-        "regional_indicator_s" : "Engine - SDL2",
-        "green_circle" : "Engine - SFML",
-        "regional_indicator_g" : "Engine - Game Maker",
-        "regional_indicator_h" : "Engine - Heaps.io",
-        "grey_question" : "Engine - Custom",
+        "🖊️" : "Engine - Unity",
+        "🤖" : "Engine - Godot",
+        "🏔️" : "Engine - Unreal",
+        "🔪" : "Engine - Monogame/FNA",
+        "🇸" : "Engine - SDL2",
+        "🟢" : "Engine - SFML",
+        "🇬" : "Engine - Game Maker",
+        "🇭" : "Engine - Heaps.io",
+        "❔" : "Engine - Custom",
     }
     language_map = {
-        "regional_indicator_c" : "Language - C/C++",
-        "dagger" : "Language - C#",
-        "coffee" : "Language - Java",
-        "crab" : "Language - Rust",
-        "snake" : "Language - Python",
-        "regional_indicator_h" : "Language - Haxe",
+        "🇨" : "Language - C/C++",
+        "🗡️" : "Language - C#",
+        "☕" : "Language - Java",
+        "🦀" : "Language - Rust",
+        "🐍" : "Language - Python",
+        "🇭" : "Language - Haxe",
     }
     colour_map = {
         "jellyfish" : "Jellyfish Blue",
@@ -184,11 +184,11 @@ class Roles(commands.Cog):
         "tallgrass" : "Tall Grass Green",
         "factorio" : "Factorio Orange",
         "crate" : "Crate Brown",
-        "bulba_aw" : "Bulbasaur Green",
+        "bulba_aw" : "Bulbasaur Green", # :bulba_aw~1:
         "gameboy" : "Gameboy Yellow",
     }
 
-    # REACT WITH :GAMEJAM: TO GET THE MOUNTAIN-TOP-JAMMER ROLE
+    # TODO: refactor structure
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload):
         match payload.message_id:
@@ -199,13 +199,16 @@ class Roles(commands.Cog):
                     await add_role(payload.member, payload.member.guild.roles, self.skill_map[payload.emoji.name])
 
             case self.ENGINE_ROLES_MESSAGE_ID:
-                pass
+                if payload.emoji.name in self.engine_map.keys():
+                    await add_role(payload.member, payload.member.guild.roles, self.engine_map[payload.emoji.name])
 
             case self.LANGUAGE_ROLES_MESSAGE_ID:
-                pass
+                if payload.emoji.name in self.language_map.keys():
+                    await add_role(payload.member, payload.member.guild.roles, self.language_map[payload.emoji.name])
 
             case self.COLOUR_ROLES_MESSAGE_ID:
-                pass
+                if payload.emoji.name in self.colour_map.keys():
+                    await add_role(payload.member, payload.member.guild.roles, self.colour_map[payload.emoji.name])
 
             case self.JAM_ROLES_MESSAGE_ID:
                 if payload.emoji.name == myconstants.game_jam_emote_name:
