@@ -13,7 +13,7 @@ class Roles(commands.Cog):
     async def ping(self, ctx):
         await ctx.send("pong!\n{}ms".format(round(self.bot.latency * 1000)))
 
-    # TODO: update this command
+    # TODO: turn this command into ,secret
     @commands.command(aliases=['colour'])
     async def color(self, ctx):
         # If the user is part of notification squad then they have a wider variety of possible colours.
@@ -37,8 +37,6 @@ class Roles(commands.Cog):
         futures = [message.add_reaction(emoji) for emoji in color_emote_list]
         await asyncio.gather(*futures)
 
-        # TODO: check for reactions here.
-
         check = lambda reaction, user: user == ctx.message.author and str(reaction.emoji) in color_emote_list
 
         try:
@@ -54,8 +52,6 @@ class Roles(commands.Cog):
             await ctx.send("You took too long to pick a colour, try `,color` again if you'd like to claim one.")
         else:
             await ctx.send("Enjoy {}!".format(reaction.emoji))
-
-        # TODO: remove the emotes from the message.
 
     @commands.command()
     async def notify(self, ctx, activate):
@@ -206,6 +202,7 @@ class Roles(commands.Cog):
 
             case self.COLOUR_ROLES_MESSAGE_ID:
                 if payload.emoji.name in self.colour_map.keys():
+                    await remove_all_color_roles(payload.member)
                     await add_role(payload.member, payload.member.guild.roles, self.colour_map[payload.emoji.name])
 
             case self.JAM_ROLES_MESSAGE_ID:
