@@ -215,14 +215,8 @@ class Roles(commands.Cog):
     async def on_raw_reaction_remove(self, payload):
         # NOTE: this is only an estimate, since moderators can remove messages for someone in certain cases
         # https://stackoverflow.com/questions/67545320/how-to-detect-that-who-removed-the-reaction-discord-py
-        print("payload: {}", payload)
-        print("payload.user_id: {}", payload.user_id)
         guild = self.bot.get_guild(payload.guild_id)
-        member = self.bot.get_user(payload.user_id)
-        print("guild: {}", guild)
-        print("member: {}", member)
-        member2 = discord.utils.get(guild.members, id=payload.user_id)
-        print("member2: {}", member2)
+        member = discord.utils.get(guild.members, id=payload.user_id)
 
         match payload.message_id:
             case self.SKILL_ROLES_MESSAGE_ID:
@@ -242,7 +236,7 @@ class Roles(commands.Cog):
     
             case self.JAM_ROLES_MESSAGE_ID:
                 if payload.emoji.name == myconstants.game_jam_emote_name:
-                    await remove_role(member2, myconstants.game_jam_role)
+                    await remove_role(member, myconstants.game_jam_role)
             case _:
                 pass # print("LOG: non-special message received a reaction")
 
