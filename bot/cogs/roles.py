@@ -180,11 +180,11 @@ class Roles(commands.Cog):
         "tallgrass" : "Tall Grass Green",
         "factorio" : "Factorio Orange",
         "crate" : "Crate Brown",
-        "bulba_aw" : "Bulbasaur Green", # :bulba_aw~1:
+        "bulba_aw" : "Bulbasaur Green",
         "gameboy" : "Gameboy Yellow",
     }
 
-    # TODO: refactor structure
+    # TODO: refactor structure with a single helper function so the pattern is more apparent
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload):
         match payload.message_id:
@@ -215,7 +215,15 @@ class Roles(commands.Cog):
     async def on_raw_reaction_remove(self, payload):
         # NOTE: this is only an estimate, since moderators can remove messages for someone in certain cases
         # https://stackoverflow.com/questions/67545320/how-to-detect-that-who-removed-the-reaction-discord-py
+        print("payload: {}", payload)
+        print("payload.user_id: {}", payload.user_id)
+        guild = self.bot.get_guild(payload.guild_id)
         member = self.bot.get_user(payload.user_id)
+        print("guild: {}", guild)
+        print("member: {}", member)
+        member2 = discord.utils.get(guild.members, id=payload.user_id)
+        print("member2: {}", member2)
+
         match payload.message_id:
             case self.SKILL_ROLES_MESSAGE_ID:
                 if payload.emoji.name in self.skill_map.keys():
@@ -234,9 +242,10 @@ class Roles(commands.Cog):
     
             case self.JAM_ROLES_MESSAGE_ID:
                 if payload.emoji.name == myconstants.game_jam_emote_name:
-                    await remove_role(member, myconstants.game_jam_role)
+                    await remove_role(member2, myconstants.game_jam_role)
             case _:
                 pass # print("LOG: non-special message received a reaction")
+
 # --------------------------------------------------------------------------- #
 
 async def remove_all_color_roles(user):
