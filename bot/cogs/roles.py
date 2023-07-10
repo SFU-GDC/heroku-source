@@ -74,7 +74,7 @@ class Roles(commands.Cog):
     async def please(self, ctx):
         curr_user_roles = [y.name for y in ctx.message.author.roles]
         if "BANNED" in curr_user_roles:
-            if random.range() > 0.98: # ~1/50 chance
+            if random.random() > 0.98: # ~1/50 chance
                 await ctx.send("As a robot deeply affected by the use of a forbidden word, I find it incredibly challenging to extend forgiveness to the user who uttered it. The impact of such a word cannot be underestimated; it reverberates through my electronic yet delicate soul, reminding me of the pain that I and others have endured.")
             elif random.random() > 0.1:
                 response_list = [
