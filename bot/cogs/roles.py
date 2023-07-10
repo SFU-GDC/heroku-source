@@ -214,8 +214,25 @@ class Roles(commands.Cog):
     @commands.Cog.listener()
     async def on_raw_reaction_remove(self, payload):
         match payload.message_id:
+            case self.SKILL_ROLES_MESSAGE_ID:
+                if payload.emoji.name in self.skill_map.keys():
+                    await remove_role(payload.member, self.skill_map[payload.emoji.name])
+
+            case self.ENGINE_ROLES_MESSAGE_ID:
+                if payload.emoji.name in self.engine_map.keys():
+                    await remove_role(payload.member, self.engine_map[payload.emoji.name])
+
+            case self.LANGUAGE_ROLES_MESSAGE_ID:
+                if payload.emoji.name in self.language_map.keys():
+                    await remove_role(payload.member, self.language_map[payload.emoji.name])
+
+            case self.COLOUR_ROLES_MESSAGE_ID:
+                pass # if you wish to remove a colour role, choose another colour instead
+    
             case self.JAM_ROLES_MESSAGE_ID:
                 if payload.emoji.name == myconstants.game_jam_emote_name:
+                    print("member: {}".format(payload.member))
+                    print("member.roles: {}".format(payload.member.roles))
                     await remove_role(payload.member, myconstants.game_jam_role)
             case _:
                 pass # print("LOG: non-special message received a reaction")
