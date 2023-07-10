@@ -213,8 +213,12 @@ class Roles(commands.Cog):
 
     @commands.Cog.listener()
     async def on_raw_reaction_remove(self, payload):
-        pass # TODO: add this too!
-
+        match payload.message_id:
+            case self.JAM_ROLES_MESSAGE_ID:
+                if payload.emoji.name == myconstants.game_jam_emote_name:
+                    await remove_role(payload.member, myconstants.game_jam_role)
+            case _:
+                pass # print("LOG: non-special message received a reaction")
 # --------------------------------------------------------------------------- #
 
 async def remove_all_color_roles(user):
