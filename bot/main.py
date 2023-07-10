@@ -41,12 +41,13 @@ async def unload(ctx, extension):
 async def help(ctx):
     help_str = "Commands:\n"
     help_str += "+\t,notify <true|false>\n\t\t// activates or deactivates notifications\n"
-    help_str += "+\t,color\n\t\t// get a colour!\n"
     help_str += "+\t,ping\t\t\n\t\t// pong\n"
     help_str += "+\t,gamejam\n\t\t// lists the 8 most popular game jams from itch.io\n"
     help_str += "+\t,gamejam more\n\t\t// 16 most popular game jams from itch.io\n"
     help_str += "+\t,gamejam soon\n\t\t// lists 4 most popular game jams from itch.io running this week\n"
     help_str += "+\t,pleade\n\t\t// pleade to Cube Bot and ask for forgiveness if you have sinned\n"
+    help_str += "+\t,secret\n\t\t// it's a secret! Try it out or look for my hidden but public source code :3\n"
+
     help_str += "\nInteraction:\n\tTry saying hi to Cube Bot"
 
     await ctx.send("```diff\n{}```".format(help_str))
