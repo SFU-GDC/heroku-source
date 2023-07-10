@@ -12,6 +12,7 @@ mountain_flower_purple = "<:mountain_flower:865405232099229716>"
 tallgrass_green = "<:tallgrass:865400601248792606>"
 factory_orange = "<:factorio:865441166291894332>"
 crate_brown = "<:crate:865448635100692510>"
+darkness_incarnate = "<:evil:872688632396398592>"
 
 game_jam = "<:gamejam:1124170128888700949>"
 game_jam_role = "Mountain-top Jammer"

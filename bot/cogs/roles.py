@@ -18,7 +18,7 @@ class Roles(commands.Cog):
         curr_user_roles = [y.name for y in ctx.message.author.roles]
         if "BANNED" in curr_user_roles or "SUPER BANNED" in curr_user_roles:
             await add_role(ctx.message.author, ctx.guild.roles, "Darkness Incarnate")
-            await ctx.send("Enjoy :evil:!")
+            await ctx.send("Enjoy {}!".format(myconstants.darkness_incarnate))
         else:
             await ctx.send("sorry, you don't satisfy the criteria for this secret")
 
