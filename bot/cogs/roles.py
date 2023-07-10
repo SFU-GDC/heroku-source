@@ -13,45 +13,14 @@ class Roles(commands.Cog):
     async def ping(self, ctx):
         await ctx.send("pong!\n{}ms".format(round(self.bot.latency * 1000)))
 
-    # TODO: turn this command into ,secret
-    @commands.command(aliases=['colour'])
-    async def color(self, ctx):
-        # If the user is part of notification squad then they have a wider variety of possible colours.
-        message = await ctx.send("Choose a colour by reacting to this message")
-        if "Notification Squad" in [y.name for y in ctx.message.author.roles]:
-            color_emote_list = myconstants.extended_color_emote_list 
-            color_emote_name_list = myconstants.extended_color_emote_name_list
-            color_list = myconstants.extended_color_list
+    @commands.command(aliases=['seecret', 'seeecret'])
+    async def secret(self, ctx):
+        curr_user_roles = [y.name for y in ctx.message.author.roles]
+        if "BANNED" in curr_user_roles or "SUPER BANNED" in curr_user_roles:
+            await add_role(ctx.message.author, ctx.guild.roles, "Darkness Incarnate")
+            await ctx.send("Enjoy :evil:!")
         else:
-            color_emote_list = myconstants.color_emote_list 
-            color_emote_name_list = myconstants.color_emote_name_list
-            color_list = myconstants.color_list
-
-        if "BANNED" in [y.name for y in ctx.message.author.roles]:
-            color_emote_list += ["<:evil:872688632396398592>"] 
-            color_emote_name_list += ["evil"]
-            color_list += ["Darkness Incarnate"]
-
-        # doesn't feel like parallel...
-        # https://stackoverflow.com/questions/53324404/delay-when-adding-emojis-to-a-message-on-discord-python
-        futures = [message.add_reaction(emoji) for emoji in color_emote_list]
-        await asyncio.gather(*futures)
-
-        check = lambda reaction, user: user == ctx.message.author and str(reaction.emoji) in color_emote_list
-
-        try:
-            reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=60.0)
-            user = ctx.message.author
-
-            if reaction.emoji.name in color_emote_name_list:
-                index_of = color_emote_name_list.index(reaction.emoji.name)
-                await remove_all_color_roles(user)
-                await add_role(user, ctx.guild.roles, color_list[index_of])
-                
-        except asyncio.TimeoutError:
-            await ctx.send("You took too long to pick a colour, try `,color` again if you'd like to claim one.")
-        else:
-            await ctx.send("Enjoy {}!".format(reaction.emoji))
+            await ctx.send("sorry, you don't satisfy the criteria for this secret")
 
     @commands.command()
     async def notify(self, ctx, activate):
