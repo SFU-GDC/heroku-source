@@ -13,6 +13,7 @@ class Roles(commands.Cog):
     async def ping(self, ctx):
         await ctx.send("pong!\n{}ms".format(round(self.bot.latency * 1000)))
 
+    """
     @commands.command(aliases=['seecret', 'seeecret'])
     async def secret(self, ctx):
         curr_user_roles = [y.name for y in ctx.message.author.roles]
@@ -21,6 +22,7 @@ class Roles(commands.Cog):
             await ctx.send("Enjoy {}!".format(myconstants.darkness_incarnate))
         else:
             await ctx.send("sorry, you don't satisfy the criteria for this secret")
+    """
 
     @commands.command()
     async def notify(self, ctx, activate):
@@ -70,6 +72,7 @@ class Roles(commands.Cog):
         print("error: {}".format(repr(error)))
         await ctx.send("Oops, something went wrong. Call the function like this: `,notify true`")
 
+    '''
     @commands.command(aliases=['forgiveme', 'pleade', 'repent'])
     async def please(self, ctx):
         curr_user_roles = [y.name for y in ctx.message.author.roles]
@@ -104,6 +107,7 @@ class Roles(commands.Cog):
             await ctx.send("those who have truly sinned cannot be forgiven")
         else:
             await ctx.send("why are you pleading? You aren't banned")
+    '''
 
     SKILL_ROLES_MESSAGE_ID = 1127701458721190018
     ENGINE_ROLES_MESSAGE_ID = 1127703868923445371

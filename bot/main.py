@@ -75,6 +75,7 @@ async def on_message(message):
     cleaned_msg = message.content.replace("!", "").replace("?", "").lower().strip()
     cleaned_msg_ascii_only = (cleaned_msg.encode('ascii', 'ignore')).decode("utf-8").strip()
 
+    """
     forgive_question_list = [
         "cubebot please forgive me", "cube bot please forgive me", "cube-bot please forgive me",
         "cubebot i ask for your forgiveness", "cube bot i ask for your forgiveness", "cube-bot i ask for your forgiveness",
@@ -83,19 +84,22 @@ async def on_message(message):
     ]
     if cleaned_msg_ascii_only in forgive_question_list:
         pass # TODO: call the please command
-
+    """
+        
     ends_with_myname = cleaned_msg_ascii_only.endswith(mynames[0].lower()) \
                      or cleaned_msg_ascii_only.endswith(mynames[1].lower()) \
                      or cleaned_msg_ascii_only.endswith(mynames[2].lower())
     if ends_with_myname and len(cleaned_msg_ascii_only) > 9 and cleaned_msg_ascii_only[:-8].strip() in greetings:
         end_char = "!" if random.randint(0, 1) == 1 else ""
         await message.channel.send("{} {}{}".format(random.choice(greetings), message.author.mention, end_char))
-    elif "linux" in cleaned_msg_ascii_only and (not "gnu linux" in cleaned_msg_ascii_only) and (not "gnulinux" in cleaned_msg_ascii_only):
-        await message.channel.send("you mean GNU linux, right?")
+    elif "linux" in cleaned_msg_ascii_only and (not "gnu linux" in cleaned_msg_ascii_only) and (not "gnulinux" in cleaned_msg_ascii_only) and (not "gnu/linux" in cleaned_msg_ascii_only):
+        await message.channel.send("you mean GNU/Linux, right?")
     
     # if player mentions a banned word, "ban them"
     if "fuck" in cleaned_msg_ascii_only and len(cleaned_msg_ascii_only) < 10:
         await message.channel.send("language {}! this is a christian minecraft server".format(message.author.mention))
+    
+    '''
     elif "video game" in cleaned_msg_ascii_only:
         message_author_role_names = [y.name for y in message.author.roles]
         if not "BANNED" in message_author_role_names:
@@ -107,8 +111,9 @@ async def on_message(message):
             await message.channel.send("!!! {}, issuing MAXIMUM punishment !!!".format( random.choice(["T̴̡̪͘Ḧ̴͎̝́̇E̸̝̾Ÿ̶͙́ ̷̟̝̎͝N̴͓̻̉E̵̗̙̾́V̵͖͝Ë̷͕́̅Ŕ̸̙͓ ̴͔͐̄L̸͖̟̓E̸̛͓͆Å̸̯͇Ŗ̶͛͌N̴̥͝", "T̶̻̔H̷͓̮̅̅E̸̻̝̍Y̵̪͐͂͜ ̵̛̱N̷̝̿̆E̵̘͘V̸̹̳̅̌E̵͙͕͌Ṟ̵̙̄̊ ̸̯͛͘L̴̲̪͋̈́E̶̢̖̍̄A̵͖̥͂R̷̳͉̾Ǹ̵̛͓̜", "Ṱ̷͌Ḧ̷̼́E̷͔͌Ỷ̶͍ ̸̤̄N̷̮̉E̵͓̕V̷̗̏Ḙ̶͊R̵̺̂ ̵̧̉L̵̳̉E̵͕̓Â̴̠R̸̪̿N̸̘̈́", "T̸̢̈́H̴͎̀E̴͎̒Ỵ̶̍ ̸̛͕N̴͔̅E̶͓̊V̴̞͝E̷͐͜R̸̭͝ ̸̨́L̷͕̿Ȇ̵ͅA̵̻͌R̴̠̕N̴͈̈́"]) ))
             r = discord.utils.get(message.guild.roles, name="SUPER_BANNED")
             if r: await message.author.add_roles(r)
-        elif ("BANNED" in message_author_role_names) and ("SUPER_BANNED" in message_author_role_names): 
+        elif ("BANNED" in message_author_role_names) and ("SUPER_BANNED" in message_author_role_names):
             await message.channel.send("{} {}".format(message.author.mention, "(っ◔◡◔)っ ♥ SILENCE ♥" if random.random() > 0.99 else "🆂🅸🅻🅴🅽🅲🅴"))
+    '''
 
     # Adding to Honorary Tom Cruise role to people who post in #missions
     guild = bot.get_guild(int(os.environ["MAIN_SERVER_ID"]))
@@ -128,7 +133,7 @@ async def on_member_join(member):
     guild = bot.get_guild(int(os.environ["MAIN_SERVER_ID"]))
     channel = discord.utils.get(guild.channels, name="bot-spam")
     await channel.send("Welcome {}! To get started, go to #roles and grab a fancy name colour!".format(member.mention))
-    await channel.send("Our goal is to set all Game Developers at SFU up for success, regardless of if you have experience or not! Please show off projects you're working on, no matter how polished they are :)\n\nCheck out the events tab in Discord for events we run; hope to see you stop by!")
+    await channel.send("Our goal is to set up all Game Developers at SFU for success, regardless of if you have experience or not! Please show off projects you're working on, no matter how polished they are :)\n\nCheck out the events tab in Discord for events we run; hope to see you stop by!")
 
 # --------------------------------------------------------------------------- #
 # Utilities
@@ -137,7 +142,6 @@ async def on_member_join(member):
 @commands.has_role('Executive')
 @bot.command()
 async def announce(ctx, message):
-    #guild = bot.get_guild(int(os.environ["MAIN_SERVER_ID"]))
     channel = discord.utils.get(ctx.guild.channels, name="announcements")
     await channel.send(message)
 
